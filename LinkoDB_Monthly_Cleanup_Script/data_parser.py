@@ -8,29 +8,43 @@ def parse_data(filepath, rubric):
     sheet_names = wb.sheet_names
     print(f"Sheet names: {sheet_names}")
 
+    # check only the first sheet
     sheet_name = sheet_names[0]
+
+    # read everything as text, assuming there exists NO header
     df = wb.parse(sheet_name, dtype=str, header=None)
 
+   # find which row is the real header row
     header_row = _find_header_row(df, rubric)
     print(f"Header row found at row index: {header_row}")
 
+    # reread file
     df = wb.parse(sheet_name, dtype=str, header=header_row)
-    df.columns = df.columns.astype(str).str.strip()
-    df.dropna(axis=1, how="all", inplace=True)
 
+    # strip white spaces
+    df.columns = df.columns.astype(str).str.strip()
+
+    # drop empty columns
+    df.dropna(axis=1, how="all", inplace=True)
     print(f" Columns found: {df.columns.tolist()}")
     print(f"  Rows found: {len(df)}")
 
+    # match each column to a rubric field
     column_mapping, report = _match_columns(df, rubric)
+
+    # rename columns
     df.rename(columns=column_mapping, inplace=True)
+
+    # print the report in console
     _print_report(report)
 
+    # save to json
     records = df.to_dict(orient="records")
     with open("output/data_parsed.json", "w") as f: json.dump(records[10:], f, indent=2, default=str)
-
     print(" Saved first 10 rows to output/data_parsed.json")
     return df, report
 
+# helper function for finding the real header row
 def _find_header_row(df, rubric):
     messy_names = list(rubric["column_mapping"].keys())
     best_row    = 0
@@ -49,12 +63,13 @@ def _find_header_row(df, rubric):
 
     return best_row
 
+# match each column to a rubric field
 def _match_columns(df, rubric):
     # matched by name
     # matched by value pattern
     # could not match
     # column not in rubric at all, probably ok to skip
-    report = { "matched":    [],   "auto_fixed": [],  "flagged":    [],   "ignored":    []}
+    report = { "matched":    [],   "auto_fixed": [], "not_in_rubric": [],  "flagged":    [],   "ignored":    []}
 
     # old name to new name
     column_mapping = {}
@@ -88,15 +103,16 @@ def _match_columns(df, rubric):
 
         # no match found
         # check if it looks important or just extra
-        if _looks_important(col_str): report["flagged"].append({ "column": col, "note":   "Could not match to rubric — review manually" })
+        if _looks_important(col_str): report["not_in_rubric"].append({ "column": col, "note":   "Could not match to rubric - may be extra data column, ok to keep as is" })
         else: report["ignored"].append(col)
     return column_mapping, report
 
+# helper function for matching a column name against our column_mapping
 def _match_by_name(col, column_mapping):
     # exact match
     if col in column_mapping: return column_mapping[col]
 
-    # normalized match
+    # normalized match, so we strip EVERYTHING except letters and numbers
     col_norm = re.sub(r"[^a-z0-9]", "", col.lower())
 
     for messy, correct in column_mapping.items():
@@ -104,6 +120,7 @@ def _match_by_name(col, column_mapping):
         if col_norm == messy_norm: return correct
     return None
 
+# helper function for matching a column by sampling its values against rubric patterns
 def _match_by_values(values, value_patterns):
     # take a sample of up to 20 non-empty values
     sample = [v.strip() for v in values if v.strip() not in ("", "nan")][:20]
@@ -125,13 +142,14 @@ def _match_by_values(values, value_patterns):
     if best_score >= 0.60: return best_field
     return None
 
-
+# helper function for deciding if an unmatched column looks important, we flag it
 def _looks_important(col):
     # if it looks like a generic placeholder name, ignore it
     generic = re.match(r"^(text|label|field|col|column)\d*$", col.lower())
     if generic: return False
     return True
 
+# if you want a readable summary, we can print it to the console
 def _print_report(report):
     print("\n" + "=" * 45)
     print("  COLUMN MATCHING REPORT")
@@ -146,7 +164,7 @@ def _print_report(report):
     print(f"\n   Flagged:            {len(report['flagged'])}")
     for r in report["flagged"]:  print(f"      '{r['column']}' — {r['note']}")
 
-    print(f"\n   Ignored:            {len(report['ignored'])} columns")
-    for col in report["ignored"]:  print(f"      '{col}'")
+    print(f"\n   Not in rubric:            {len(report['not_in_rubric'])} columns")
+    for col in report["not_in_rubric"]:  print(f"      '{col}'")
 
     print("\n" + "=" * 45 + "\n")
