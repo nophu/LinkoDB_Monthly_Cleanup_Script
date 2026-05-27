@@ -2,7 +2,6 @@ import re
 import json
 import pandas as pd
 
-
 def parse_data(filepath, rubric):
     print(f"\nReading data from: {filepath}")
     wb = pd.ExcelFile(filepath, engine='openpyxl')
@@ -53,10 +52,7 @@ def parse_data(filepath, rubric):
     return df, report
 
 
-# ====================================================================
-# HELPER: Find the real header row
-# looks for the row with the most matches against rubric column names
-# ====================================================================
+# helper function for finding the real header row
 def _find_header_row(df, rubric):
     messy_names = list(rubric["column_mapping"].keys())
     best_row    = 0
@@ -76,10 +72,7 @@ def _find_header_row(df, rubric):
     return best_row
 
 
-# ====================================================================
-# HELPER: Match each column to a rubric field
-# returns a mapping of old name to new name and a report
-# ====================================================================
+# helper function for matching each column to a rubric field
 def _match_columns(df, rubric):
     report = {
         "matched":       [],  # matched by name
@@ -103,7 +96,7 @@ def _match_columns(df, rubric):
             report["matched"].append({ "original":   col,   "renamed_to": matched, "method":     "name_match" })
             continue
 
-        # --- PASS 2: match by value pattern ---
+        # match by value pattern
         values = df[col].dropna().astype(str).tolist()
         matched = _match_by_values(values, rubric["value_patterns"])
 
@@ -116,7 +109,7 @@ def _match_columns(df, rubric):
             })
             continue
 
-        # --- no match found ---
+        # no match found
         if _looks_important(col_str):
             # has a real name but rubric doesn't know about it — ok to keep
             report["not_in_rubric"].append({
