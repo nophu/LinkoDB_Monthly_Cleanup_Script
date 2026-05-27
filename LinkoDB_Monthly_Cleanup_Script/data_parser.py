@@ -186,8 +186,7 @@ def _merge_facility_and_extractor_rows(df):
 # helper function for matching a column name against the rubric column_mapping
 def _match_by_name(col, column_mapping):
     # exact match
-    if col in column_mapping:
-        return column_mapping[col]
+    if col in column_mapping: return column_mapping[col]
 
     # normalized match — strip everything except letters and numbers
     # so "CleaningFreq" and "cleaningfreq" both match
