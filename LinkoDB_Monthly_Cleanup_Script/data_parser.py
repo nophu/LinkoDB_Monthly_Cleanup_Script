@@ -2,7 +2,7 @@ import re
 import json
 import pandas as pd
 
-def data_parser(filepath, rubric):
+def parse_data(filepath, rubric):
     print(f"\nReading data from: {filepath}")
     wb = pd.ExcelFile(filepath)
     sheet_names = wb.sheet_names
@@ -15,9 +15,21 @@ def data_parser(filepath, rubric):
     print(f"Header row found at row index: {header_row}")
 
     df = wb.parse(sheet_name, dtype=str, header=header_row)
-    df.columns = df.columns.astype(str).str.strip().tolist()
-    df.dropna(how="all", inplace=True)
+    df.columns = df.columns.astype(str).str.strip()
+    df.dropna(axis=1, how="all", inplace=True)
 
+    print(f" Columns found: {df.columns.tolist()}")
+    print(f"  Rows found: {len(df)}")
+
+    column_mapping, report = _match_columns(df, rubric)
+    df.rename(columns=column_mapping, inplace=True)
+    _print_report(report)
+
+    records = df.to_dict(orient="records")
+    with open("output/data_parsed.json", "w") as f: json.dump(records[10:], f, indent=2, default=str)
+
+    print(" Saved first 10 rows to output/data_parsed.json")
+    return df, report
 
 def _find_header_row(df, rubric):
     messy_names = list(rubric["column_mapping"].keys())
