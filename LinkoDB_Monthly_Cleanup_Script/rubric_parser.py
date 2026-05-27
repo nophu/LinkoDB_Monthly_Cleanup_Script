@@ -4,7 +4,6 @@ import pandas as pd
 
 def parse_rubric(filepath):
     print(f"\nReading rubric: {filepath}")
-
     wb  = pd.ExcelFile(filepath)
     sheet_names = wb.sheet_names
     print(f"Sheets found: {sheet_names}")
@@ -40,12 +39,10 @@ def parse_rubric(filepath):
     print(f"Rule sheets found: {rule_sheets}")
 
     for sheet_name in rule_sheets: _extract_valid_values(wb, sheet_name, rubric)
-
     _build_patterns(rubric)
 
     # save everything to a json file
     with open("output/rubric.json", "w") as f: json.dump(rubric, f, indent=2)
-
     print("Saved: output/rubric.json")
     return rubric
 
@@ -81,7 +78,6 @@ def _extract_valid_values(wb, sheet_name, rubric):
                 values = _collect_column_values(df, row_idx, col_idx)
 
                 if values:
-
                     # merge with any values we already found for this field
                     existing = rubric["valid_values"].get(matched_field, [])
 
@@ -102,7 +98,8 @@ def _match_field_name(cell_str, known_fields):
         # check if the field name appears inside the cell text
         if field_normalized in cell_normalized: return field
 
-    return None  # no match
+    # no match
+    return None
 
 
 # helper function for collecting non empty values from each column starting from a row
