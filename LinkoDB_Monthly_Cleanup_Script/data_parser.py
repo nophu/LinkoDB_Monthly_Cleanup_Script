@@ -2,7 +2,6 @@ import re
 import json
 import pandas as pd
 
-
 def parse_data(filepath, rubric):
     print(f"\nReading data from: {filepath}")
     wb = pd.ExcelFile(filepath, engine='openpyxl')
@@ -30,14 +29,14 @@ def parse_data(filepath, rubric):
 
     # save first 10 rows to JSON for inspection
     with open("output/data_parsed.json", "w") as f: json.dump(records[:10], f, indent=2, default=str)
-    print("Saved first 10 rows → output/data_parsed.json")
+    print("Saved: output/data_parsed.json")
     return records
 
 def _detect_file_type(raw_df, rubric):
     messy_names = list(rubric["column_mapping"].keys())
 
     # convert EVERYTHING to string first before doing any stripping
-    top_rows = [str(v).strip() for v in raw_df.iloc[:5].values.flatten() if str(v).strip() not in ("", "nan")]
+    [str(v).strip() for v in raw_df.iloc[:5].values.flatten() if str(v).strip() not in ("", "nan")]
 
     # check row 1 specifically — inspection events has its header there
     row1_values = raw_df.iloc[1].astype(str).str.strip().tolist()
@@ -162,7 +161,7 @@ def _parse_inspection_events(raw_df, rubric):
 
         # detect a facility row
         # facility rows start with [permit_id] like "[9199] Facility Name - Address"
-        if re.match(r"^\[\d+\]", first_val):
+        if re.match(r"^\[\d+]", first_val):
             current_facility_raw = first_val
             continue
 
@@ -193,7 +192,7 @@ def _parse_inspection_events(raw_df, rubric):
 # helper function for parsing facility string like "[9199] Café Name - 123 Main St"
 def _parse_facility_string(raw_string):
     # regex to extract permit id from [9199]
-    permit_match = re.match(r"^\[(\d+)\]\s*(.*)", raw_string)
+    permit_match = re.match(r"^\[(\d+)]\s*(.*)", raw_string)
 
     if permit_match:
         permit_id    = permit_match.group(1)
@@ -381,10 +380,10 @@ def _print_report(report):
     print("=" * 45)
 
     print(f"\n  Matched by name:      {len(report['matched'])}")
-    for r in report["matched"]:  print(f"      '{r['original']}'  →  '{r['renamed_to']}'")
+    for r in report["matched"]:  print(f"      '{r['original']}'  :  '{r['renamed_to']}'")
 
     print(f"\n  Matched by values:    {len(report['auto_fixed'])}")
-    for r in report["auto_fixed"]:   print(f"      '{r['original']}'  →  '{r['renamed_to']}'")
+    for r in report["auto_fixed"]:   print(f"      '{r['original']}'  :  '{r['renamed_to']}'")
 
     print(f"\n  Not in rubric:        {len(report['not_in_rubric'])} columns")
     for r in report["not_in_rubric"]:  print(f"      '{r['column']}'")

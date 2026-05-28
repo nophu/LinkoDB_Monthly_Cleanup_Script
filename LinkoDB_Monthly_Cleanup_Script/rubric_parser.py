@@ -43,7 +43,7 @@ def parse_rubric(filepath):
 
     # save everything to a json file
     with open("output/rubric.json", "w") as f: json.dump(rubric, f, indent=2)
-    print("Saved: output/rubric.json")
+    print("Saved: output/rubric_parsed.json")
     return rubric
 
 # helper function for finding partial names in a sheet (name matching that is case-INSENSITIVE)
