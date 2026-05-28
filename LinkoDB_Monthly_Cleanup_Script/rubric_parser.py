@@ -33,7 +33,8 @@ def parse_rubric(filepath):
     else: print("WARNING: Could not find 'Key' sheet")
 
     # learn valid values from every sheet that uses the label, "Tables" or "FS -"
-    needed_sheets = ['Tables Extractor IDs, Type', 'Key', '6Other Codes_MapCategory_Events', 'FS - Trap Size & Units', 'FS - Cleaning Frequency']
+    # update this line in rubric_parser.py
+    needed_sheets = [ 'Tables Extractor IDs, Type', 'Key', '6Other Codes_MapCategory_Events', 'FS - Trap Size & Units', 'FS - Cleaning Frequency', 'FS - Classes ' ]
     rule_sheets = [s for s in sheet_names if s in needed_sheets]
     print(f"Rule sheets found: {rule_sheets}")
 

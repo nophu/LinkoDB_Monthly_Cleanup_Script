@@ -20,19 +20,17 @@ def parse_data(filepath, rubric):
     if file_type == "permit_list": records = _parse_permit_list(raw_df, rubric)
     elif file_type == "extract_summary": records = _parse_extract_summary(raw_df, rubric)
     elif file_type == "inspection_events": records = _parse_inspection_events(raw_df, rubric)
-    elif file_type == "flat_table":records = _parse_flat(raw_df, rubric)
+    elif file_type == "flat_table": records = _parse_flat(raw_df, rubric)
     else:
         print("WARNING: Unknown file type — using basic flat parse")
         records = _parse_flat(raw_df, rubric)
 
     # save to JSON for inspection
-    with open("output/data_parsed.json", "w") as f: json.dump(records[:10], f, indent=2, default=str)
+    with open("output/data_parsed.json", "w") as f: json.dump(records, f, indent=2, default=str)
     print("Saved: output/data_parsed.json")
     return records
 
 def _detect_file_type(raw_df, rubric):
-    messy_names = list(rubric["column_mapping"].keys())
-
     # convert everything to string first
     top_rows = [str(v).strip() for v in raw_df.iloc[:5].values.flatten() if str(v).strip() not in ("", "nan")]
 
@@ -50,12 +48,12 @@ def _detect_file_type(raw_df, rubric):
 
     # for permit list
     row0_values = raw_df.iloc[0].astype(str).str.strip().tolist()
-    matches = sum(1 for v in row0_values if v in messy_names)
-    if matches >= 1: return "permit_list"
+    access_style = sum(1 for v in row0_values if v.startswith("txt") or v in ["CleaningFreq", "ExtractorID", "ExtractName"])
+    if access_style >= 1: return "permit_list"
 
     # for flat table
     row0_non_empty = sum(1 for v in row0_values if v not in ("", "nan"))
-    if row0_non_empty >= 5:  return "flat_table"
+    if row0_non_empty >= 5: return "flat_table"
     return "unknown"
 
 # parser for permit lists
@@ -119,7 +117,7 @@ def _parse_extract_summary(raw_df, rubric):
             col_names   = current_col_order[2:]
 
             if any(v not in ("", "nan", "NaN") for v in data_values):
-                record = {   "SiteCompany": current_facility, "PermitNo":    current_permit }
+                record = { "SiteCompany": current_facility, "PermitNo": current_permit }
 
                 for col_name, value in zip(col_names, data_values):
                     if col_name in ("", "nan", "NaN"): continue
@@ -130,7 +128,7 @@ def _parse_extract_summary(raw_df, rubric):
 
                 # only append if the record has at least one real value
                 # besides SiteCompany and PermitNo
-                real_values = {k: v for k, v in record.items()  if k not in ("SiteCompany", "PermitNo") and v is not None}
+                real_values = {k: v for k, v in record.items() if k not in ("SiteCompany", "PermitNo") and v is not None}
                 if real_values: records.append(record)
     return records
 
@@ -201,11 +199,10 @@ def _parse_facility_string(raw_string):
         facility_name = parts[0].strip() if parts else rest
         address       = parts[1].strip() if len(parts) > 1 else None
 
-        return { "PermitID":     permit_id,  "FacilityName": facility_name,  "Address":      address }
+        return { "PermitID": permit_id, "FacilityName": facility_name, "Address": address }
 
     # couldn't parse it — just return the raw string
     return {"FacilityInfo": raw_string}
-
 
 # helper function for re-reading the dataframe using a specific row as the header
 def _reread_with_header(raw_df, header_row_idx):
@@ -269,7 +266,7 @@ def _merge_by_facility_column(df, facility_signal_cols, extractor_signal_cols):
 # helper function for basic flat parse fallback for unknown file types
 def _parse_flat(raw_df, rubric):
     header_row = _find_header_row(raw_df, rubric)
-    df         = _reread_with_header(raw_df, header_row)
+    df = _reread_with_header(raw_df, header_row)
 
     df.dropna(how="all", inplace=True)
     df.dropna(axis=1, how="all", inplace=True)
@@ -277,7 +274,13 @@ def _parse_flat(raw_df, rubric):
     column_mapping, report = _match_columns(df, rubric)
     df.rename(columns=column_mapping, inplace=True)
     _print_report(report)
-    return df.to_dict(orient="records")
+
+    # convert to records and clean up NaN values
+    records = []
+    for row in df.to_dict(orient="records"):
+        cleaned = { k: (None if str(v).strip() in ("nan", "NaN") else v) for k, v in row.items() }
+        records.append(cleaned)
+    return records
 
 # helper function for finding ind the real header row by matching against rubric names
 def _find_header_row(raw_df, rubric):

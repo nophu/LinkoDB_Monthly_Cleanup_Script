@@ -1,16 +1,23 @@
 import os
 import rubric_parser
 import data_parser
+import validator
 
 if __name__ == '__main__':
     os.makedirs("output", exist_ok=True)
+
+    # step 1 — read the rubric
     rubric = rubric_parser.parse_rubric('Final Scripts and Update Plan.xlsx')
 
-    #records = data_parser.parse_data('r_M_FG_sys_Iu_Permit_List_Extractors.xlsx', rubric)
-    #records = data_parser.parse_data('r_M_AG_sys_Iu_Extract_Summary.xlsx', rubric)
-    #records = data_parser.parse_data('r_sys_Events_Inspection_Details.xlsx', rubric)
-    records = data_parser.parse_data('2025-08-05_FSE_Inspections_last_5_years.xlsx', rubric)
-    #records = data_parser.parse_data('Master_List_with_Additional_Fields__1_.xlsx', rubric)
+    # step 2 — parse a data file
+    records = data_parser.parse_data('r_M_FG_sys_Iu_Permit_List_Extractors.xlsx', rubric)
 
-    print(f"\nFirst record:")
-    print(records[0])
+    # step 3 — validate the records
+    validated, changes = validator.validate_records(
+        records,
+        rubric,
+        'r_M_FG_sys_Iu_Permit_List_Extractors.xlsx'
+    )
+
+    print(f"\nTotal records validated: {len(validated)}")
+    print(f"Total changes logged:    {len(changes)}")
