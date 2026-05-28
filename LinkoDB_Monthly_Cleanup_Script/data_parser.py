@@ -33,36 +33,28 @@ def parse_data(filepath, rubric):
     print("Saved first 10 rows → output/data_parsed.json")
     return records
 
-# detect the specific type of file
 def _detect_file_type(raw_df, rubric):
     messy_names = list(rubric["column_mapping"].keys())
 
-    # flatten all values in the first 5 rows into one list for scanning
-    top_rows = raw_df.iloc[:5].astype(str).values.flatten().tolist()
-    top_rows = [v.strip() for v in top_rows if v.strip() not in ("", "nan")]
+    # convert EVERYTHING to string first before doing any stripping
+    top_rows = [str(v).strip() for v in raw_df.iloc[:5].values.flatten() if str(v).strip() not in ("", "nan")]
 
     # check row 1 specifically — inspection events has its header there
     row1_values = raw_df.iloc[1].astype(str).str.strip().tolist()
 
     # for inspection events
-    # row 0 is a report title (long string with "Fort Wayne")
-    # row 1 has "txtPermitInfo" as first column
     row0_val = str(raw_df.iloc[0, 0]).strip()
-    if "Fort Wayne" in row0_val and "txtPermitInfo" in row1_values:  return "inspection_events"
+    if "Fort Wayne" in row0_val and "txtPermitInfo" in row1_values: return "inspection_events"
 
     # for extract summaries
-    # header rows repeat throughout the file (txtExtractName appears many times)
     all_values = raw_df.astype(str).values.flatten().tolist()
     extract_name_count = sum(1 for v in all_values if "txtExtractName" in str(v))
-
-    # appears more than 3 times = repeating header = extract summary
-    if extract_name_count > 3:  return "extract_summary"
+    if extract_name_count > 3: return "extract_summary"
 
     # for permit lists
-    # has a single header row at the top with known messy column names
     row0_values = raw_df.iloc[0].astype(str).str.strip().tolist()
     matches = sum(1 for v in row0_values if v in messy_names)
-    if matches >= 1: return "permit_list"
+    if matches >= 1:  return "permit_list"
     return "unknown"
 
 

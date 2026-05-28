@@ -3,15 +3,16 @@ import rubric_parser
 import data_parser
 
 if __name__ == '__main__':
-    os.makedirs("output")
+    os.makedirs("output", exist_ok=True)
+
+    # step 1 — read the rubric
     rubric = rubric_parser.parse_rubric('Final Scripts and Update Plan.xlsx')
-    df, report = data_parser.parse_data('r_M_AG_sys_Iu_Extract_Summary.xlsx.xlsx', rubric)
 
-    print("\n--- COLUMN MAPPINGS ---")
-    for messy, correct in rubric["column_mapping"].items(): print(f"   '{messy}'  =  '{correct}'")
+    # step 2 — parse a data file
+    # uncomment the one you want to test
+    # records = data_parser.parse_data('r_M_FG_sys_Iu_Permit_List_Extractors.xlsx', rubric)
+    # records = data_parser.parse_data('r_M_AG_sys_Iu_Extract_Summary.xlsx', rubric)
+    records = data_parser.parse_data('r_sys_Events_Inspection_Details.xlsx', rubric)
 
-    print("\n--- VALID VALUES ---")
-    for field, values in rubric["valid_values"].items(): print(f"   '{field}': {values[:5]}")
-
-    print("\n--- REGEX PATTERNS ---")
-    for field, pattern in rubric["value_patterns"].items(): print(f"   '{field}': {pattern[:80]}")
+    print(f"\nFirst record preview:")
+    print(records[0])
