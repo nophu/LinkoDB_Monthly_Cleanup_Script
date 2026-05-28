@@ -231,7 +231,7 @@ def _looks_important(col):
     return True
 
 
-# helper function for printing a human readable summary to the console
+# helper function for printing a human-readable summary to the console
 def _print_report(report):
     print("\n" + "=" * 45)
     print("  COLUMN MATCHING REPORT")

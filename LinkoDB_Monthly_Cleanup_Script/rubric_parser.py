@@ -102,7 +102,7 @@ def _match_field_name(cell_str, known_fields):
     return None
 
 
-# helper function for collecting non empty values from each column starting from a row
+# helper function for collecting non-empty values from each column starting from a row
 def _collect_column_values(df, start_row, col_idx):
     values = []
 
@@ -159,7 +159,7 @@ def _infer_pattern(field, values):
     clean_values = [str(v).strip() for v in values if str(v).strip()]
     if not clean_values: return None
 
-    # look for values that look like a extractor ID
+    # look for values that look like an extractor ID
     if "extractor id" in field.lower(): return r"^EX\s*[-]?\s*\d+"
 
     # if we get the exact list
