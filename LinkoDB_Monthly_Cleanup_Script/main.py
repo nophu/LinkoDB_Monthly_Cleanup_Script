@@ -5,7 +5,7 @@ import data_parser
 if __name__ == '__main__':
     os.makedirs("output")
     rubric = rubric_parser.parse_rubric('Final Scripts and Update Plan.xlsx')
-    df, report = data_parser.parse_data('r_M_FG_sys_Iu_Permit_List_Extractors.xlsx', rubric)
+    df, report = data_parser.parse_data('r_M_AG_sys_Iu_Extract_Summary.xlsx.xlsx', rubric)
 
     print("\n--- COLUMN MAPPINGS ---")
     for messy, correct in rubric["column_mapping"].items(): print(f"   '{messy}'  =  '{correct}'")
