@@ -4,14 +4,10 @@ import data_parser
 
 if __name__ == '__main__':
     os.makedirs("output", exist_ok=True)
-
-    # step 1 — read the rubric
     rubric = rubric_parser.parse_rubric('Final Scripts and Update Plan.xlsx')
 
-    # step 2 — parse a data file
-    # uncomment the one you want to test
-    # records = data_parser.parse_data('r_M_FG_sys_Iu_Permit_List_Extractors.xlsx', rubric)
-    # records = data_parser.parse_data('r_M_AG_sys_Iu_Extract_Summary.xlsx', rubric)
+    records = data_parser.parse_data('r_M_FG_sys_Iu_Permit_List_Extractors.xlsx', rubric)
+    records = data_parser.parse_data('r_M_AG_sys_Iu_Extract_Summary.xlsx', rubric)
     records = data_parser.parse_data('r_sys_Events_Inspection_Details.xlsx', rubric)
 
     print(f"\nFirst record preview:")

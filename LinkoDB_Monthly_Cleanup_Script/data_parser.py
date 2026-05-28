@@ -79,61 +79,60 @@ def _parse_permit_list(raw_df, rubric):
 
 # parser for extracted summaries
 def _parse_extract_summary(raw_df, rubric):
-    records      = []
-    messy_names  = list(rubric["column_mapping"].keys())
+    records     = []
+    messy_names = list(rubric["column_mapping"].keys())
 
-    current_facility   = None
-    current_permit     = None
-    current_col_order  = None  # column names from the last mini header row
+    current_facility  = None
+    current_permit    = None
+    current_col_order = None
 
     for row_idx in range(len(raw_df)):
-        row = raw_df.iloc[row_idx].astype(str).str.strip()
-        row_values = row.tolist()
+        # convert every cell to string explicitly — prevents float NaN issues
+        row_values = [str(v).strip() for v in raw_df.iloc[row_idx].tolist()]
 
         # skip completely empty rows
-        non_empty = [v for v in row_values if v not in ("", "nan")]
-        if not non_empty:
-            continue
+        non_empty = [v for v in row_values if v not in ("", "nan", "NaN")]
+        if not non_empty: continue
 
         # detect a mini header row
-        # it contains known messy column names like txtExtractName
         header_matches = sum(1 for v in row_values if v in messy_names)
         if header_matches >= 2:
-            # this is a mini header row — learn the column order from it
             current_col_order = row_values
             continue
 
-        # detect a facility row
-        # col 0 has a name, col 1 has a permit number, rest are empty
-        col0 = row_values[0] if len(row_values) > 0 else ""
-        col1 = row_values[1] if len(row_values) > 1 else ""
-        rest_empty = all(v in ("", "nan") for v in row_values[2:])
+        col0  = row_values[0] if len(row_values) > 0 else ""
+        col1  = row_values[1] if len(row_values) > 1 else ""
+        rest_empty = all(v in ("", "nan", "NaN") for v in row_values[2:])
 
-        if col0 not in ("", "nan") and col1 not in ("", "nan") and rest_empty:
+        # permit numbers look like DEN-0080, AG-9999, _SMV2017, HLR-147
+        # must have at least one letter/underscore and one more character
+        # relaxed pattern to catch all permit formats
+        looks_like_permit = bool(re.match(r"^[A-Z0-9_][A-Z0-9_\-]+$", col1, re.IGNORECASE))
+
+        if col0 not in ("", "nan", "NaN") and looks_like_permit and rest_empty:
             current_facility = col0
             current_permit   = col1
             continue
 
         # detect a data row
-        # has values starting from column 2 onwards and we know the col order
         if current_col_order is not None:
-            data_values = row_values[2:]  # first 2 cols are always empty in data rows
-            col_names   = current_col_order[2:]  # match the same offset
+            data_values = row_values[2:]
+            col_names   = current_col_order[2:]
 
-            if any(v not in ("", "nan") for v in data_values):
-                # build a record from this row
-                record = {
-                    "SiteCompany": current_facility,
-                    "PermitNo":    current_permit
-                }
+            if any(v not in ("", "nan", "NaN") for v in data_values):
+                record = {   "SiteCompany": current_facility, "PermitNo":    current_permit }
 
                 for col_name, value in zip(col_names, data_values):
-                    if col_name in ("", "nan"):  continue
+                    if col_name in ("", "nan", "NaN"): continue
 
-                    # rename using rubric mapping if possible
-                    correct_name = rubric["column_mapping"].get(col_name, col_name)
-                    record[correct_name] = None if value in ("", "nan") else value
-                records.append(record)
+                    correct_name   = rubric["column_mapping"].get(col_name, col_name)
+                    # store None for empty values so JSON shows null not NaN
+                    record[correct_name] = None if value in ("", "nan", "NaN") else value
+
+                # only append if the record has at least one real value
+                # besides SiteCompany and PermitNo
+                real_values = {k: v for k, v in record.items()  if k not in ("SiteCompany", "PermitNo") and v is not None}
+                if real_values: records.append(record)
     return records
 
 
@@ -157,7 +156,6 @@ def _parse_inspection_events(raw_df, rubric):
     first_col = df.columns[0]
 
     current_facility_raw = None
-
     for _, row in df.iterrows():
         row_dict   = row.to_dict()
         first_val  = str(row_dict.get(first_col, "")).strip()
