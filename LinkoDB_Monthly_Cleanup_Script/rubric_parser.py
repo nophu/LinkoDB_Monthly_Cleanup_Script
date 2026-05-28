@@ -29,7 +29,6 @@ def parse_rubric(filepath):
                 if messy.lower() in ("download data header", "header", "field"): continue
                 rubric["column_mapping"][messy] = correct
 
-
         print(f"Column mappings learned: {len(rubric['column_mapping'])}")
     else: print("WARNING: Could not find 'Key' sheet")
 
@@ -172,5 +171,4 @@ def _infer_pattern(field, values):
         # combine all valid values with | based off meaning or RegEx
         pattern = r"^(" + "|".join(short_values) + r")$"
         return pattern
-
     return None

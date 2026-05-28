@@ -17,17 +17,15 @@ def parse_data(filepath, rubric):
     print(f"Detected file type: {file_type}")
 
     # parse the file based on its type
-    if file_type == "permit_list":  records = _parse_permit_list(raw_df, rubric)
+    if file_type == "permit_list": records = _parse_permit_list(raw_df, rubric)
     elif file_type == "extract_summary": records = _parse_extract_summary(raw_df, rubric)
     elif file_type == "inspection_events": records = _parse_inspection_events(raw_df, rubric)
-
-    # unknown structure — fall back to basic flat parse
+    elif file_type == "flat_table":records = _parse_flat(raw_df, rubric)
     else:
         print("WARNING: Unknown file type — using basic flat parse")
         records = _parse_flat(raw_df, rubric)
-    print(f"Total records parsed: {len(records)}")
 
-    # save first 10 rows to JSON for inspection
+    # save to JSON for inspection
     with open("output/data_parsed.json", "w") as f: json.dump(records[:10], f, indent=2, default=str)
     print("Saved: output/data_parsed.json")
     return records
@@ -35,27 +33,30 @@ def parse_data(filepath, rubric):
 def _detect_file_type(raw_df, rubric):
     messy_names = list(rubric["column_mapping"].keys())
 
-    # convert EVERYTHING to string first before doing any stripping
-    [str(v).strip() for v in raw_df.iloc[:5].values.flatten() if str(v).strip() not in ("", "nan")]
+    # convert everything to string first
+    top_rows = [str(v).strip() for v in raw_df.iloc[:5].values.flatten() if str(v).strip() not in ("", "nan")]
 
-    # check row 1 specifically — inspection events has its header there
+    # check row 1 for inspection events
     row1_values = raw_df.iloc[1].astype(str).str.strip().tolist()
 
     # for inspection events
     row0_val = str(raw_df.iloc[0, 0]).strip()
     if "Fort Wayne" in row0_val and "txtPermitInfo" in row1_values: return "inspection_events"
 
-    # for extract summaries
+    # for extract summary
     all_values = raw_df.astype(str).values.flatten().tolist()
     extract_name_count = sum(1 for v in all_values if "txtExtractName" in str(v))
     if extract_name_count > 3: return "extract_summary"
 
-    # for permit lists
+    # for permit list
     row0_values = raw_df.iloc[0].astype(str).str.strip().tolist()
     matches = sum(1 for v in row0_values if v in messy_names)
-    if matches >= 1:  return "permit_list"
-    return "unknown"
+    if matches >= 1: return "permit_list"
 
+    # for flat table
+    row0_non_empty = sum(1 for v in row0_values if v not in ("", "nan"))
+    if row0_non_empty >= 5:  return "flat_table"
+    return "unknown"
 
 # parser for permit lists
 def _parse_permit_list(raw_df, rubric):
@@ -74,7 +75,6 @@ def _parse_permit_list(raw_df, rubric):
     # merge facility rows with extractor rows below them
     records = _merge_by_facility_column(df, facility_signal_cols=["txtPermittee", "txtPermitNo"], extractor_signal_cols=["Extractor ID", "Extractor Type", "Cleaning Frequency"])
     return records
-
 
 # parser for extracted summaries
 def _parse_extract_summary(raw_df, rubric):
@@ -134,7 +134,6 @@ def _parse_extract_summary(raw_df, rubric):
                 if real_values: records.append(record)
     return records
 
-
 # parser for inspection events
 def _parse_inspection_events(raw_df, rubric):
     records = []
@@ -188,7 +187,6 @@ def _parse_inspection_events(raw_df, rubric):
             records.append(record)
     return records
 
-
 # helper function for parsing facility string like "[9199] Café Name - 123 Main St"
 def _parse_facility_string(raw_string):
     # regex to extract permit id from [9199]
@@ -209,7 +207,6 @@ def _parse_facility_string(raw_string):
     return {"FacilityInfo": raw_string}
 
 
-
 # helper function for re-reading the dataframe using a specific row as the header
 def _reread_with_header(raw_df, header_row_idx):
     # use the specified row as column names
@@ -220,7 +217,6 @@ def _reread_with_header(raw_df, header_row_idx):
     data_df.columns = headers
     data_df.reset_index(drop=True, inplace=True)
     return data_df
-
 
 # helper function for merging facility rows with data rows below them
 def _merge_by_facility_column(df, facility_signal_cols, extractor_signal_cols):
@@ -270,7 +266,6 @@ def _merge_by_facility_column(df, facility_signal_cols, extractor_signal_cols):
             records.append(cleaned)
     return records
 
-
 # helper function for basic flat parse fallback for unknown file types
 def _parse_flat(raw_df, rubric):
     header_row = _find_header_row(raw_df, rubric)
@@ -283,7 +278,6 @@ def _parse_flat(raw_df, rubric):
     df.rename(columns=column_mapping, inplace=True)
     _print_report(report)
     return df.to_dict(orient="records")
-
 
 # helper function for finding ind the real header row by matching against rubric names
 def _find_header_row(raw_df, rubric):
@@ -299,7 +293,6 @@ def _find_header_row(raw_df, rubric):
             best_score = score
             best_row   = row_idx
     return best_row
-
 
 # helper function for matching each column to a rubric field
 def _match_columns(df, rubric):
@@ -335,7 +328,6 @@ def _match_columns(df, rubric):
         else:  report["ignored"].append(col)
     return column_mapping, report
 
-
 # helper function for matching column name against rubric mapping
 def _match_by_name(col, column_mapping):
     if col in column_mapping: return column_mapping[col]
@@ -344,7 +336,6 @@ def _match_by_name(col, column_mapping):
     for messy, correct in column_mapping.items():
         if col_norm == re.sub(r"[^a-z0-9]", "", messy.lower()):  return correct
     return None
-
 
 # helper function for matching column by sampling values against rubric patterns
 def _match_by_values(values, value_patterns):
@@ -366,12 +357,10 @@ def _match_by_values(values, value_patterns):
     if best_score >= 0.60: return best_field
     return None
 
-
 # helper function for deciding if an unmatched column looks important
 def _looks_important(col):
     generic = re.match(r"^(text|label|field|col|column)\d*$", col.lower())
     return not generic
-
 
 # helper for print column matching report to console
 def _print_report(report):
