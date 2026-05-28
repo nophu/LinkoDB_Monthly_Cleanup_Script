@@ -1,8 +1,6 @@
 import re
-import json
 
-
-def validate_records(records, rubric, source_filename):
+def validate_data(records, rubric, source_filename):
     print(f"\nValidating {len(records)} records from {source_filename}...")
 
     # only validate fields the rubric has rules for
@@ -124,7 +122,7 @@ def _print_summary(changes, source_filename):
         print(f"\n  AUTO FIXED:")
         for c in fixed:
             print(f"      [{c['facility']} | {c['permit_no']}]")
-            print(f"      {c['field']}: '{c['original']}' → '{c['cleaned_value']}'")
+            print(f"      {c['field']}: '{c['original']}' to '{c['cleaned_value']}'")
 
     if flagged:
         print(f"\n  FLAGGED FOR REVIEW:")
