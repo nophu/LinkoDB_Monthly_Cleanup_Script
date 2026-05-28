@@ -74,13 +74,12 @@ def _find_header_row(df, rubric):
 
 # helper function for matching each column to a rubric field
 def _match_columns(df, rubric):
-    report = {
-        "matched":       [],  # matched by name
-        "auto_fixed":    [],  # matched by value pattern
-        "not_in_rubric": [],  # column exists in data but rubric doesn't mention it
-        "flagged":       [],  # something looks wrong — needs human review
-        "ignored":       []   # generic placeholder columns like Text50, Label130
-    }
+    # matched by name
+    # matched by value pattern
+    # column exists in data but rubric doesn't mention it
+    # something looks wrong — needs human review
+    # generic placeholder columns like Text50, Label130
+    report = {  "matched":       [],    "auto_fixed":    [],   "not_in_rubric": [],   "flagged":       [],   "ignored":       []   }
 
     # old name → new name
     column_mapping = {}
@@ -112,10 +111,7 @@ def _match_columns(df, rubric):
         # no match found
         if _looks_important(col_str):
             # has a real name but rubric doesn't know about it — ok to keep
-            report["not_in_rubric"].append({
-                "column": col,
-                "note":   "Not in rubric — may be extra data column, ok to keep as is"
-            })
+            report["not_in_rubric"].append({ "column": col,  "note":   "Not in rubric — may be extra data column, ok to keep as is"})
         else:
             # generic placeholder name — safe to ignore
             report["ignored"].append(col)
