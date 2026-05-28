@@ -126,9 +126,7 @@ def _print_summary(changes, source_filename):
 
     if flagged:
         print(f"\n  FLAGGED FOR REVIEW:")
-        for c in flagged[:20]:  # show first 20 only so console doesn't flood
+        for c in flagged:
             print(f"      [{c['facility']} | {c['permit_no']}]")
             print(f"      {c['field']}: '{c['original']}' — {c['note']}")
-        if len(flagged) > 20: print(f"      ... and {len(flagged) - 20} more — see output/changes.json")
-
     print("\n" + "=" * 45 + "\n")
