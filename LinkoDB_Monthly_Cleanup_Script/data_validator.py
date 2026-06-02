@@ -9,14 +9,16 @@ def validate_data(records, rubric, source_filename, only_fields=None):
 
     # if only_fields is provided, restrict to just those fields
     # this lets each report only check the fields that apply to it
-    if only_fields is not None: checkable_fields = [f for f in checkable_fields if f in only_fields]
+    if only_fields is not None:   checkable_fields = [f for f in checkable_fields if f in only_fields]
 
     print(f"   Fields being validated: {checkable_fields}")
+
     validated = []   # cleaned records
     changes   = []   # log of every change or flag
 
     for record in records:
         cleaned_record = {}
+
         for field, value in record.items():
 
             # skip empty values — nothing to validate
@@ -53,7 +55,6 @@ def validate_data(records, rubric, source_filename, only_fields=None):
                     "status":        result["status"],
                     "note":          result["note"],
                 })
-
         validated.append(cleaned_record)
 
     # save changes to JSON so the summary report can use them
@@ -63,6 +64,7 @@ def validate_data(records, rubric, source_filename, only_fields=None):
     _print_summary(changes, source_filename)
     return validated, changes
 
+
 # helper function for checking a single value against the rubric rules for its field
 def _check_value(field, value, rubric):
     valid_values  = rubric["valid_values"].get(field, [])
@@ -70,7 +72,7 @@ def _check_value(field, value, rubric):
 
     # special rule: Trap Size and Units uses a size-based unit check, not a static list
     # rule: size <= 99 → units must be gpm | size >= 100 → units must be gal
-    if field == 'Trap Size and Units':   return _check_trap_size(value)
+    if field == 'Trap Size and Units': return _check_trap_size(value)
 
     # special case: empty valid list means the field should be blank
     # (e.g. TrunkLine — rubric says "delete entry and leave field BLANK")
@@ -82,7 +84,7 @@ def _check_value(field, value, rubric):
         }
 
     # exact match — value is already correct
-    if value in valid_values:   return {"status": "pass", "cleaned_value": value, "note": "exact match"}
+    if value in valid_values:  return {"status": "pass", "cleaned_value": value, "note": "exact match"}
 
     # case-insensitive match — value is right but wrong casing, auto-fix it
     value_lower = value.lower()
@@ -96,7 +98,7 @@ def _check_value(field, value, rubric):
 
     # regex pattern match — value matches the expected format
     if value_pattern:
-        if re.match(value_pattern, value, re.IGNORECASE):   return {"status": "pass", "cleaned_value": value, "note": "matched pattern"}
+        if re.match(value_pattern, value, re.IGNORECASE):  return {"status": "pass", "cleaned_value": value, "note": "matched pattern"}
 
     # partial match — value is close to something valid, flag for manual review
     close = _find_partial_match(value, valid_values)
@@ -129,18 +131,17 @@ def _check_trap_size(value):
     size_str, unit = parts[0], parts[1]
 
     # size must be numeric
-    try:  size = float(size_str)
+    try: size = float(size_str)
     except ValueError:
         return {
             "status":        "flagged",
             "cleaned_value": value,
             "note":          f"'{size_str}' is not a valid numeric trap size",
         }
-
     correct_unit = "gpm" if size <= 99 else "gal"
 
     # unit is already correct
-    if unit == correct_unit:  return {"status": "pass", "cleaned_value": value, "note": "exact match"}
+    if unit == correct_unit:   return {"status": "pass", "cleaned_value": value, "note": "exact match"}
 
     # unit is correct but wrong casing — auto-fix
     if unit.lower() == correct_unit:
@@ -164,13 +165,18 @@ def _find_partial_match(value, valid_values):
     value_lower = value.lower()
     for valid in valid_values:
         valid_lower = valid.lower()
-        if value_lower in valid_lower or valid_lower in value_lower:   return valid
+
+        # value starts with a valid value  (e.g. "Multi-Tenant Facility" starts with "Multi-Tenant")
+        if value_lower.startswith(valid_lower):return valid
+
+        # valid value starts with the user's value  (e.g. "EX050" starts with "050")
+        if valid_lower.startswith(value_lower):   return valid
     return None
 
 # helper function for getting the facility name from a record
 # checks several common field name variations across different file types
 def _get_facility_name(record):
-    for field in ["txtPermittee", "SiteCompany", "FacilityName", "Permittee",   "PermitteeAccount", "AccountName", "Name", "FacilityInfo"]:
+    for field in ["txtPermittee", "SiteCompany", "FacilityName", "Permittee", "PermitteeAccount", "AccountName", "Name", "FacilityInfo"]:
         val = record.get(field)
         if val and str(val).strip() not in ("", "nan", "NaN", "None"):  return str(val).strip()
     return "Unknown"
@@ -179,12 +185,12 @@ def _get_facility_name(record):
 def _get_permit_no(record):
     for field in ["txtPermitNo", "PermitNo", "PermitID", "PermitNumber", "Permit"]:
         val = record.get(field)
-        if val and str(val).strip() not in ("", "nan", "NaN", "None"):    return str(val).strip()
+        if val and str(val).strip() not in ("", "nan", "NaN", "None"): return str(val).strip()
     return "Unknown"
-
 
 # saves changes to a JSON file named after the source file
 def _save_changes(changes, source_filename):
+
     # strip the extension and use it as the output filename
     base = source_filename.replace(".xlsx", "").replace(".csv", "")
     output_path = f"output/{base}_changes.json"
