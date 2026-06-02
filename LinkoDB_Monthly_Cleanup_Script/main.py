@@ -27,11 +27,10 @@ if __name__ == '__main__':
             records,
             rubric,
             filename,
-            only_fields=cfg["fields"]   # <-- per-report field restriction
+            only_fields=cfg["fields"]   # per-report field restriction
         )
 
         all_changes.extend(changes)
-
         print(f"\n  Records validated: {len(validated)}")
         print(f"  Changes logged:    {len(changes)}")
 
