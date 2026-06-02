@@ -2,7 +2,7 @@ import re
 import json
 import pandas as pd
 
-# Hard-coded green tabs only (FS - Classes removed — not green)
+# green tabs only
 NEEDED_SHEETS = [
     'Key',
     'Tables Extractor IDs, Type',
@@ -11,10 +11,7 @@ NEEDED_SHEETS = [
     'FS - Cleaning Frequency',
 ]
 
-# The 6Other Codes sheet has side-by-side columns where each "New ___" column
-# is the valid list for a field. This maps each header label -> rubric field name.
-# TrunkLine and ReceivingPlant are NOT here because they are a sub-table
-# buried inside cols 0/1 — handled separately below.
+# the 6Other Codes sheet has side-by-side columns where each "New ___" column
 OTHER_CODES_COLUMNS = {
     "new class codes":    "ClassCode",
     "new secondclass":    "SecondClass",
@@ -22,8 +19,7 @@ OTHER_CODES_COLUMNS = {
     "new eventtypeabbrv": "EventTypeAbbrv",
 }
 
-# Fields owned by the 6Other Codes sheet — the generic reader must NOT touch these
-# or it will mix values from the wrong columns
+# fields owned by the 6Other Codes sheet — the generic reader must NOT touch these
 OTHER_CODES_FIELDS = set(OTHER_CODES_COLUMNS.values()) | {"ReceivingPlant", "TrunkLine"}
 
 
@@ -31,50 +27,40 @@ def parse_rubric(filepath):
     print(f"\nReading rubric: {filepath}")
     wb = pd.ExcelFile(filepath)
     sheet_names = wb.sheet_names
-
     rubric = {"column_mapping": {}, "valid_values": {}, "value_patterns": {}}
 
-    # --- Step 1: learn column-name mapping from the Key sheet ---
+    # learn column-name mapping from the Key sheet
     key_sheet = _find_sheet(wb, "Key")
     if key_sheet is not None:
         for _, row in key_sheet.iterrows():
             values = [str(v).strip() for v in row if str(v).strip() not in ("", "nan")]
             if len(values) >= 2:
                 messy, correct = values[0], values[1]
-                if messy.lower() in ("download data header", "header", "field"):
-                    continue
+                if messy.lower() in ("download data header", "header", "field"):  continue
                 rubric["column_mapping"][messy] = correct
         print(f"Column mappings learned: {len(rubric['column_mapping'])}")
     else:  print("WARNING: Could not find 'Key' sheet")
 
-    # --- Step 2: extract valid values from each green rule sheet ---
+    # extract valid values from each green rule sheet
     rule_sheets = [s for s in sheet_names if s in NEEDED_SHEETS]
     print(f"Rule sheets used: {rule_sheets}")
 
     for sheet_name in rule_sheets:
-        if "Other Codes" in sheet_name:
-            # this sheet needs its own dedicated reader
-            _extract_other_codes(wb, sheet_name, rubric)
-        else:
-            # all other green sheets use the generic single-column reader
-            _extract_valid_values(wb, sheet_name, rubric)
 
+        # this sheet needs its own dedicated reader
+        if "Other Codes" in sheet_name: _extract_other_codes(wb, sheet_name, rubric)
+
+        # all other green sheets use the generic single-column reader
+        else: _extract_valid_values(wb, sheet_name, rubric)
     _build_patterns(rubric)
 
-    # Trap Size and Units uses a conditional size-based rule, not a static list.
-    # Adding it here (as []) tells the validator to check it —
-    # _check_value catches it by field name before the empty-list logic runs.
+    # trap Size and Units uses a conditional size-based rule, not a static list.
     rubric["valid_values"]["Trap Size and Units"] = []
-
     with open("output/rubric.json", "w") as f:  json.dump(rubric, f, indent=2)
     print("Saved: output/rubric.json")
     return rubric
 
-
-# --- Dedicated reader for the 6Other Codes sheet ---
-# This sheet has multiple side-by-side tables. Each "New ___" column header
-# is the valid list for its field. TrunkLine/ReceivingPlant are a sub-table
-# stacked in cols 0/1 and are handled separately.
+# dedicated reader for the 6Other Codes sheet
 def _extract_other_codes(wb, sheet_name, rubric):
     df = wb.parse(sheet_name, dtype=str, header=None)
 
@@ -101,13 +87,11 @@ def _extract_other_codes(wb, sheet_name, rubric):
             vals.append(cell)
         if vals:  rubric["valid_values"][field] = sorted(set(vals))
 
-    # TrunkLine rule: "delete entry and leave field BLANK"
-    # Any non-blank value is wrong, so we store [] (empty list).
-    # The validator will flag every non-blank TrunkLine automatically.
+    # trunkLine rule: "delete entry and leave field BLANK"
     rubric["valid_values"]["TrunkLine"] = []
 
     # ReceivingPlant is a sub-table in cols 0/1 (rows 5-8).
-    # Scan for the "new receiving plant" sub-header, then collect values below it.
+    # scan for the "new receiving plant" sub-header, then collect values below it.
     receiving_vals = []
     for col_idx in range(df.shape[1]):
         for row_idx in range(len(df)):
@@ -123,7 +107,7 @@ def _extract_other_codes(wb, sheet_name, rubric):
     if receiving_vals:   rubric["valid_values"]["ReceivingPlant"] = sorted(set(receiving_vals))
 
 
-# --- Generic single-column reader for Tables / FS - Trap Size / FS - Cleaning Frequency ---
+# generic single-column reader for Tables / FS - Trap Size / FS - Cleaning Frequency
 # Scans every cell; when a cell matches a known field name, reads values straight down
 # that column. Does NOT touch fields owned by the 6Other Codes sheet.
 def _extract_valid_values(wb, sheet_name, rubric):
@@ -133,7 +117,6 @@ def _extract_valid_values(wb, sheet_name, rubric):
         return
 
     known_fields = list(rubric["column_mapping"].values())
-
     for row_idx, row in df.iterrows():
         for col_idx, cell in enumerate(row):
             cell_str = str(cell).strip()
