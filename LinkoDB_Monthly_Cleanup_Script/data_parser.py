@@ -218,7 +218,6 @@ def _parse_facility_string(raw_string):
         parts = rest.split("   -   ", 1)
         facility_name = parts[0].strip() if parts else rest
         address       = parts[1].strip() if len(parts) > 1 else None
-
         return { "PermitID": permit_id, "FacilityName": facility_name, "Address": address }
 
     # couldn't parse it — just return the raw string

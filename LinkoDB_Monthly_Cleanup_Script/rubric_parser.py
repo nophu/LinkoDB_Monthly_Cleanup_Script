@@ -22,7 +22,6 @@ OTHER_CODES_COLUMNS = {
 # fields owned by the 6Other Codes sheet — the generic reader must NOT touch these
 OTHER_CODES_FIELDS = set(OTHER_CODES_COLUMNS.values()) | {"ReceivingPlant", "TrunkLine"}
 
-
 def parse_rubric(filepath):
     print(f"\nReading rubric: {filepath}")
     wb = pd.ExcelFile(filepath)
@@ -106,7 +105,6 @@ def _extract_other_codes(wb, sheet_name, rubric):
                 break
     if receiving_vals:   rubric["valid_values"]["ReceivingPlant"] = sorted(set(receiving_vals))
 
-
 # generic single-column reader for Tables / FS - Trap Size / FS - Cleaning Frequency
 # Scans every cell; when a cell matches a known field name, reads values straight down
 # that column. Does NOT touch fields owned by the 6Other Codes sheet.
@@ -129,7 +127,6 @@ def _extract_valid_values(wb, sheet_name, rubric):
                     existing = rubric["valid_values"].get(matched_field, [])
                     rubric["valid_values"][matched_field] = sorted(set(existing + values))
 
-
 def _find_sheet(wb, partial_name):
     for name in wb.sheet_names:
         if partial_name.lower() in name.lower():
@@ -137,14 +134,12 @@ def _find_sheet(wb, partial_name):
             except Exception as e:  print(f"   WARNING: Could not read sheet '{name}': {e}")
     return None
 
-
 def _match_field_name(cell_str, known_fields):
     cell_norm = re.sub(r"[^a-z0-9 ]", "", cell_str.lower()).strip()
     for field in known_fields:
         field_norm = re.sub(r"[^a-z0-9 ]", "", field.lower()).strip()
         if field_norm and field_norm in cell_norm:  return field
     return None
-
 
 def _collect_column_values(df, start_row, col_idx):
     values = []
@@ -172,13 +167,11 @@ def _collect_column_values(df, start_row, col_idx):
         values.append(cell)
     return values
 
-
 def _build_patterns(rubric):
     for field, values in rubric["valid_values"].items():
         if not values:  continue
         p = _infer_pattern(field, values)
         if p:   rubric["value_patterns"][field] = p
-
 
 def _infer_pattern(field, values):
     clean = [str(v).strip() for v in values if str(v).strip()]

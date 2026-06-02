@@ -9,11 +9,9 @@ def validate_data(records, rubric, source_filename, only_fields=None):
 
     # if only_fields is provided, restrict to just those fields
     # this lets each report only check the fields that apply to it
-    if only_fields is not None:
-        checkable_fields = [f for f in checkable_fields if f in only_fields]
+    if only_fields is not None: checkable_fields = [f for f in checkable_fields if f in only_fields]
 
     print(f"   Fields being validated: {checkable_fields}")
-
     validated = []   # cleaned records
     changes   = []   # log of every change or flag
 
@@ -64,7 +62,6 @@ def validate_data(records, rubric, source_filename, only_fields=None):
     # print a summary to the console
     _print_summary(changes, source_filename)
     return validated, changes
-
 
 # helper function for checking a single value against the rubric rules for its field
 def _check_value(field, value, rubric):
@@ -117,7 +114,6 @@ def _check_value(field, value, rubric):
         "note":          f"'{value}' is not a valid value for '{field}' — review manually",
     }
 
-
 # special rule for Trap Size and Units — not a static list, it's a size-based unit check
 # rubric rule: size <= 99 → gpm | size >= 100 → gal | blank → leave blank
 def _check_trap_size(value):
@@ -163,7 +159,6 @@ def _check_trap_size(value):
         "note":          f"unit should be '{correct_unit}' for size {size_str} (rule: ≤99 → gpm, ≥100 → gal) — suggested: '{fixed}'",
     }
 
-
 # helper function for finding a partial match between a value and the valid values
 def _find_partial_match(value, valid_values):
     value_lower = value.lower()
@@ -172,7 +167,6 @@ def _find_partial_match(value, valid_values):
         if value_lower in valid_lower or valid_lower in value_lower:   return valid
     return None
 
-
 # helper function for getting the facility name from a record
 # checks several common field name variations across different file types
 def _get_facility_name(record):
@@ -180,7 +174,6 @@ def _get_facility_name(record):
         val = record.get(field)
         if val and str(val).strip() not in ("", "nan", "NaN", "None"):  return str(val).strip()
     return "Unknown"
-
 
 # helper function for getting the permit number from a record
 def _get_permit_no(record):
@@ -197,7 +190,6 @@ def _save_changes(changes, source_filename):
     output_path = f"output/{base}_changes.json"
     with open(output_path, "w") as f: json.dump(changes, f, indent=2, default=str)
     print(f"   Saved: {output_path}")
-
 
 # helper function for printing a readable summary to the console
 def _print_summary(changes, source_filename):

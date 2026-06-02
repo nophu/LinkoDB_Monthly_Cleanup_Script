@@ -6,33 +6,32 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 from config import REPORT_CONFIG
 
+# ── style constants (matching their sheets exactly) ───────────────────────────
 GREEN   = "92D050"
 YELLOW  = "FFFF00"
 GREY    = "D9D9D9"
 RED     = "FF0000"
-BLUE    = "0070C0"
+BLUE    = "0070C0"   # label colour (Report Name:, Fields Checked:, Issues Found:)
 FONT    = "Aptos Narrow"
 
 def _f(size=11, bold=False, color="000000"): return Font(name=FONT, size=size, bold=bold, color=color)
-
-def _fill(hex_color):  return PatternFill("solid", fgColor=hex_color)
+def _fill(hex_color): return PatternFill("solid", fgColor=hex_color)
 
 def _border():
     s = Side(style="thin", color="BFBFBF")
     return Border(left=s, right=s, top=s, bottom=s)
 
-def _cell(ws, row, col, value, bold=False, color="000000", fill=None, halign="left", wrap=False, size=11):
+def _cell(ws, row, col, value, bold=False, color="000000", fill=None,  halign="left", wrap=False, size=11):
     c = ws.cell(row=row, column=col, value=value)
     c.font = _f(size, bold, color)
-    c.alignment = Alignment(horizontal=halign, vertical="center",  wrap_text=wrap, indent=1 if halign == "left" else 0)
+    c.alignment = Alignment(horizontal=halign, vertical="center",   wrap_text=wrap, indent=1 if halign == "left" else 0)
     if fill: c.fill = _fill(fill)
     c.border = _border()
     return c
 
-
 # extract a suggested "Changed To" value from a change entry
 def _suggestion(change):
-    if change["status"] == "fixed":   return change["cleaned_value"]
+    if change["status"] == "fixed":  return change["cleaned_value"]
     note = change.get("note", "")
 
     # "should it be changed to 'X'?"
@@ -44,9 +43,8 @@ def _suggestion(change):
     if m: return m.group(1)
 
     # "should be deleted — leave this field blank"
-    if "leave this field blank" in note or "should be deleted" in note:  return "Blank"
+    if "leave this field blank" in note or "should be deleted" in note:   return "Blank"
     return ""
-
 
 # group changes by facility, dedup same field per facility
 def _group(changes, field_order):
@@ -71,9 +69,8 @@ def _group(changes, field_order):
     def sort_key(item):
         try:   return field_order.index(item[0])
         except ValueError: return 99
-    for key in order: order[key].sort(key=sort_key)
+    for key in order:  order[key].sort(key=sort_key)
     return order
-
 
 # layout constants
 #  A = label | B = facility | C = permit | D,E = pair1 | F,G = pair2 | …
@@ -87,9 +84,8 @@ def _pair_cols(pair_idx):
     base = COL_PAIRS_START + pair_idx * 2
     return base, base + 1
 
-
 # write one report block
-def _write_block(ws, row, cfg, changes, write_col_headers):
+def _write_block(ws, row, cfg, changes, write_col_headers, max_pairs=4):
     report_name = cfg["name"]
     fields      = cfg["fields"]
     n_pairs     = max(len(fields), 1)
@@ -99,19 +95,19 @@ def _write_block(ws, row, cfg, changes, write_col_headers):
     _cell(ws, row, COL_FACILITY, report_name, bold=True)
 
     if write_col_headers:
-        _cell(ws, row, COL_PERMIT, "Permit No", bold=True,
-              halign="center", fill=GREY)
-        for i in range(n_pairs):
+        _cell(ws, row, COL_PERMIT, "Permit No", bold=True, halign="center", fill=GREY)
+
+        # write headers for ALL pairs (max across reports) so columns are labelled fully
+        for i in range(max_pairs):
             cur, chg = _pair_cols(i)
             _cell(ws, row, cur, "Current",    bold=True, halign="center", fill=GREY)
             _cell(ws, row, chg, "Changed To", bold=True, halign="center", fill=GREY)
-
     ws.row_dimensions[row].height = 18
     row += 1
 
     # row: "Fields Checked:"
     _cell(ws, row, COL_LABEL, "Fields Checked:", bold=True, color=BLUE)
-    _cell(ws, row, COL_FACILITY,  ",  ".join(fields), wrap=True)
+    _cell(ws, row, COL_FACILITY, ",  ".join(fields), wrap=True)
     ws.row_dimensions[row].height = 16
     row += 1
 
@@ -122,8 +118,8 @@ def _write_block(ws, row, cfg, changes, write_col_headers):
         ws.row_dimensions[row].height = 16
         row += 1
         return row
-
     by_fac = _group(changes, fields)
+
     for idx, ((facility, permit), issues) in enumerate(by_fac.items()):
         label = "Issues Found:" if idx == 0 else ""
 
@@ -145,21 +141,18 @@ def _write_block(ws, row, cfg, changes, write_col_headers):
             _cell(ws, row, cur_col, original,   color=RED, fill=row_fill, halign="center")
             # changed to → red if flagged, black if auto-fixed
             chg_color = RED if has_flagged else "000000"
-            _cell(ws, row, chg_col, suggestion, color=chg_color, fill=row_fill, halign="center")
-
+            _cell(ws, row, chg_col, suggestion, color=chg_color, fill=row_fill,  halign="center")
         ws.row_dimensions[row].height = 16
         row += 1
-
     return row
 
-
 # main
-def build_report(changes_path="output/all_changes.json", output_path="output/Monthly_Quality_Check_Report.xlsx"):
+def build_report(changes_path="output/all_changes.json",  output_path="output/Monthly_Quality_Check_Report.xlsx"):
 
-    with open(changes_path) as f:   all_changes = json.load(f)
+    with open(changes_path) as f:  all_changes = json.load(f)
 
     by_file = defaultdict(list)
-    for c in all_changes:   by_file[c["source_file"]].append(c)
+    for c in all_changes:  by_file[c["source_file"]].append(c)
 
     wb = Workbook()
     ws = wb.active
@@ -174,11 +167,17 @@ def build_report(changes_path="output/all_changes.json", output_path="output/Mon
     ws.row_dimensions[1].height = 24
     current_row = 2
 
+    # calculate the max number of Current/Changed To pairs needed
+    # (based on the report with the most fields to check)
+    max_pairs = max(len(cfg["fields"]) for cfg in REPORT_CONFIG.values())
+
     # one block per report
     for report_idx, (filename, cfg) in enumerate(REPORT_CONFIG.items()):
         changes = by_file.get(filename, [])
-        include_headers = (report_idx == 0)   # column headers only in first block
-        current_row = _write_block(  ws, current_row, cfg, changes, include_headers )
+
+        # column headers only in first block
+        include_headers = (report_idx == 0)
+        current_row = _write_block(  ws, current_row, cfg, changes, include_headers, max_pairs)
         current_row += 1   # blank separator row
 
     # column widths
@@ -193,11 +192,9 @@ def build_report(changes_path="output/all_changes.json", output_path="output/Mon
         ws.column_dimensions[get_column_letter(chg_col)].width = 22
 
     ws.freeze_panes = "B2"
-
     wb.save(output_path)
     print(f"Saved: {output_path}")
     return output_path
-
 
 if __name__ == "__main__":
     os.makedirs("output", exist_ok=True)
