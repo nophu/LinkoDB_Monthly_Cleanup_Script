@@ -19,7 +19,6 @@ def validate_data(records, rubric, source_filename, only_fields=None):
 
     for record in records:
         cleaned_record = {}
-
         for field, value in record.items():
 
             # skip empty values — nothing to validate
