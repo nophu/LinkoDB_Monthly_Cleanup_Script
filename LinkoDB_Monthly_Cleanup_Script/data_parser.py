@@ -70,8 +70,20 @@ def _parse_permit_list(raw_df, rubric):
     df.rename(columns=column_mapping, inplace=True)
     _print_report(report)
 
+    # combine TrapSize and TrapSizeUnits into one field so the validator can check it
+    # rubric rule: size <= 99 must use gpm, size >= 100 must use gal
+    # combined format: "35 gpm" or "100 gal"
+    if 'TrapSize' in df.columns and 'TrapSizeUnits' in df.columns:
+        def _combine_trap_size(row):
+            size  = str(row.get('TrapSize',  '') or '').strip()
+            units = str(row.get('TrapSizeUnits', '') or '').strip()
+            if size and size not in ('', 'nan'):
+                return f"{size} {units}".strip()
+            return None
+        df['Trap Size and Units'] = df.apply(_combine_trap_size, axis=1)
+
     # merge facility rows with extractor rows below them
-    records = _merge_by_facility_column(df, facility_signal_cols=["txtPermittee", "txtPermitNo"], extractor_signal_cols=["Extractor ID", "Extractor Type", "Cleaning Frequency"])
+    records = _merge_by_facility_column(df, facility_signal_cols=["txtPermittee", "txtPermitNo"], extractor_signal_cols=["Extractor ID", "Extractor Type", "Cleaning Frequency", "Trap Size and Units"])
     return records
 
 # parser for extracted summaries
@@ -147,6 +159,14 @@ def _parse_inspection_events(raw_df, rubric):
     column_mapping, report = _match_columns(df, rubric)
     df.rename(columns=column_mapping, inplace=True)
     _print_report(report)
+
+    # the ContactType column holds "EventTypeName - Description"
+    # extract just the name before " - " and store it as EventTypeAbbrv for validation
+    if 'ContactType' in df.columns:
+        df['EventTypeAbbrv'] = df['ContactType'].apply(
+            lambda v: str(v).split(' - ')[0].strip()
+            if str(v).strip() not in ('', 'nan', 'None') else None
+        )
 
     # the first column contains facility info — find its name
     first_col = df.columns[0]
@@ -282,7 +302,7 @@ def _parse_flat(raw_df, rubric):
         records.append(cleaned)
     return records
 
-# helper function for finding ind the real header row by matching against rubric names
+# helper function for finding the real header row by matching against rubric names
 def _find_header_row(raw_df, rubric):
     messy_names = list(rubric["column_mapping"].keys())
     best_row    = 0
@@ -365,7 +385,7 @@ def _looks_important(col):
     generic = re.match(r"^(text|label|field|col|column)\d*$", col.lower())
     return not generic
 
-# helper for print column matching report to console
+# helper for printing column matching report to console
 def _print_report(report):
     print("\n" + "=" * 45)
     print("  COLUMN MATCHING REPORT")

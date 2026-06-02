@@ -1,9 +1,3 @@
-# app.py
-# ------
-# Flask web server that accepts uploaded Excel files,
-# runs the rubric parser, data parser, and validator,
-# then returns the report and a cleaned Excel file for download.
-
 import os
 import io
 import json
@@ -20,17 +14,13 @@ app = Flask(__name__)
 
 # allow requests from GitHub Pages frontend
 CORS(app)
-
-# ----------------------------------------------------------------
 # POST /validate
 # Accepts two uploaded files: rubric and data
 # Returns a JSON validation report
-# ----------------------------------------------------------------
 @app.route('/validate', methods=['POST'])
 def validate():
     # check both files were uploaded
-    if 'rubric' not in request.files or 'data' not in request.files:
-        return jsonify({"error": "Please upload both a rubric file and a data file"}), 400
+    if 'rubric' not in request.files or 'data' not in request.files: return jsonify({"error": "Please upload both a rubric file and a data file"}), 400
 
     rubric_file = request.files['rubric']
     data_file   = request.files['data']
@@ -47,11 +37,8 @@ def validate():
         try:
             rubric    = rubric_parser.parse_rubric(rubric_path)
             records   = data_parser.parse_data(data_path, rubric)
-            validated, changes = data_validator.validate_data(
-                records, rubric, data_file.filename
-            )
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+            validated, changes = data_validator.validate_data( records, rubric, data_file.filename )
+        except Exception as e: return jsonify({"error": str(e)}), 500
 
         # count results
         fixed   = [c for c in changes if c["status"] == "fixed"]
@@ -74,23 +61,17 @@ def validate():
         df.to_excel(cleaned_path, index=False)
 
         # read the cleaned file into memory before tempdir is deleted
-        with open(cleaned_path, "rb") as f:
-            cleaned_bytes = f.read()
+        with open(cleaned_path, "rb") as f:  cleaned_bytes = f.read()
 
     # return report as JSON, include cleaned file as base64
     import base64
     report["cleaned_file_b64"] = base64.b64encode(cleaned_bytes).decode("utf-8")
     report["cleaned_filename"] = f"cleaned_{data_file.filename}"
-
     return jsonify(report)
 
-# ----------------------------------------------------------------
 # GET /health
 # Simple check to confirm the server is running
-# ----------------------------------------------------------------
 @app.route('/health', methods=['GET'])
-def health():
-    return jsonify({"status": "ok"})
+def health():  return jsonify({"status": "ok"})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == '__main__':  app.run(debug=True)
