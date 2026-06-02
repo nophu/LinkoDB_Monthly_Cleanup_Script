@@ -1,0 +1,422 @@
+[
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Ziano's",
+    "permit_no": "9973",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Tiffany Nails Inc.",
+    "permit_no": "17657",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Closed",
+    "permit_no": "17732",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Closed",
+    "permit_no": "17732",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Closed",
+    "permit_no": "17732",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Gratitude Catering",
+    "permit_no": "17779",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Gratitude Catering",
+    "permit_no": "17779",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "M. Vince Nail Spa",
+    "permit_no": "17861",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "M. Vince Nail Spa",
+    "permit_no": "17861",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Tocho Snack Bar",
+    "permit_no": "18018",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Tocho Snack Bar",
+    "permit_no": "18018",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Board & Bond",
+    "permit_no": "18034",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Taco Rancho Grande",
+    "permit_no": "18036",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Taco Rancho Grande",
+    "permit_no": "18036",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Taco Rancho Grande",
+    "permit_no": "18036",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Hatfield & Sons Distillery",
+    "permit_no": "18157",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Hatfield & Sons Distillery",
+    "permit_no": "18157",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "El Rey del Pincho FT",
+    "permit_no": "18274",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "The Flavor Patch FT",
+    "permit_no": "18287",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "The Flavor Patch FT",
+    "permit_no": "18287",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Cooking With Herbs Catering LLC",
+    "permit_no": "18388",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Queen Nails",
+    "permit_no": "18400",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "2025-08-05 FSE Inspections last 5 years.xlsx",
+    "facility": "Queen Nails",
+    "permit_no": "18400",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  }
+]

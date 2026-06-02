@@ -1,0 +1,182 @@
+[
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Allen County Community Corrections Residential Services Facillity",
+    "permit_no": "17854",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Bubba's 33",
+    "permit_no": "18459",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Crispy Cones",
+    "permit_no": "18449",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Drive & Shine Car Wash",
+    "permit_no": "18465",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Drive & Shine Lube Center",
+    "permit_no": "18467",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Dunkin Donuts #346590",
+    "permit_no": "10211",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Dunkin Donuts #346590",
+    "permit_no": "10211",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Headwaters Church",
+    "permit_no": "9392",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Hoshi Hoshi",
+    "permit_no": "18463",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Mi Tierra Market",
+    "permit_no": "18458",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Rise N Roll Bakery & Deli",
+    "permit_no": "0067",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Thai Diner Restaurant",
+    "permit_no": "1259",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "The Grind",
+    "permit_no": "9777",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Valvoline",
+    "permit_no": "18423",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Van Eerden Food Service",
+    "permit_no": "18441",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "Wing Stop",
+    "permit_no": "17897",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "YWCA/Gratitude Catering",
+    "permit_no": "9269",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "r_sys_Events_Inspection_Details.xlsx",
+    "facility": "YWCA/Gratitude Catering",
+    "permit_no": "9269",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  }
+]

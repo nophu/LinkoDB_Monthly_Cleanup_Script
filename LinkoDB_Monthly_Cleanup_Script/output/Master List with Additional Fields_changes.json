@@ -1,0 +1,72 @@
+[
+  {
+    "source_file": "Master List with Additional Fields.xlsx",
+    "facility": "Nestle",
+    "permit_no": "17459",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "Master List with Additional Fields.xlsx",
+    "facility": "Divert Inc.",
+    "permit_no": "18186",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "Master List with Additional Fields.xlsx",
+    "facility": "Drumm Inc.",
+    "permit_no": "17817",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "Master List with Additional Fields.xlsx",
+    "facility": "Proctor & Gamble Lima",
+    "permit_no": "17848",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "Master List with Additional Fields.xlsx",
+    "facility": "Emery",
+    "permit_no": "17849",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "Master List with Additional Fields.xlsx",
+    "facility": "Clean City Bins",
+    "permit_no": "18181",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "Master List with Additional Fields.xlsx",
+    "facility": "Dannon Co.",
+    "permit_no": "18460",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  }
+]
