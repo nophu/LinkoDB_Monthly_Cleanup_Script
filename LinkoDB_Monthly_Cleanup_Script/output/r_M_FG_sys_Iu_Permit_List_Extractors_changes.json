@@ -37,7 +37,7 @@
     "original": "120",
     "cleaned_value": "120",
     "status": "flagged",
-    "note": "'120' is close to 'EX120 - EX129' \u2014 should it be changed to 'EX120 - EX129'?"
+    "note": "'120' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -57,7 +57,7 @@
     "original": "050",
     "cleaned_value": "050",
     "status": "flagged",
-    "note": "'050' is close to 'EX050' \u2014 should it be changed to 'EX050'?"
+    "note": "'050' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -117,7 +117,7 @@
     "original": "200",
     "cleaned_value": "200",
     "status": "flagged",
-    "note": "'200' is close to 'EX200 - EX220' \u2014 should it be changed to 'EX200 - EX220'?"
+    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -137,7 +137,7 @@
     "original": "200",
     "cleaned_value": "200",
     "status": "flagged",
-    "note": "'200' is close to 'EX200 - EX220' \u2014 should it be changed to 'EX200 - EX220'?"
+    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -157,7 +157,7 @@
     "original": "200",
     "cleaned_value": "200",
     "status": "flagged",
-    "note": "'200' is close to 'EX200 - EX220' \u2014 should it be changed to 'EX200 - EX220'?"
+    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -207,7 +207,7 @@
     "original": "Twice Monthly",
     "cleaned_value": "Twice Monthly",
     "status": "flagged",
-    "note": "'Twice Monthly' is close to 'Monthly' \u2014 should it be changed to 'Monthly'?"
+    "note": "'Twice Monthly' is not a valid value for 'Cleaning Frequency' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -247,7 +247,7 @@
     "original": "200",
     "cleaned_value": "200",
     "status": "flagged",
-    "note": "'200' is close to 'EX200 - EX220' \u2014 should it be changed to 'EX200 - EX220'?"
+    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -317,7 +317,7 @@
     "original": "200",
     "cleaned_value": "200",
     "status": "flagged",
-    "note": "'200' is close to 'EX200 - EX220' \u2014 should it be changed to 'EX200 - EX220'?"
+    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -367,7 +367,7 @@
     "original": "200",
     "cleaned_value": "200",
     "status": "flagged",
-    "note": "'200' is close to 'EX200 - EX220' \u2014 should it be changed to 'EX200 - EX220'?"
+    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -397,7 +397,7 @@
     "original": "200",
     "cleaned_value": "200",
     "status": "flagged",
-    "note": "'200' is close to 'EX200 - EX220' \u2014 should it be changed to 'EX200 - EX220'?"
+    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",

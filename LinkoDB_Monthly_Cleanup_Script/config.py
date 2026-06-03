@@ -7,11 +7,11 @@ REPORT_CONFIG = {
         "name":   "Permit List – Extractors",
         "fields": ["Extractor ID", "Extractor Type", "Trap Size and Units", "Cleaning Frequency"],
     },
-    "2025-08-05_FSE_Inspections_last_5_years.xlsx": {
+    "2025-08-05 FSE Inspections last 5 years.xlsx": {
         "name":   "FSE Inspections – Last 5 Years",
         "fields": ["ReceivingPlant", "ClassCode", "SecondClass", "TrunkLine"],
     },
-    "Master_List_with_Additional_Fields.xlsx": {
+    "Master List with Additional Fields.xlsx": {
         "name":   "Master List with Additional Fields",
         "fields": ["MapCategory"],
     },
