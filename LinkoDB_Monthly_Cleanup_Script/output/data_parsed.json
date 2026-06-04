@@ -6874,7 +6874,7 @@
     "Text115": null,
     "txtOtherPersonPresent": null,
     "txtInspectReason": "DVS Request",
-    "txtEventDesc": "A dye trace to determine which kitchen fixtures flow to the grease trap, interceptor or oil/sand separator\nfacility informed us that they replumbed the DW. They had replumbed it to the pre-wash sink. There doesn\u2019t seem to be any close sanitary drain",
+    "txtEventDesc": "A dye trace to determine which kitchen fixtures flow to the grease trap, interceptor or oil/sand separator\nfacility informed us that they replumbed the DW. They had replumbed it to the pre-wash sink. There doesn\u0092t seem to be any close sanitary drain",
     "Text117": null,
     "Text110": "No",
     "EventTypeAbbrv": "Dye Trace Extractor"

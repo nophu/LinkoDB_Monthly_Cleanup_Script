@@ -4,7 +4,10 @@ import pandas as pd
 
 def parse_data(filepath, rubric):
     print(f"\nReading data from: {filepath}")
-    wb = pd.ExcelFile(filepath, engine='openpyxl')
+    if filepath.endswith(".xlsx"): engine = 'openpyxl'
+    elif filepath.endswith(".xls"): engine = 'xlrd'
+    else: raise ValueError(f"Unrecognized file type: {filepath}")
+    wb = pd.ExcelFile(filepath, engine=engine)
     sheet_name  = wb.sheet_names[0]
     print(f"Sheet: {sheet_name}")
 
