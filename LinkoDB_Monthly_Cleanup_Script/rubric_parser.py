@@ -27,8 +27,9 @@ TABLES_FIELDS = {"Extractor ID", "Extractor Type"}
 
 def parse_rubric(filepath):
     print(f"\nReading rubric: {filepath}")
-    if filepath.endswith(".xlsx"):    engine = 'openpyxl'
-    elif filepath.endswith(".xls"):    engine = 'xlrd'
+    fp = filepath.lower()
+    if fp.endswith(".xlsx"):    engine = 'openpyxl'
+    elif fp.endswith(".xls"):    engine = 'xlrd'
     else:   raise ValueError(f"Unrecognized file type: {filepath}")
     wb = pd.ExcelFile(filepath, engine=engine)
     sheet_names = wb.sheet_names
