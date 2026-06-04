@@ -48,13 +48,13 @@ def _cell(ws, row, col, value, bold=False, color="000000", fill=None,   halign="
 COL_LABEL, COL_FAC, COL_PERMIT, COL_FIELD, COL_CUR, COL_CHG = 1, 2, 3, 4, 5, 6
 
 def _suggestion(change):
-    if change["status"] == "fixed": return change["cleaned_value"]
+    if change["status"] == "fixed":    return change["cleaned_value"]
     note = change.get("note", "")
     m = re.search(r"should it be changed to '([^']+)'", note)
     if m: return m.group(1)
     m = re.search(r"suggested: '([^']+)'", note)
     if m: return m.group(1)
-    if "leave this field blank" in note or "should be deleted" in note:  return "Blank"
+    if "leave this field blank" in note or "should be deleted" in note:  return ""   # actual blank cell instead of the word "Blank"
     return "Needs Manual Review"
 
 
@@ -114,22 +114,22 @@ def _write_block(ws, row, cfg, changes, write_headers):
 
     for i, r in enumerate(rows):
         fill = GREEN if r["status"] == "fixed" else YELLOW
-        _cell(ws, row, COL_LABEL, "Issues Found:" if i == 0 else "",    bold=(i == 0), color=BLUE)
+        _cell(ws, row, COL_LABEL, "Issues Found:" if i == 0 else "",     bold=(i == 0), color=BLUE)
         _cell(ws, row, COL_FAC,    r["facility"], fill=fill)
         _cell(ws, row, COL_PERMIT, r["permit"],   fill=fill, halign="center")
-        _cell(ws, row, COL_FIELD,  FIELD_DISPLAY.get(r["field"], r["field"]), fill=fill, bold=True)
+        _cell(ws, row, COL_FIELD,  FIELD_DISPLAY.get(r["field"], r["field"]),    fill=fill, bold=True)
         _cell(ws, row, COL_CUR,    r["current"], fill=fill, color=RED)
         nmr = (r["changed"] == "Needs Manual Review")
-        _cell(ws, row, COL_CHG,    r["changed"], fill=fill,  color=(RED if r["status"] == "flagged" else "000000"), italic=nmr)
+        _cell(ws, row, COL_CHG,    r["changed"], fill=fill,    color=(RED if r["status"] == "flagged" else "000000"),  italic=nmr)
         ws.row_dimensions[row].height = 15
         row += 1
     return row
 
 
-def build_report(changes_path="output/all_changes.json",   output_path="output/Monthly_Quality_Check_Report.xlsx"):
-    with open(changes_path) as f:  all_changes = json.load(f)
+def build_report(changes_path="output/all_changes.json",  output_path="output/Monthly_Quality_Check_Report.xlsx"):
+    with open(changes_path) as f: all_changes = json.load(f)
     by_file = defaultdict(list)
-    for c in all_changes:    by_file[c["source_file"]].append(c)
+    for c in all_changes: by_file[c["source_file"]].append(c)
     wb = Workbook()
     ws = wb.active
     ws.title = f"Quality Check {date.today().strftime('%b %Y')}"
