@@ -1,0 +1,522 @@
+[
+  {
+    "source_file": "permit_list",
+    "facility": "American Kolache",
+    "permit_no": "18443",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Arby's #1201",
+    "permit_no": "6052",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "B. Antonio's Pizza",
+    "permit_no": "9893",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Bowen Coffee Shop",
+    "permit_no": "18488",
+    "field": "Extractor ID",
+    "original": "120",
+    "cleaned_value": "EX120",
+    "status": "fixed",
+    "note": "added EX prefix: '120' \u2192 'EX120'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Buffalo Wild Wings",
+    "permit_no": "8071",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Burger Bar",
+    "permit_no": "18462",
+    "field": "Extractor ID",
+    "original": "050",
+    "cleaned_value": "050",
+    "status": "flagged",
+    "note": "'050' is an old-scheme ID (EX050) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Chicken Salad Chick",
+    "permit_no": "18130",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Chick-fil-A #03479",
+    "permit_no": "17663",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "CLOSED",
+    "permit_no": "9322",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "CLOSED",
+    "permit_no": "9727",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Club Soda",
+    "permit_no": "9042",
+    "field": "Extractor ID",
+    "original": "EX001",
+    "cleaned_value": "EX001",
+    "status": "flagged",
+    "note": "'EX001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Comfort Suites North",
+    "permit_no": "9620",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Corner Pocket Pub",
+    "permit_no": "9605",
+    "field": "Extractor ID",
+    "original": "EX 200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: 'EX 200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Crispy Cones",
+    "permit_no": "18449",
+    "field": "Extractor ID",
+    "original": "EX 002",
+    "cleaned_value": "EX 002",
+    "status": "flagged",
+    "note": "'EX 002' is an old-scheme ID (EX002) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Curly's Village Inn",
+    "permit_no": "3027",
+    "field": "Extractor ID",
+    "original": "200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Curly's Village Inn",
+    "permit_no": "3027",
+    "field": "Trap Size and Units",
+    "original": "20 gal",
+    "cleaned_value": "20 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Deer Park Irish Pub",
+    "permit_no": "9305",
+    "field": "Extractor ID",
+    "original": "200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Dicky's 21 Tap",
+    "permit_no": "4558",
+    "field": "Trap Size and Units",
+    "original": "20 gal",
+    "cleaned_value": "20 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Domino's",
+    "permit_no": "18479",
+    "field": "Extractor ID",
+    "original": "200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Domino's",
+    "permit_no": "18479",
+    "field": "Trap Size and Units",
+    "original": "50 gal",
+    "cleaned_value": "50 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 50 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '50 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Don Hall's Factory Restaurant",
+    "permit_no": "3608",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Golden Corral",
+    "permit_no": "17407",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Hoshi Hoshi",
+    "permit_no": "18463",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Hoshi Hoshi",
+    "permit_no": "18463",
+    "field": "Cleaning Frequency",
+    "original": "Twice Monthly",
+    "cleaned_value": "Twice Monthly",
+    "status": "flagged",
+    "note": "'Twice Monthly' is not a valid value for 'Cleaning Frequency' \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Hoshi Hoshi",
+    "permit_no": "18463",
+    "field": "Trap Size and Units",
+    "original": "20 gal",
+    "cleaned_value": "20 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Kim Thai Buffet",
+    "permit_no": "2909",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "King Gyros",
+    "permit_no": "1533",
+    "field": "Cleaning Frequency",
+    "original": "three times weekly",
+    "cleaned_value": "Three Times Weekly",
+    "status": "fixed",
+    "note": "fixed casing: 'three times weekly' \u2192 'Three Times Weekly'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "La Cabana 2",
+    "permit_no": "18486",
+    "field": "Extractor ID",
+    "original": "200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "La Cabana 2",
+    "permit_no": "18486",
+    "field": "Trap Size and Units",
+    "original": "40 gal",
+    "cleaned_value": "40 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 40 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '40 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "La Santa Anita Family Grill",
+    "permit_no": "2346",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "LaLos Restaurante Mexicano",
+    "permit_no": "17800",
+    "field": "Cleaning Frequency",
+    "original": "three times weekly",
+    "cleaned_value": "Three Times Weekly",
+    "status": "fixed",
+    "note": "fixed casing: 'three times weekly' \u2192 'Three Times Weekly'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Las Delicias Del Gordito",
+    "permit_no": "9495",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Legendary Life Bar",
+    "permit_no": "18450",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Lengerich Meats Inc.",
+    "permit_no": "17590",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Life in Balance Nutrition",
+    "permit_no": "18461",
+    "field": "Extractor ID",
+    "original": "200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Los Cabos Mexican Grill",
+    "permit_no": "10315",
+    "field": "Cleaning Frequency",
+    "original": "three times weekly",
+    "cleaned_value": "Three Times Weekly",
+    "status": "fixed",
+    "note": "fixed casing: 'three times weekly' \u2192 'Three Times Weekly'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Loving Caf\u00e9",
+    "permit_no": "10195",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Mama Mia Pizza",
+    "permit_no": "6546",
+    "field": "Trap Size and Units",
+    "original": "25 gal",
+    "cleaned_value": "25 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 25 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '25 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Morgans Tap & Grill",
+    "permit_no": "3081",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Mozzarelli's Pizza",
+    "permit_no": "9376",
+    "field": "Extractor ID",
+    "original": "200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Mystic Arcade",
+    "permit_no": "18476",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Pepper & Spice Jamaican Restaurant",
+    "permit_no": "17421",
+    "field": "Trap Size and Units",
+    "original": "20 gal",
+    "cleaned_value": "20 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Pizza King",
+    "permit_no": "5796",
+    "field": "Extractor ID",
+    "original": "200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Pizza King",
+    "permit_no": "5796",
+    "field": "Trap Size and Units",
+    "original": "20 lbs",
+    "cleaned_value": "20 lbs",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Real Alloy",
+    "permit_no": "18192",
+    "field": "Extractor ID",
+    "original": "HSW - Station 1",
+    "cleaned_value": "HSW - Station 1",
+    "status": "flagged",
+    "note": "'HSW - Station 1' is not a standard extractor ID \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Real Alloy",
+    "permit_no": "18192",
+    "field": "Extractor ID",
+    "original": "SEPTIC - Station 2",
+    "cleaned_value": "SEPTIC - Station 2",
+    "status": "flagged",
+    "note": "'SEPTIC - Station 2' is not a standard extractor ID \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Salsa Grill Northeast",
+    "permit_no": "17583",
+    "field": "Extractor ID",
+    "original": "EX900",
+    "cleaned_value": "EX900",
+    "status": "flagged",
+    "note": "'EX900' (EX900) is not in any valid range (EX100\u2013EX830) \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Sol De Mexico Bar & Grill",
+    "permit_no": "10353",
+    "field": "Cleaning Frequency",
+    "original": "three times weekly",
+    "cleaned_value": "Three Times Weekly",
+    "status": "fixed",
+    "note": "fixed casing: 'three times weekly' \u2192 'Three Times Weekly'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "St. Paul's Lutheran - Heritage Hall",
+    "permit_no": "18404",
+    "field": "Extractor ID",
+    "original": "001",
+    "cleaned_value": "001",
+    "status": "flagged",
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Storming Crab (CUGC)",
+    "permit_no": "6024",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Subway #1141",
+    "permit_no": "0823",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "Taco Bell #36384",
+    "permit_no": "17758",
+    "field": "Cleaning Frequency",
+    "original": "Every 2 months",
+    "cleaned_value": "Every 2 Months",
+    "status": "fixed",
+    "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "source_file": "master",
+    "facility": "Nestle",
+    "permit_no": "17459",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Divert Inc.",
+    "permit_no": "18186",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Drumm Inc.",
+    "permit_no": "17817",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Proctor & Gamble Lima",
+    "permit_no": "17848",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Emery",
+    "permit_no": "17849",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Clean City Bins",
+    "permit_no": "18181",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Dannon Co.",
+    "permit_no": "18460",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  }
+]
