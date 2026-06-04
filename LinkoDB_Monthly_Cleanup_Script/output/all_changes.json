@@ -467,7 +467,7 @@
     "original": "EX900",
     "cleaned_value": "EX900",
     "status": "flagged",
-    "note": "'EX900' is an old-scheme ID (EX900) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+    "note": "'EX900' (EX900) is not in any valid range (EX100\u2013EX830) \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",

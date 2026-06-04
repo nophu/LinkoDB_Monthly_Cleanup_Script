@@ -3,12 +3,13 @@ import json
 
 def validate_data(records, rubric, source_filename, only_fields=None):
     print(f"\nValidating {len(records)} records from {source_filename}...")
+
     # only validate fields the rubric has rules for
     checkable_fields = list(rubric["valid_values"].keys())
 
     # if only_fields is provided, restrict to just those fields
-    if only_fields is not None:  checkable_fields = [f for f in checkable_fields if f in only_fields]
-
+    # this lets each report only check the fields that apply to it
+    if only_fields is not None:   checkable_fields = [f for f in checkable_fields if f in only_fields]
     print(f"   Fields being validated: {checkable_fields}")
 
     validated = []   # cleaned records
@@ -63,18 +64,22 @@ def validate_data(records, rubric, source_filename, only_fields=None):
     _print_summary(changes, source_filename)
     return validated, changes
 
+
 # helper function for checking a single value against the rubric rules for its field
 def _check_value(field, value, rubric):
     valid_values  = rubric["valid_values"].get(field, [])
     value_pattern = rubric["value_patterns"].get(field)
 
     # special rule: Trap Size and Units uses a size-based unit check, not a static list
+    # rule: size <= 99 → units must be gpm | size >= 100 → units must be gal
     if field == 'Trap Size and Units':   return _check_trap_size(value)
 
     # special rule: Extractor IDs must start with "EX" per the rubric
-    if field == 'Extractor ID':    return _check_extractor_id(value, valid_values, value_pattern)
+    # a bare number like "001" / "050" just needs the EX prefix → "EX001", "EX050"
+    if field == 'Extractor ID':  return _check_extractor_id(value, valid_values, value_pattern)
 
     # special case: empty valid list means the field should be blank
+    # (e.g. TrunkLine — rubric says "delete entry and leave field BLANK")
     if valid_values == []:
         return {
             "status":        "flagged",
@@ -97,7 +102,7 @@ def _check_value(field, value, rubric):
 
     # regex pattern match — value matches the expected format
     if value_pattern:
-        if re.match(value_pattern, value, re.IGNORECASE):   return {"status": "pass", "cleaned_value": value, "note": "matched pattern"}
+        if re.match(value_pattern, value, re.IGNORECASE):    return {"status": "pass", "cleaned_value": value, "note": "matched pattern"}
 
     # partial match — value is close to something valid, flag for manual review
     close = _find_partial_match(value, valid_values)
@@ -115,6 +120,7 @@ def _check_value(field, value, rubric):
         "note":          f"'{value}' is not a valid value for '{field}' — review manually",
     }
 
+
 # special rule for Trap Size and Units — not a static list, it's a size-based unit check
 # rubric rule: size <= 99 → gpm | size >= 100 → gal | blank → leave blank
 def _check_trap_size(value):
@@ -130,7 +136,7 @@ def _check_trap_size(value):
     size_str, unit = parts[0], parts[1]
 
     # size must be numeric
-    try:   size = float(size_str)
+    try: size = float(size_str)
     except ValueError:
         return {
             "status":        "flagged",
@@ -140,8 +146,7 @@ def _check_trap_size(value):
     correct_unit = "gpm" if size <= 99 else "gal"
 
     # unit is already correct
-    if unit == correct_unit:
-        return {"status": "pass", "cleaned_value": value, "note": "exact match"}
+    if unit == correct_unit: return {"status": "pass", "cleaned_value": value, "note": "exact match"}
 
     # unit is correct but wrong casing — auto-fix
     if unit.lower() == correct_unit:
@@ -161,18 +166,21 @@ def _check_trap_size(value):
     }
 
 # special rule for Extractor IDs — per the rubric every ID must start with "EX"
+# AND fall within a valid NEW range (EX100-EX830). Bare numbers get "EX" added,
+# then we check the number against the new ranges. Old-scheme IDs (EX001-099) and
+# non-numeric values can't be auto-fixed → manual review.
 def _check_extractor_id(value, valid_values, value_pattern):
     # parse the valid NEW ranges from values like "EX100 - EX110" or "EX400"
     ranges = []
     for v in valid_values:
         nums = re.findall(r"\d+", v)
-        if len(nums) >= 2:    ranges.append((int(nums[0]), int(nums[1])))
+        if len(nums) >= 2:   ranges.append((int(nums[0]), int(nums[1])))
         elif len(nums) == 1:  ranges.append((int(nums[0]), int(nums[0])))
     raw = value.strip()
 
     # figure out the candidate EX-id
-    if re.match(r"^\d+$", raw):   candidate   = "EX" + raw            # bare number → add prefix
-    elif re.match(r"^EX\s*\d+$", raw, re.IGNORECASE):   candidate   = "EX" + re.sub(r"[^0-9]", "", raw)   # normalise existing EX id
+    if re.match(r"^\d+$", raw):  candidate   = "EX" + raw            # bare number → add prefix
+    elif re.match(r"^EX\s*\d+$", raw, re.IGNORECASE): candidate   = "EX" + re.sub(r"[^0-9]", "", raw)   # normalise existing EX id
     else:
         # non-numeric like "HSW - Station 1" — can't auto-handle
         return {
@@ -185,18 +193,26 @@ def _check_extractor_id(value, valid_values, value_pattern):
     in_new_range = any(lo <= num <= hi for lo, hi in ranges)
 
     if in_new_range:
-        if candidate == raw:   return {"status": "pass", "cleaned_value": candidate, "note": "valid"}
+        if candidate == raw: return {"status": "pass", "cleaned_value": candidate, "note": "valid"}
         return {
             "status":        "fixed",
             "cleaned_value": candidate,
             "note":          f"added EX prefix: '{value}' → '{candidate}'",
         }
 
-    # number is not in any NEW range → it's an old-scheme ID that needs migration
+    # number is not in any NEW range
+    if num < 100:
+        # below EX100 → it's an old-scheme ID that needs migrating
+        return {
+            "status":        "flagged",
+            "cleaned_value": value,
+            "note":          f"'{value}' is an old-scheme ID ({candidate}) — needs a new EX1xx–EX8xx ID (review manually)",
+        }
+    # at or above EX100 but not inside any valid range → just invalid
     return {
         "status":        "flagged",
         "cleaned_value": value,
-        "note":          f"'{value}' is an old-scheme ID ({candidate}) — needs a new EX1xx–EX8xx ID (review manually)",
+        "note":          f"'{value}' ({candidate}) is not in any valid range (EX100–EX830) — review manually",
     }
 
 # helper function for finding a partial match between a value and the valid values
@@ -206,9 +222,11 @@ def _find_partial_match(value, valid_values):
         valid_lower = valid.lower()
 
         # data value starts with a valid value
-        if value_lower.startswith(valid_lower):   return valid
+        # e.g. "Multi-Tenant Facility - LARGE" starts with "Multi-Tenant"
+        if value_lower.startswith(valid_lower):  return valid
 
         # valid value starts with the data value
+        # e.g. data "Mobile" vs valid "Mobile Business"
         if valid_lower.startswith(value_lower):  return valid
     return None
 
@@ -219,7 +237,6 @@ def _get_facility_name(record):
         val = record.get(field)
         if val and str(val).strip() not in ("", "nan", "NaN", "None"):   return str(val).strip()
     return "Unknown"
-
 
 # helper function for getting the permit number from a record
 def _get_permit_no(record):
@@ -233,7 +250,7 @@ def _save_changes(changes, source_filename):
     # strip the extension and use it as the output filename
     base = source_filename.replace(".xlsx", "").replace(".csv", "")
     output_path = f"output/{base}_changes.json"
-    with open(output_path, "w") as f:   json.dump(changes, f, indent=2, default=str)
+    with open(output_path, "w") as f:  json.dump(changes, f, indent=2, default=str)
     print(f"   Saved: {output_path}")
 
 # helper function for printing a readable summary to the console
