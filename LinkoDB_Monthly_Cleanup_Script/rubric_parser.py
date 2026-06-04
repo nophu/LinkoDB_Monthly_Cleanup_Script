@@ -141,7 +141,6 @@ def _extract_other_codes(wb, sheet_name, rubric):
                 break
     if receiving_vals:   rubric["valid_values"]["ReceivingPlant"] = sorted(set(receiving_vals))
 
-
 # generic single-column reader for Tables / FS - Trap Size / FS - Cleaning Frequency
 def _extract_valid_values(wb, sheet_name, rubric):
     try: df = wb.parse(sheet_name, dtype=str, header=None)
@@ -161,7 +160,6 @@ def _extract_valid_values(wb, sheet_name, rubric):
                 if values:
                     existing = rubric["valid_values"].get(matched_field, [])
                     rubric["valid_values"][matched_field] = sorted(set(existing + values))
-
 
 def _find_sheet(wb, partial_name):
     for name in wb.sheet_names:

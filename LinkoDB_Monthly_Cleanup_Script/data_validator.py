@@ -3,7 +3,6 @@ import json
 
 def validate_data(records, rubric, source_filename, only_fields=None):
     print(f"\nValidating {len(records)} records from {source_filename}...")
-
     # only validate fields the rubric has rules for
     checkable_fields = list(rubric["valid_values"].keys())
 
@@ -64,7 +63,6 @@ def validate_data(records, rubric, source_filename, only_fields=None):
     _print_summary(changes, source_filename)
     return validated, changes
 
-
 # helper function for checking a single value against the rubric rules for its field
 def _check_value(field, value, rubric):
     valid_values  = rubric["valid_values"].get(field, [])
@@ -116,7 +114,6 @@ def _check_value(field, value, rubric):
         "cleaned_value": value,
         "note":          f"'{value}' is not a valid value for '{field}' — review manually",
     }
-
 
 # special rule for Trap Size and Units — not a static list, it's a size-based unit check
 # rubric rule: size <= 99 → gpm | size >= 100 → gal | blank → leave blank
@@ -201,7 +198,6 @@ def _check_extractor_id(value, valid_values, value_pattern):
         "cleaned_value": value,
         "note":          f"'{value}' is an old-scheme ID ({candidate}) — needs a new EX1xx–EX8xx ID (review manually)",
     }
-
 
 # helper function for finding a partial match between a value and the valid values
 def _find_partial_match(value, valid_values):

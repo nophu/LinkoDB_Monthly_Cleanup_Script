@@ -57,7 +57,6 @@ def _suggestion(change):
     if "leave this field blank" in note or "should be deleted" in note:   return ""   # actual blank cell instead of the word "Blank"
     return "Needs Manual Review"
 
-
 # one issue per row, deduplicated by (facility, field, original value)
 def _issue_rows(changes, field_order):
     seen = set()
