@@ -1,6 +1,26 @@
 [
   {
     "source_file": "master",
+    "facility": "Salem United Church (Kids Kafet)",
+    "permit_no": "10360",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Get 2 Go",
+    "permit_no": "0146",
+    "field": "MapCategory",
+    "original": "mobile business",
+    "cleaned_value": "Mobile Business",
+    "status": "fixed",
+    "note": "fixed casing: 'mobile business' \u2192 'Mobile Business'"
+  },
+  {
+    "source_file": "master",
     "facility": "Nestle",
     "permit_no": "17459",
     "field": "MapCategory",

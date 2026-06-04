@@ -1,6 +1,56 @@
 [
   {
     "source_file": "permit_list",
+    "facility": "07 Pub",
+    "permit_no": "2739",
+    "field": "Extractor Type",
+    "original": "SIDEWAYS-FLOOR",
+    "cleaned_value": "SIDEWAYS-FLOOR",
+    "status": "flagged",
+    "note": "'SIDEWAYS-FLOOR' is not a valid value for 'Extractor Type' \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "07 Pub",
+    "permit_no": "2739",
+    "field": "Trap Size and Units",
+    "original": "35 gal",
+    "cleaned_value": "35 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 35 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '35 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "19th Hole",
+    "permit_no": "2697",
+    "field": "Extractor ID",
+    "original": "EX999",
+    "cleaned_value": "EX999",
+    "status": "flagged",
+    "note": "'EX999' (EX999) is not in any valid range (EX100\u2013EX830) \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "19th Hole",
+    "permit_no": "2697",
+    "field": "Extractor Type",
+    "original": "in-floor",
+    "cleaned_value": "IN-FLOOR",
+    "status": "fixed",
+    "note": "fixed casing: 'in-floor' \u2192 'IN-FLOOR'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "19th Hole",
+    "permit_no": "2697",
+    "field": "Cleaning Frequency",
+    "original": "monthly",
+    "cleaned_value": "Monthly",
+    "status": "fixed",
+    "note": "fixed casing: 'monthly' \u2192 'Monthly'"
+  },
+  {
+    "source_file": "permit_list",
     "facility": "American Kolache",
     "permit_no": "18443",
     "field": "Extractor ID",

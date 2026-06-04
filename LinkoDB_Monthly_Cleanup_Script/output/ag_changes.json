@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "source_file": "ag",
+    "facility": "Aboite Dental Group",
+    "permit_no": "DEN-0080",
+    "field": "Extractor ID",
+    "original": "050",
+    "cleaned_value": "050",
+    "status": "flagged",
+    "note": "'050' is an old-scheme ID (EX050) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "ag",
+    "facility": "Aboite Dental Group",
+    "permit_no": "DEN-0080",
+    "field": "Extractor Type",
+    "original": "above-floor",
+    "cleaned_value": "ABOVE-FLOOR",
+    "status": "fixed",
+    "note": "fixed casing: 'above-floor' \u2192 'ABOVE-FLOOR'"
+  }
+]

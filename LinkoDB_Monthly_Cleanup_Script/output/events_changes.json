@@ -1,6 +1,26 @@
 [
   {
     "source_file": "events",
+    "facility": "A Divine Encounter Caf\u00e9",
+    "permit_no": "9199",
+    "field": "EventTypeAbbrv",
+    "original": "Bogus Event",
+    "cleaned_value": "Bogus Event",
+    "status": "flagged",
+    "note": "'Bogus Event' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "A Divine Encounter Caf\u00e9",
+    "permit_no": "9199",
+    "field": "EventTypeAbbrv",
+    "original": "informational",
+    "cleaned_value": "Informational",
+    "status": "fixed",
+    "note": "fixed casing: 'informational' \u2192 'Informational'"
+  },
+  {
+    "source_file": "events",
     "facility": "Allen County Community Corrections Residential Services Facillity",
     "permit_no": "17854",
     "field": "EventTypeAbbrv",

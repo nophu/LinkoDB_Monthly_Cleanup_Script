@@ -1,6 +1,46 @@
 [
   {
     "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "TrunkLine",
+    "original": "Line 7",
+    "cleaned_value": "Line 7",
+    "status": "flagged",
+    "note": "'Line 7' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "SecondClass",
+    "original": "ff",
+    "cleaned_value": "FF",
+    "status": "fixed",
+    "note": "fixed casing: 'ff' \u2192 'FF'"
+  },
+  {
+    "source_file": "fse",
     "facility": "Majestic Care",
     "permit_no": "9922",
     "field": "ReceivingPlant",

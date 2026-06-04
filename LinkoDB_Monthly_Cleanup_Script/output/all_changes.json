@@ -1,5 +1,825 @@
 [
   {
+    "source_file": "ag",
+    "facility": "Aboite Dental Group",
+    "permit_no": "DEN-0080",
+    "field": "Extractor ID",
+    "original": "050",
+    "cleaned_value": "050",
+    "status": "flagged",
+    "note": "'050' is an old-scheme ID (EX050) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "ag",
+    "facility": "Aboite Dental Group",
+    "permit_no": "DEN-0080",
+    "field": "Extractor Type",
+    "original": "above-floor",
+    "cleaned_value": "ABOVE-FLOOR",
+    "status": "fixed",
+    "note": "fixed casing: 'above-floor' \u2192 'ABOVE-FLOOR'"
+  },
+  {
+    "source_file": "events",
+    "facility": "A Divine Encounter Caf\u00e9",
+    "permit_no": "9199",
+    "field": "EventTypeAbbrv",
+    "original": "Bogus Event",
+    "cleaned_value": "Bogus Event",
+    "status": "flagged",
+    "note": "'Bogus Event' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "A Divine Encounter Caf\u00e9",
+    "permit_no": "9199",
+    "field": "EventTypeAbbrv",
+    "original": "informational",
+    "cleaned_value": "Informational",
+    "status": "fixed",
+    "note": "fixed casing: 'informational' \u2192 'Informational'"
+  },
+  {
+    "source_file": "events",
+    "facility": "Allen County Community Corrections Residential Services Facillity",
+    "permit_no": "17854",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Bubba's 33",
+    "permit_no": "18459",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Crispy Cones",
+    "permit_no": "18449",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Drive & Shine Car Wash",
+    "permit_no": "18465",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Drive & Shine Lube Center",
+    "permit_no": "18467",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Dunkin Donuts #346590",
+    "permit_no": "10211",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Dunkin Donuts #346590",
+    "permit_no": "10211",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Headwaters Church",
+    "permit_no": "9392",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Hoshi Hoshi",
+    "permit_no": "18463",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Mi Tierra Market",
+    "permit_no": "18458",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Rise N Roll Bakery & Deli",
+    "permit_no": "0067",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Thai Diner Restaurant",
+    "permit_no": "1259",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "The Grind",
+    "permit_no": "9777",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Valvoline",
+    "permit_no": "18423",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Van Eerden Food Service",
+    "permit_no": "18441",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "Wing Stop",
+    "permit_no": "17897",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "YWCA/Gratitude Catering",
+    "permit_no": "9269",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "events",
+    "facility": "YWCA/Gratitude Catering",
+    "permit_no": "9269",
+    "field": "EventTypeAbbrv",
+    "original": "Dye Trace Monitoring Point",
+    "cleaned_value": "Dye Trace Monitoring Point",
+    "status": "flagged",
+    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "TrunkLine",
+    "original": "Line 7",
+    "cleaned_value": "Line 7",
+    "status": "flagged",
+    "note": "'Line 7' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Fairfield Inn and Suites",
+    "permit_no": "10000",
+    "field": "SecondClass",
+    "original": "ff",
+    "cleaned_value": "FF",
+    "status": "fixed",
+    "note": "fixed casing: 'ff' \u2192 'FF'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Majestic Care",
+    "permit_no": "9922",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Ziano's",
+    "permit_no": "9973",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Tiffany Nails Inc.",
+    "permit_no": "17657",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Closed",
+    "permit_no": "17732",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Closed",
+    "permit_no": "17732",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Closed",
+    "permit_no": "17732",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Royalty Nails Lounge",
+    "permit_no": "17765",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Gratitude Catering",
+    "permit_no": "17779",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Gratitude Catering",
+    "permit_no": "17779",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "M. Vince Nail Spa",
+    "permit_no": "17861",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "M. Vince Nail Spa",
+    "permit_no": "17861",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Dupont Sports and Medicine Complex",
+    "permit_no": "17939",
+    "field": "TrunkLine",
+    "original": ".",
+    "cleaned_value": ".",
+    "status": "flagged",
+    "note": "'.' should be deleted \u2014 leave this field blank per rubric"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Let's Get Nailed",
+    "permit_no": "17971",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Tocho Snack Bar",
+    "permit_no": "18018",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Tocho Snack Bar",
+    "permit_no": "18018",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Board & Bond",
+    "permit_no": "18034",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Taco Rancho Grande",
+    "permit_no": "18036",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Taco Rancho Grande",
+    "permit_no": "18036",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Taco Rancho Grande",
+    "permit_no": "18036",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Hatfield & Sons Distillery",
+    "permit_no": "18157",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Hatfield & Sons Distillery",
+    "permit_no": "18157",
+    "field": "ClassCode",
+    "original": "Distillery (No Food)",
+    "cleaned_value": "Distillery (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Distillery (No Food)' \u2192 'Distillery (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "El Rey del Pincho FT",
+    "permit_no": "18274",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "The Flavor Patch FT",
+    "permit_no": "18287",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "The Flavor Patch FT",
+    "permit_no": "18287",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Cooking With Herbs Catering LLC",
+    "permit_no": "18388",
+    "field": "ReceivingPlant",
+    "original": "Aqua Indiana",
+    "cleaned_value": "Aqua Indiana",
+    "status": "flagged",
+    "note": "'Aqua Indiana' is not a valid value for 'ReceivingPlant' \u2014 review manually"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Queen Nails",
+    "permit_no": "18400",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "fse",
+    "facility": "Queen Nails",
+    "permit_no": "18400",
+    "field": "ClassCode",
+    "original": "Salon (No Food)",
+    "cleaned_value": "Salon (No food)",
+    "status": "fixed",
+    "note": "fixed casing: 'Salon (No Food)' \u2192 'Salon (No food)'"
+  },
+  {
+    "source_file": "master",
+    "facility": "Salem United Church (Kids Kafet)",
+    "permit_no": "10360",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Get 2 Go",
+    "permit_no": "0146",
+    "field": "MapCategory",
+    "original": "mobile business",
+    "cleaned_value": "Mobile Business",
+    "status": "fixed",
+    "note": "fixed casing: 'mobile business' \u2192 'Mobile Business'"
+  },
+  {
+    "source_file": "master",
+    "facility": "Nestle",
+    "permit_no": "17459",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Divert Inc.",
+    "permit_no": "18186",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Drumm Inc.",
+    "permit_no": "17817",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Proctor & Gamble Lima",
+    "permit_no": "17848",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Emery",
+    "permit_no": "17849",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Clean City Bins",
+    "permit_no": "18181",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "master",
+    "facility": "Dannon Co.",
+    "permit_no": "18460",
+    "field": "MapCategory",
+    "original": "Quasar",
+    "cleaned_value": "Quasar",
+    "status": "flagged",
+    "note": "'Quasar' is not a valid value for 'MapCategory' \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "07 Pub",
+    "permit_no": "2739",
+    "field": "Extractor Type",
+    "original": "SIDEWAYS-FLOOR",
+    "cleaned_value": "SIDEWAYS-FLOOR",
+    "status": "flagged",
+    "note": "'SIDEWAYS-FLOOR' is not a valid value for 'Extractor Type' \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "07 Pub",
+    "permit_no": "2739",
+    "field": "Trap Size and Units",
+    "original": "35 gal",
+    "cleaned_value": "35 gal",
+    "status": "flagged",
+    "note": "unit should be 'gpm' for size 35 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '35 gpm'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "19th Hole",
+    "permit_no": "2697",
+    "field": "Extractor ID",
+    "original": "EX999",
+    "cleaned_value": "EX999",
+    "status": "flagged",
+    "note": "'EX999' (EX999) is not in any valid range (EX100\u2013EX830) \u2014 review manually"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "19th Hole",
+    "permit_no": "2697",
+    "field": "Extractor Type",
+    "original": "in-floor",
+    "cleaned_value": "IN-FLOOR",
+    "status": "fixed",
+    "note": "fixed casing: 'in-floor' \u2192 'IN-FLOOR'"
+  },
+  {
+    "source_file": "permit_list",
+    "facility": "19th Hole",
+    "permit_no": "2697",
+    "field": "Cleaning Frequency",
+    "original": "monthly",
+    "cleaned_value": "Monthly",
+    "status": "fixed",
+    "note": "fixed casing: 'monthly' \u2192 'Monthly'"
+  },
+  {
     "source_file": "permit_list",
     "facility": "American Kolache",
     "permit_no": "18443",
@@ -518,185 +1338,5 @@
     "cleaned_value": "Every 2 Months",
     "status": "fixed",
     "note": "fixed casing: 'Every 2 months' \u2192 'Every 2 Months'"
-  },
-  {
-    "source_file": "events",
-    "facility": "Allen County Community Corrections Residential Services Facillity",
-    "permit_no": "17854",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Bubba's 33",
-    "permit_no": "18459",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Crispy Cones",
-    "permit_no": "18449",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Drive & Shine Car Wash",
-    "permit_no": "18465",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Drive & Shine Lube Center",
-    "permit_no": "18467",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Dunkin Donuts #346590",
-    "permit_no": "10211",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Dunkin Donuts #346590",
-    "permit_no": "10211",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Headwaters Church",
-    "permit_no": "9392",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Hoshi Hoshi",
-    "permit_no": "18463",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Mi Tierra Market",
-    "permit_no": "18458",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Rise N Roll Bakery & Deli",
-    "permit_no": "0067",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Thai Diner Restaurant",
-    "permit_no": "1259",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "The Grind",
-    "permit_no": "9777",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Valvoline",
-    "permit_no": "18423",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Van Eerden Food Service",
-    "permit_no": "18441",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "Wing Stop",
-    "permit_no": "17897",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "YWCA/Gratitude Catering",
-    "permit_no": "9269",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
-  },
-  {
-    "source_file": "events",
-    "facility": "YWCA/Gratitude Catering",
-    "permit_no": "9269",
-    "field": "EventTypeAbbrv",
-    "original": "Dye Trace Monitoring Point",
-    "cleaned_value": "Dye Trace Monitoring Point",
-    "status": "flagged",
-    "note": "'Dye Trace Monitoring Point' is not a valid value for 'EventTypeAbbrv' \u2014 review manually"
   }
 ]
