@@ -12,12 +12,6 @@
   },
   "valid_values": {
     "Extractor ID": [
-      "EX050",
-      "EX060",
-      "EX075",
-      "EX080",
-      "EX098",
-      "EX099",
       "EX100 - EX110",
       "EX120 - EX129",
       "EX150 - EX159",
@@ -36,23 +30,8 @@
     ],
     "Extractor Type": [
       "ABOVE-FLOOR",
-      "AGRU - Big Dipper",
-      "AGRU - Highland",
-      "AS-10",
-      "Amalsed Green",
-      "Amalsed Silver",
-      "COMMISSARY",
-      "Don't Use",
-      "ECO II+",
-      "GREY WATER TANK",
       "IN-FLOOR",
-      "OIG_CONCRETE",
-      "OIG_FIBERGLASS",
-      "OIG_STEEL",
-      "OTHER",
-      "OUTDOOR",
-      "Sediment Trap",
-      "Solids seperator"
+      "OUTDOOR"
     ],
     "ClassCode": [
       "Auto",
@@ -118,7 +97,7 @@
   },
   "value_patterns": {
     "Extractor ID": "^EX\\s*[-]?\\s*\\d+",
-    "Extractor Type": "^(ABOVE\\-FLOOR|AGRU\\ \\-\\ Big\\ Dipper|AGRU\\ \\-\\ Highland|AS\\-10|Amalsed\\ Green|Amalsed\\ Silver|COMMISSARY|Don't\\ Use|ECO\\ II\\+|GREY\\ WATER\\ TANK|IN\\-FLOOR|OIG_CONCRETE|OIG_FIBERGLASS|OIG_STEEL|OTHER|OUTDOOR|Sediment\\ Trap|Solids\\ seperator)$",
+    "Extractor Type": "^(ABOVE\\-FLOOR|IN\\-FLOOR|OUTDOOR)$",
     "ClassCode": "^(Auto|Commissary|Dentists|Distillery\\ \\(No\\ food\\)|Dry\\ Cleaner|Food\\ Service|Funeral\\ Home|Institutional|Laundromat|Non\\ FSE|Residential|Salon\\ \\(No\\ food\\)|Waste\\ Hauler)$",
     "SecondClass": "^(FF|FP|FS|MB|NC)$",
     "MapCategory": "^(Mobile\\ Business|Multi\\-Tenant|Stand\\ Alone\\ Building)$",

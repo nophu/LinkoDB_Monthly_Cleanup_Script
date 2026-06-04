@@ -364,7 +364,6 @@ def _match_by_values(values, value_patterns):
     sample = [v.strip() for v in values if v.strip() not in ("", "nan")][:20]
 
     if not sample:  return None
-
     best_field = None
     best_score = 0.0
 

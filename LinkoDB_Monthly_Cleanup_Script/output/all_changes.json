@@ -7,7 +7,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -27,7 +27,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -35,9 +35,9 @@
     "permit_no": "18488",
     "field": "Extractor ID",
     "original": "120",
-    "cleaned_value": "120",
-    "status": "flagged",
-    "note": "'120' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX120",
+    "status": "fixed",
+    "note": "added EX prefix: '120' \u2192 'EX120'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -57,7 +57,7 @@
     "original": "050",
     "cleaned_value": "050",
     "status": "flagged",
-    "note": "'050' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'050' is an old-scheme ID (EX050) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -101,6 +101,16 @@
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
+    "facility": "Club Soda",
+    "permit_no": "9042",
+    "field": "Extractor ID",
+    "original": "EX001",
+    "cleaned_value": "EX001",
+    "status": "flagged",
+    "note": "'EX001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
     "facility": "Comfort Suites North",
     "permit_no": "9620",
     "field": "Cleaning Frequency",
@@ -111,13 +121,33 @@
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
+    "facility": "Corner Pocket Pub",
+    "permit_no": "9605",
+    "field": "Extractor ID",
+    "original": "EX 200",
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: 'EX 200' \u2192 'EX200'"
+  },
+  {
+    "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
+    "facility": "Crispy Cones",
+    "permit_no": "18449",
+    "field": "Extractor ID",
+    "original": "EX 002",
+    "cleaned_value": "EX 002",
+    "status": "flagged",
+    "note": "'EX 002' is an old-scheme ID (EX002) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+  },
+  {
+    "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
     "facility": "Curly's Village Inn",
     "permit_no": "3027",
     "field": "Extractor ID",
     "original": "200",
-    "cleaned_value": "200",
-    "status": "flagged",
-    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -135,9 +165,9 @@
     "permit_no": "9305",
     "field": "Extractor ID",
     "original": "200",
-    "cleaned_value": "200",
-    "status": "flagged",
-    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -155,9 +185,9 @@
     "permit_no": "18479",
     "field": "Extractor ID",
     "original": "200",
-    "cleaned_value": "200",
-    "status": "flagged",
-    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -197,7 +227,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -245,9 +275,9 @@
     "permit_no": "18486",
     "field": "Extractor ID",
     "original": "200",
-    "cleaned_value": "200",
-    "status": "flagged",
-    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -267,7 +297,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -297,7 +327,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -315,9 +345,9 @@
     "permit_no": "18461",
     "field": "Extractor ID",
     "original": "200",
-    "cleaned_value": "200",
-    "status": "flagged",
-    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -337,7 +367,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -365,9 +395,9 @@
     "permit_no": "9376",
     "field": "Extractor ID",
     "original": "200",
-    "cleaned_value": "200",
-    "status": "flagged",
-    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -377,7 +407,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -395,9 +425,9 @@
     "permit_no": "5796",
     "field": "Extractor ID",
     "original": "200",
-    "cleaned_value": "200",
-    "status": "flagged",
-    "note": "'200' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "added EX prefix: '200' \u2192 'EX200'"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -417,7 +447,7 @@
     "original": "HSW - Station 1",
     "cleaned_value": "HSW - Station 1",
     "status": "flagged",
-    "note": "'HSW - Station 1' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'HSW - Station 1' is not a standard extractor ID \u2014 review manually"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -427,7 +457,17 @@
     "original": "SEPTIC - Station 2",
     "cleaned_value": "SEPTIC - Station 2",
     "status": "flagged",
-    "note": "'SEPTIC - Station 2' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'SEPTIC - Station 2' is not a standard extractor ID \u2014 review manually"
+  },
+  {
+    "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
+    "facility": "Salsa Grill Northeast",
+    "permit_no": "17583",
+    "field": "Extractor ID",
+    "original": "EX900",
+    "cleaned_value": "EX900",
+    "status": "flagged",
+    "note": "'EX900' is an old-scheme ID (EX900) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
@@ -447,7 +487,7 @@
     "original": "001",
     "cleaned_value": "001",
     "status": "flagged",
-    "note": "'001' is not a valid value for 'Extractor ID' \u2014 review manually"
+    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
   },
   {
     "source_file": "r_M_FG_sys_Iu_Permit_List_Extractors.xlsx",
