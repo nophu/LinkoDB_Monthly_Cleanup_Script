@@ -29,7 +29,6 @@ REPORT_CONFIG = {
     },
 }
 
-
 # Given a filename, return (key, cfg) for the report it belongs to, or (None, None).
 def match_report(filename):
     fn = filename.lower()
