@@ -1,0 +1,4 @@
+astreamlit
+pandas
+openpyxl
+xlrd
