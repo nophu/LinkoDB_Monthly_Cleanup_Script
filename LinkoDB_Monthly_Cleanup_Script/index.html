@@ -1,14 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Monthly Linko Cleanup Automated Script</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linko DB Monthly Cleanup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Spline+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10211f;
+    --paper:#f4f1e9;
+    --teal:#0d6b6b;
+    --teal-deep:#073f3f;
+    --green:#5fab46;
+    --amber:#e8b500;
+    --line:#d8d2c2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Spline Sans',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    background-image:radial-gradient(var(--line) 1px,transparent 1px);
+    background-size:22px 22px;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+
+  /* ── header ── */
+  header{
+    background:var(--teal-deep);
+    color:var(--paper);
+    border-bottom:5px solid var(--amber);
+    overflow:hidden;
+  }
+  .hero{padding:64px 24px 56px;max-width:980px;margin:0 auto;position:relative}
+  .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:18px;
+  }
+  h1{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;font-size:clamp(2.8rem,7vw,5.2rem);
+    line-height:.92;letter-spacing:-.01em;text-transform:uppercase;
+  }
+  h1 .sub{display:block;color:var(--green);}
+  .hero p{max-width:560px;margin-top:22px;font-size:1.08rem;color:#cfe0db}
+
+  /* ── pipeline strip ── */
+  .pipe{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;
+    font-family:'JetBrains Mono',monospace;font-size:.8rem;
+  }
+  .pipe span{
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
+    padding:7px 13px;border-radius:4px;color:#dcebe0;
+  }
+  .pipe span b{color:var(--amber);font-weight:600}
+
+  /* ── sections ── */
+  section{padding:62px 0}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:.72rem;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--teal);
+    margin-bottom:10px;
+  }
+  h2{
+    font-family:'Big Shoulders Display',sans-serif;font-weight:700;
+    font-size:clamp(1.8rem,4vw,2.6rem);text-transform:uppercase;
+    letter-spacing:-.01em;margin-bottom:24px;line-height:1;
+  }
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:22px;transition:transform .18s ease,box-shadow .18s ease;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:6px 8px 0 var(--teal-deep)}
+  .card h3{font-size:1.05rem;margin-bottom:6px}
+  .card .num{
+    font-family:'Big Shoulders Display',sans-serif;font-weight:800;
+    font-size:1.8rem;color:var(--teal);line-height:1;
+  }
+  .card p{font-size:.92rem;color:#4a5654}
+
+  /* ── color key ── */
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .key{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);padding:18px;border-radius:8px}
+  .swatch{width:30px;height:30px;border-radius:5px;flex:none;border:1px solid rgba(0,0,0,.15)}
+  .swatch.g{background:var(--green)}
+  .swatch.y{background:var(--amber)}
+  .key b{display:block;margin-bottom:2px}
+  .key p{font-size:.88rem;color:#4a5654}
+
+  /* ── steps ── */
+  ol.steps{list-style:none;counter-reset:s;display:grid;gap:14px}
+  ol.steps li{
+    counter-increment:s;background:#fff;border:1px solid var(--line);
+    border-left:4px solid var(--teal);padding:16px 18px 16px 56px;
+    position:relative;border-radius:6px;
+  }
+  ol.steps li::before{
+    content:counter(s);position:absolute;left:14px;top:14px;
+    font-family:'Big Shoulders Display',sans-serif;font-weight:800;
+    font-size:1.4rem;color:var(--amber);
+  }
+  code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:#eae6da;padding:2px 6px;border-radius:4px}
+
+  /* ── footer ── */
+  footer{background:var(--ink);color:#9fb0ad;padding:40px 0;font-size:.85rem}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer b{color:var(--paper);font-family:'JetBrains Mono',monospace}
+</style>
 </head>
 <body>
-<h1> Please choose a rubric file for Linko Monthly Report Cleanup</h1>
-<form action="/action_page.php">
-    <input type="file" id="myFile" name="filename">
-    <input type="submit">
-</form>
+
+<header>
+  <div class="hero">
+    <div class="tag">Fort Wayne · Pretreatment / FOG Program</div>
+    <h1>Linko DB<span class="sub">Monthly Cleanup</span></h1>
+    <p>An automated quality-check pipeline that reads the monthly Linko report exports,
+       validates every field against the program rubric, and produces a clean,
+       color-coded report of exactly what needs fixing.</p>
+    <div class="pipe">
+      <span><b>read</b> rubric + reports</span>
+      <span><b>validate</b> each field</span>
+      <span><b>auto-fix</b> what's certain</span>
+      <span><b>flag</b> what needs review</span>
+      <span><b>export</b> Excel report</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">What it checks</div>
+    <h2>Five reports, one pass</h2>
+    <div class="grid">
+      <div class="card"><div class="num">01</div><h3>Permit List</h3><p>Extractor ID, Extractor Type, Trap Size &amp; Units, Cleaning Frequency.</p></div>
+      <div class="card"><div class="num">02</div><h3>FSE Inspections</h3><p>Receiving Plant, Class Code, Second Class, Trunk Line.</p></div>
+      <div class="card"><div class="num">03</div><h3>Master List</h3><p>Map Category against the approved values.</p></div>
+      <div class="card"><div class="num">04</div><h3>AG Extract Summary</h3><p>Extractor ID and Extractor Type.</p></div>
+      <div class="card"><div class="num">05</div><h3>Inspection Events</h3><p>Event Type against the current pick list.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="eyebrow">How to read the output</div>
+    <h2>Two colors, zero guesswork</h2>
+    <div class="keys">
+      <div class="key">
+        <div class="swatch g"></div>
+        <div><b>Green — Auto-fixed</b><p>A clear correction the tool applied for you (casing, EX prefix, trap unit). Apply it as-is in Linko.</p></div>
+      </div>
+      <div class="key">
+        <div class="swatch y"></div>
+        <div><b>Yellow — Needs review</b><p>No certain fix; a person decides (old extractor IDs, unknown values, retired plants).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Running it</div>
+    <h2>From export to report</h2>
+    <ol class="steps">
+      <li>Pull the five monthly report exports out of Linko (<code>.xlsx</code> or <code>.xls</code>).</li>
+      <li>Launch the tool and pick the rubric file when prompted.</li>
+      <li>Select the report file(s) to check — one or several at once.</li>
+      <li>The tool validates every field and writes <code>Monthly_Quality_Check_Report.xlsx</code>.</li>
+      <li>Open the report, work the green rows first, then review the yellow ones.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Built for the Fort Wayne FOG / pretreatment monthly cleanup.</span>
+    <span><b>linko-cleanup</b></span>
+  </div>
+</footer>
+
 </body>
 </html>
