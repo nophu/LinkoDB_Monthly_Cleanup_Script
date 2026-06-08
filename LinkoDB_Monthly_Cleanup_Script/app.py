@@ -1,8 +1,6 @@
 """
 app.py — a web version of the Linko Monthly Cleanup tool.
 
-Run it locally with:
-    streamlit run app.py
 
 It reuses your existing pipeline (rubric_parser, data_parser, data_validator,
 summary_report) — no logic is duplicated here, this file only adds the web UI.
@@ -21,7 +19,7 @@ import summary_report
 from config import REPORT_CONFIG, match_report
 
 
-# ── core pipeline (no Streamlit code in here, so it's easy to test) ────────────
+# core pipeline (no Streamlit code in here, so it's easy to test)
 def run_pipeline(rubric_path, data_paths):
     """Run the full cleanup on saved file paths. Returns (changes, processed, skipped, report_path)."""
     os.makedirs("output", exist_ok=True)
@@ -124,7 +122,6 @@ if st.button("Run Quality Check", type="primary", disabled=not ready):
         m1.metric("Total issues", len(df))
         m2.metric("🟢 Auto-fixed", int(fixed_n))
         m3.metric("🟡 Needs review", int(flagged_n))
-
         st.dataframe(show, use_container_width=True, hide_index=True)
     else:  st.info("No issues found — everything is clean!")
 else:
