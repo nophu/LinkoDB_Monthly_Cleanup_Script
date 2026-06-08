@@ -136,6 +136,19 @@
 const XLSX = window.XLSX;
 const L = window.Linko;
 
+// startup check — if a library didn't load, say so plainly instead of silently breaking
+window.addEventListener("DOMContentLoaded", ()=>{
+  const missing = [];
+  if(!window.XLSX) missing.push("the Excel library (xlsx)");
+  if(!window.Linko) missing.push("the validation engine (linko.js)");
+  if(missing.length){
+    document.getElementById("errBox").innerHTML =
+      `<div class="err"><b>A required file didn't load:</b> ${missing.join(" and ")}.<br>
+       Make sure <code>linko.js</code> sits in the same folder as <code>index.html</code>,
+       and that you have an internet connection (the Excel library loads from a CDN).</div>`;
+  }
+});
+
 let rubricFile = null;
 let dataFiles = [];
 let lastReportBlob = null;
@@ -159,12 +172,16 @@ $("rubricInput").addEventListener("change", e=>{
 });
 $("dataInput").addEventListener("change", e=>{
   dataFiles = Array.from(e.target.files);
-  $("dataList").innerHTML = dataFiles.map(f=>{
-    const {key, cfg} = L.matchReport(f.name);
-    return cfg
-      ? `<div class="chip"><span>${f.name}</span><span class="rep">${cfg.name}</span></div>`
-      : `<div class="chip bad"><span>${f.name}</span><span>unrecognized — will skip</span></div>`;
-  }).join("");
+  try{
+    $("dataList").innerHTML = dataFiles.map(f=>{
+      const {key, cfg} = L.matchReport(f.name);
+      return cfg
+        ? `<div class="chip"><span>${f.name}</span><span class="rep">${cfg.name}</span></div>`
+        : `<div class="chip bad"><span>${f.name}</span><span>unrecognized — will skip</span></div>`;
+    }).join("");
+  }catch(err){
+    $("dataList").innerHTML = dataFiles.map(f=>`<div class="chip"><span>${f.name}</span></div>`).join("");
+  }
   refresh();
 });
 function refresh(){ $("runBtn").disabled = !(rubricFile && dataFiles.length); }
