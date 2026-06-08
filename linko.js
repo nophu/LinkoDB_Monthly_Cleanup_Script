@@ -485,7 +485,9 @@ function validateData(records, rubric, sourceKey, onlyFields){
 // ---------- export to global / module ----------
 const API={REPORT_CONFIG, FIELD_DISPLAY, matchReport, parseRubric, parseData, validateData,
   checkValue, checkExtractorId, sheetToGrid};
-if(typeof module!=="undefined"&&module.exports) module.exports=API;
-else root.Linko=API;
+// In a browser, ALWAYS attach to window (even if a loaded library leaked a `module`
+// global). Only fall back to module.exports when there is no window (Node).
+if(typeof window!=="undefined") window.Linko=API;
+else if(typeof module!=="undefined"&&module.exports) module.exports=API;
 
 })(typeof window!=="undefined"?window:globalThis);
