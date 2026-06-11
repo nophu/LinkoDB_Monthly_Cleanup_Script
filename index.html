@@ -796,7 +796,7 @@ function buildReportBlob(changes, processed){
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
   rows.push([blank(), cell("Yellow",{bold:true,fill:YELLOW,h:"center"}), cell("Needs review — a suggested fix to confirm."),blank(),blank(),blank()]);
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
-  rows.push([blank(), cell("Orange",{bold:true,fill:ORANGE,h:"center"}), cell("One-off — a unique value with no match; decide individually."),blank(),blank(),blank()]);
+  rows.push([blank(), cell("#BDD7EE",{bold:true,fill:"#BDD7EE",h:"center"}), cell("One-off — a unique value with no match; decide individually."),blank(),blank(),blank()]);
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
   rows.push([]);
 
