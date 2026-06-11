@@ -20,7 +20,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     --navy:#14304e; --accent:#2c8ca5; --accent-deep:#226f83; --accent-soft:#e8f2f6;
     --green:#78a830; --green-soft:#f1f6e7;
     --amber:#c79a2a; --amber-soft:#f9f3e0;
-    --oneoff:#cc6b2c; --oneoff-soft:#f8ece1;
+    --oneoff:#3a60ad; --oneoff-soft:#eaeff8;
     --red:#b14b45; --line:#e6ebef;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -186,6 +186,11 @@ const OTHER_CODES_COLUMNS = {
 };
 const OTHER_CODES_FIELDS = new Set(Object.values(OTHER_CODES_COLUMNS).concat(["ReceivingPlant","TrunkLine"]));
 const TABLES_FIELDS = new Set(["Extractor ID","Extractor Type"]);
+
+// Known value equivalents that map to a canonical valid value (auto-fixed).
+const FIELD_ALIASES = {
+  "Cleaning Frequency": { "twice monthly": "Every 2 Weeks" },
+};
 
 function S(v){ return (v===null||v===undefined) ? "" : String(v).trim(); }
 function sheetToGrid(XLSX, ws){
@@ -589,6 +594,8 @@ function checkValue(field, value, rubric){
   const pattern=rubric.value_patterns[field];
   if(field==="Trap Size and Units") return checkTrapSize(value);
   if(field==="Extractor ID") return checkExtractorId(value, valid);
+  const alias = (FIELD_ALIASES[field]||{})[value.toLowerCase()];
+  if(alias) return {status:"fixed", cleaned_value:alias, note:`mapped '${value}' → '${alias}'`};
   if(valid.length===0) return {status:"flagged",cleaned_value:value,note:`'${value}' should be deleted — leave this field blank per rubric`};
   if(valid.includes(value)) return {status:"pass",cleaned_value:value,note:"exact match"};
   const vl=value.toLowerCase();
@@ -777,7 +784,7 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,m=>({"&":"&amp;","
 // ---- build styled Excel report (mirrors summary_report.py) ----
 function buildReportBlob(changes, processed){
   const byKey = {}; changes.forEach(c=>{ (byKey[c.source_file] ||= []).push(c); });
-  const GREEN="FF92D050", YELLOW="FFFFFF00", ORANGE="FFF4B183", GREY="FFD9D9D9", RED="FFFF0000", BLUE="FF0070C0";
+  const GREEN="FF92D050", YELLOW="FFFFFF00", ONEOFF="FFBDD7EE", GREY="FFD9D9D9", RED="FFFF0000", BLUE="FF0070C0";
   const F="Aptos Narrow";
   const rows = []; // array of arrays of {v,s}
   const merges = [];
@@ -796,7 +803,7 @@ function buildReportBlob(changes, processed){
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
   rows.push([blank(), cell("Yellow",{bold:true,fill:YELLOW,h:"center"}), cell("Needs review — a suggested fix to confirm."),blank(),blank(),blank()]);
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
-  rows.push([blank(), cell("Orange",{bold:true,fill:ORANGE,h:"center"}), cell("One-off — a unique value with no match; decide individually."),blank(),blank(),blank()]);
+  rows.push([blank(), cell("Blue",{bold:true,fill:ONEOFF,h:"center"}), cell("One-off — a unique value with no match; decide individually."),blank(),blank(),blank()]);
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
   rows.push([]);
 
@@ -820,7 +827,7 @@ function buildReportBlob(changes, processed){
     if(!issues.length){ rows.push([cell("Issues Found:",{bold:true,color:BLUE}), cell("None")]); }
     else issues.forEach((it,i)=>{
       const oneoff = (it.status==="flagged" && it.chg==="Needs Manual Review");
-      const fill = it.status==="fixed" ? GREEN : (oneoff ? ORANGE : YELLOW);
+      const fill = it.status==="fixed" ? GREEN : (oneoff ? ONEOFF : YELLOW);
       const nmr = it.chg==="Needs Manual Review";
       rows.push([
         cell(i===0?"Issues Found:":"",{bold:i===0,color:BLUE}),
