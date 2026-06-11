@@ -9,7 +9,7 @@ from config import REPORT_CONFIG
 # ── style ─────────────────────────────────────────────────────────────────────
 GREEN  = "92D050"
 YELLOW = "FFFF00"
-ONEOFF = "BDD7EE"
+ORANGE = "F4B183"
 GREY   = "D9D9D9"
 RED    = "FF0000"
 BLUE   = "0070C0"
@@ -122,7 +122,7 @@ def _write_block(ws, row, cfg, changes, write_headers):
 
     for i, r in enumerate(rows):
         if r["status"] == "fixed":             fill = GREEN
-        elif r["changed"] == "Needs Manual Review": fill = ONEOFF   # one-off, no suggestion
+        elif r["changed"] == "Needs Manual Review": fill = ORANGE   # one-off, no suggestion
         else:                                  fill = YELLOW
         _cell(ws, row, COL_LABEL, "Issues Found:" if i == 0 else "",
               bold=(i == 0), color=BLUE)
@@ -181,7 +181,7 @@ def build_report(changes_path="output/all_changes.json",
     ws.row_dimensions[row].height = 15
     row += 1
 
-    _cell(ws, row, COL_FAC, "Blue", bold=True, fill=ONEOFF, halign="center")
+    _cell(ws, row, COL_FAC, "Orange", bold=True, fill=ORANGE, halign="center")
     ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_CHG)
     _cell(ws, row, COL_PERMIT,
           "One-off — a unique value with no match (e.g. Quasar, HSW - Station 1); decide individually.")
