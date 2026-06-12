@@ -9,6 +9,38 @@ FIELD_ALIASES = {
     },
 }
 
+# Old-scheme extractor migration. When an old ID (number 1-99) has a description
+# containing one of these keywords, map the number into the matching new range:
+#     new number = base + (old_number - 1)
+# e.g. a "grease trap" with ID 001 -> EX200, 002 -> EX201, ... up to range_max.
+EXTRACTOR_MIGRATION = [
+    # description keyword (lowercased)        new base   range cap   label
+    {"keyword": "grease trap",      "base": 200, "range_max": 220, "label": "grease trap"},
+    {"keyword": "sediment",         "base": 230, "range_max": 239, "label": "sediment trap"},
+    {"keyword": "hair",             "base": 250, "range_max": 259, "label": "hair trap"},
+    {"keyword": "amalgam",          "base": 300, "range_max": 310, "label": "amalgam separator"},
+    {"keyword": "oil/sand",         "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "oil water",        "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "oil-water",        "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "sand separator",   "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "solids",           "base": 150, "range_max": 159, "label": "solids interceptor"},
+    {"keyword": "shared",           "base": 160, "range_max": 169, "label": "shared interceptor"},
+    {"keyword": "concrete",         "base": 100, "range_max": 110, "label": "grease interceptor (concrete)"},
+    {"keyword": "interceptor",      "base": 120, "range_max": 129, "label": "grease interceptor"},
+]
+
+# fields that may hold the extractor's free-text description, across report types
+_DESC_FIELDS = ("ExtractDesc", "Text24", "Description", "ExtractorDesc")
+
+def _get_description(record):
+    if not record:
+        return ""
+    for f in _DESC_FIELDS:
+        v = record.get(f)
+        if v and str(v).strip().lower() not in ("", "nan", "none"):
+            return str(v).strip()
+    return ""
+
 def validate_data(records, rubric, source_filename, only_fields=None):
     print(f"\nValidating {len(records)} records from {source_filename}...")
 
@@ -44,7 +76,7 @@ def validate_data(records, rubric, source_filename, only_fields=None):
                 continue
 
             # run the value through our checks
-            result = _check_value(field, value_str, rubric)
+            result = _check_value(field, value_str, rubric, record)
 
             # store the cleaned value
             cleaned_record[field] = result["cleaned_value"]
@@ -76,7 +108,7 @@ def validate_data(records, rubric, source_filename, only_fields=None):
 
 
 # helper function for checking a single value against the rubric rules for its field
-def _check_value(field, value, rubric):
+def _check_value(field, value, rubric, record=None):
     valid_values  = rubric["valid_values"].get(field, [])
     value_pattern = rubric["value_patterns"].get(field)
 
@@ -88,7 +120,7 @@ def _check_value(field, value, rubric):
     # special rule: Extractor IDs must start with "EX" per the rubric
     # a bare number like "001" / "050" just needs the EX prefix → "EX001", "EX050"
     if field == 'Extractor ID':
-        return _check_extractor_id(value, valid_values, value_pattern)
+        return _check_extractor_id(value, valid_values, value_pattern, _get_description(record))
 
     # known equivalents → auto-map to the canonical valid value
     alias = FIELD_ALIASES.get(field, {}).get(value.lower())
@@ -184,12 +216,13 @@ def _check_trap_size(value):
             "note":          f"fixed casing: '{value}' → '{fixed}'",
         }
 
-    # unit is wrong — flag with the suggested correct value
+    # unit is wrong — but the rule is deterministic (size decides the unit),
+    # so this is a certain correction → auto-fix
     fixed = f"{size_str} {correct_unit}"
     return {
-        "status":        "flagged",
-        "cleaned_value": value,
-        "note":          f"unit should be '{correct_unit}' for size {size_str} (rule: ≤99 → gpm, ≥100 → gal) — suggested: '{fixed}'",
+        "status":        "fixed",
+        "cleaned_value": fixed,
+        "note":          f"corrected unit by rule (≤99 → gpm, ≥100 → gal): '{value}' → '{fixed}'",
     }
 
 
@@ -197,7 +230,7 @@ def _check_trap_size(value):
 # AND fall within a valid NEW range (EX100-EX830). Bare numbers get "EX" added,
 # then we check the number against the new ranges. Old-scheme IDs (EX001-099) and
 # non-numeric values can't be auto-fixed → manual review.
-def _check_extractor_id(value, valid_values, value_pattern):
+def _check_extractor_id(value, valid_values, value_pattern, description=""):
     # parse the valid NEW ranges from values like "EX100 - EX110" or "EX400"
     ranges = []
     for v in valid_values:
@@ -236,7 +269,19 @@ def _check_extractor_id(value, valid_values, value_pattern):
 
     # number is not in any NEW range
     if num < 100:
-        # below EX100 → it's an old-scheme ID that needs migrating
+        # try to migrate using the extractor's description (e.g. grease trap → EX200 range)
+        desc = (description or "").lower()
+        for m in EXTRACTOR_MIGRATION:
+            if m["keyword"] in desc:
+                new_num = m["base"] + (num - 1)
+                if m["base"] <= new_num <= m["range_max"]:
+                    new_id = f"EX{new_num}"
+                    return {
+                        "status":        "fixed",
+                        "cleaned_value": new_id,
+                        "note":          f"migrated old {m['label']} ID '{value}' → '{new_id}'",
+                    }
+        # no description match → old-scheme ID that still needs a manual decision
         return {
             "status":        "flagged",
             "cleaned_value": value,

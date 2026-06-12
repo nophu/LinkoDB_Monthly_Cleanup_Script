@@ -192,6 +192,32 @@ const FIELD_ALIASES = {
   "Cleaning Frequency": { "twice monthly": "Every 2 Weeks" },
 };
 
+// Old-scheme extractor migration: old ID (1-99) whose description matches a keyword
+// maps to base + (old_number - 1).  e.g. grease trap 001 -> EX200, 002 -> EX201.
+const EXTRACTOR_MIGRATION = [
+  {keyword:"grease trap",    base:200, rangeMax:220, label:"grease trap"},
+  {keyword:"sediment",       base:230, rangeMax:239, label:"sediment trap"},
+  {keyword:"hair",           base:250, rangeMax:259, label:"hair trap"},
+  {keyword:"amalgam",        base:300, rangeMax:310, label:"amalgam separator"},
+  {keyword:"oil/sand",       base:311, rangeMax:319, label:"oil/sand separator"},
+  {keyword:"oil water",      base:311, rangeMax:319, label:"oil/sand separator"},
+  {keyword:"oil-water",      base:311, rangeMax:319, label:"oil/sand separator"},
+  {keyword:"sand separator", base:311, rangeMax:319, label:"oil/sand separator"},
+  {keyword:"solids",         base:150, rangeMax:159, label:"solids interceptor"},
+  {keyword:"shared",         base:160, rangeMax:169, label:"shared interceptor"},
+  {keyword:"concrete",       base:100, rangeMax:110, label:"grease interceptor (concrete)"},
+  {keyword:"interceptor",    base:120, rangeMax:129, label:"grease interceptor"},
+];
+const DESC_FIELDS = ["ExtractDesc","Text24","Description","ExtractorDesc"];
+function getDescription(rec){
+  if(!rec) return "";
+  for(const f of DESC_FIELDS){
+    const v = rec[f];
+    if(v && !["","nan","none"].includes(S(v).toLowerCase())) return S(v);
+  }
+  return "";
+}
+
 function S(v){ return (v===null||v===undefined) ? "" : String(v).trim(); }
 function sheetToGrid(XLSX, ws){
   // 2D array of trimmed strings, preserving row/col layout
@@ -569,9 +595,9 @@ function checkTrapSize(value){
   if(unit===correct) return {status:"pass",cleaned_value:value,note:"exact match"};
   if(unit.toLowerCase()===correct){ const f=`${sizeStr} ${correct}`; return {status:"fixed",cleaned_value:f,note:`fixed casing: '${value}' → '${f}'`}; }
   const f=`${sizeStr} ${correct}`;
-  return {status:"flagged",cleaned_value:value,note:`unit should be '${correct}' for size ${sizeStr} (rule: ≤99 → gpm, ≥100 → gal) — suggested: '${f}'`};
+  return {status:"fixed",cleaned_value:f,note:`corrected unit by rule (≤99 → gpm, ≥100 → gal): '${value}' → '${f}'`};
 }
-function checkExtractorId(value, valid){
+function checkExtractorId(value, valid, description){
   const ranges=[];
   for(const v of valid){ const nums=(v.match(/\d+/g)||[]).map(Number);
     if(nums.length>=2) ranges.push([nums[0],nums[1]]); else if(nums.length===1) ranges.push([nums[0],nums[0]]); }
@@ -586,14 +612,26 @@ function checkExtractorId(value, valid){
     if(candidate===raw) return {status:"pass",cleaned_value:candidate,note:"valid"};
     return {status:"fixed",cleaned_value:candidate,note:`added EX prefix: '${value}' → '${candidate}'`};
   }
-  if(num<100) return {status:"flagged",cleaned_value:value,note:`'${value}' is an old-scheme ID (${candidate}) — needs a new EX1xx–EX8xx ID (review manually)`};
+  if(num<100){
+    const desc=(description||"").toLowerCase();
+    for(const m of EXTRACTOR_MIGRATION){
+      if(desc.includes(m.keyword)){
+        const newNum=m.base+(num-1);
+        if(newNum>=m.base && newNum<=m.rangeMax){
+          const newId="EX"+newNum;
+          return {status:"fixed",cleaned_value:newId,note:`migrated old ${m.label} ID '${value}' → '${newId}'`};
+        }
+      }
+    }
+    return {status:"flagged",cleaned_value:value,note:`'${value}' is an old-scheme ID (${candidate}) — needs a new EX1xx–EX8xx ID (review manually)`};
+  }
   return {status:"flagged",cleaned_value:value,note:`'${value}' (${candidate}) is not in any valid range (EX100–EX830) — review manually`};
 }
-function checkValue(field, value, rubric){
+function checkValue(field, value, rubric, record){
   const valid=rubric.valid_values[field]||[];
   const pattern=rubric.value_patterns[field];
   if(field==="Trap Size and Units") return checkTrapSize(value);
-  if(field==="Extractor ID") return checkExtractorId(value, valid);
+  if(field==="Extractor ID") return checkExtractorId(value, valid, getDescription(record));
   const alias = (FIELD_ALIASES[field]||{})[value.toLowerCase()];
   if(alias) return {status:"fixed", cleaned_value:alias, note:`mapped '${value}' → '${alias}'`};
   if(valid.length===0) return {status:"flagged",cleaned_value:value,note:`'${value}' should be deleted — leave this field blank per rubric`};
@@ -626,7 +664,7 @@ function validateData(records, rubric, sourceKey, onlyFields){
       const value=rec[field];
       if(value===null||["","nan","NaN"].includes(S(value))) continue;
       if(!checkable.includes(field)) continue;
-      const res=checkValue(field, S(value), rubric);
+      const res=checkValue(field, S(value), rubric, rec);
       if(res.status!=="pass"){
         changes.push({source_file:sourceKey, facility:getFacility(rec), permit_no:getPermit(rec),
           field, original:S(value), cleaned_value:res.cleaned_value, status:res.status, note:res.note});
@@ -738,17 +776,40 @@ function suggestion(c){
   if(c.note.includes("leave this field blank")||c.note.includes("should be deleted")) return "";
   return "Needs Manual Review";
 }
-// fixed = auto-fixed | review = flagged with a suggested fix | oneoff = flagged, no suggestion
-function category(c){
+// One-off (blue) = either a value that recurs across the data but never appears in
+// the rubric (e.g. "Quasar"), OR a forced exception we always treat as a one-off
+// (HSW / Septic stations). Everything else flagged stays yellow (review).
+const ONEOFF_EXCEPTIONS = ["hsw","septic"];
+function oneoffKeys(changes, threshold=2){
+  const cnt = {};
+  for(const c of changes){
+    if(c.status==="flagged" && c.note.includes("is not a valid value for")){
+      const k = c.field+"||"+c.original; cnt[k] = (cnt[k]||0)+1;
+    }
+  }
+  const keys = new Set();
+  for(const c of changes){
+    if(c.status!=="flagged") continue;
+    const orig = String(c.original).toLowerCase();
+    if(ONEOFF_EXCEPTIONS.some(p=>orig.includes(p))){ keys.add(c.field+"||"+c.original); continue; }
+    const k = c.field+"||"+c.original;
+    if(c.note.includes("is not a valid value for") && (cnt[k]||0) >= threshold) keys.add(k);
+  }
+  return keys;
+}
+// fixed = auto-fixed | oneoff = recurring-unknown or forced exception | review = everything else flagged
+function category(c, oneoff){
   if(c.status==="fixed") return "fixed";
-  return suggestion(c)==="Needs Manual Review" ? "oneoff" : "review";
+  if(oneoff.has(c.field+"||"+c.original)) return "oneoff";
+  return "review";
 }
 const PILL_LABEL = {fixed:"AUTO-FIXED", review:"REVIEW", oneoff:"ONE-OFF"};
 
 function showResults(changes, processed, skipped){
-  const fixed  = changes.filter(c=>category(c)==="fixed").length;
-  const review = changes.filter(c=>category(c)==="review").length;
-  const oneoff = changes.filter(c=>category(c)==="oneoff").length;
+  const oneoffSet = oneoffKeys(changes);
+  const fixed  = changes.filter(c=>category(c,oneoffSet)==="fixed").length;
+  const review = changes.filter(c=>category(c,oneoffSet)==="review").length;
+  const oneoff = changes.filter(c=>category(c,oneoffSet)==="oneoff").length;
   $("metrics").innerHTML =
     `<div class="metric"><div class="v">${changes.length}</div><div class="l">Total issues</div></div>
      <div class="metric g"><div class="v">${fixed}</div><div class="l">Auto-fixed</div></div>
@@ -766,7 +827,7 @@ function showResults(changes, processed, skipped){
   for(const c of rows){
     const disp = L.FIELD_DISPLAY[c.field] || c.field;
     const sug = suggestion(c);
-    const cat = category(c);
+    const cat = category(c, oneoffSet);
     html += `<tr class="${cat}">
       <td>${esc(c.facility)}</td><td>${esc(c.permit_no)}</td><td>${esc(disp)}</td>
       <td class="cur">${esc(c.original)}</td><td>${esc(sug)}</td>
@@ -784,6 +845,7 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,m=>({"&":"&amp;","
 // ---- build styled Excel report (mirrors summary_report.py) ----
 function buildReportBlob(changes, processed){
   const byKey = {}; changes.forEach(c=>{ (byKey[c.source_file] ||= []).push(c); });
+  const oneoffSet = oneoffKeys(changes);
   const GREEN="FF92D050", YELLOW="FFFFFF00", ONEOFF="FFBDD7EE", GREY="FFD9D9D9", RED="FFFF0000", BLUE="FF0070C0";
   const F="Aptos Narrow";
   const rows = []; // array of arrays of {v,s}
@@ -801,9 +863,9 @@ function buildReportBlob(changes, processed){
   rows.push([cell("Color Key:",{bold:true})]);
   rows.push([blank(), cell("Green",{bold:true,fill:GREEN,h:"center"}), cell("Auto-fixed — apply as-is in Linko."),blank(),blank(),blank()]);
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
-  rows.push([blank(), cell("Yellow",{bold:true,fill:YELLOW,h:"center"}), cell("Needs review — a suggested fix to confirm."),blank(),blank(),blank()]);
+  rows.push([blank(), cell("Yellow",{bold:true,fill:YELLOW,h:"center"}), cell("Needs review — no auto-fix and not a one-off (e.g. old ID needing a new number)."),blank(),blank(),blank()]);
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
-  rows.push([blank(), cell("Blue",{bold:true,fill:ONEOFF,h:"center"}), cell("One-off — a unique value with no match; decide individually."),blank(),blank(),blank()]);
+  rows.push([blank(), cell("Blue",{bold:true,fill:ONEOFF,h:"center"}), cell("One-off — recurs in the data but never in the rubric (e.g. Quasar), plus HSW/Septic stations."),blank(),blank(),blank()]);
   merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
   rows.push([]);
 
@@ -826,8 +888,8 @@ function buildReportBlob(changes, processed){
     issues.sort((a,b)=> a.fac.toLowerCase()<b.fac.toLowerCase()?-1:1);
     if(!issues.length){ rows.push([cell("Issues Found:",{bold:true,color:BLUE}), cell("None")]); }
     else issues.forEach((it,i)=>{
-      const oneoff = (it.status==="flagged" && it.chg==="Needs Manual Review");
-      const fill = it.status==="fixed" ? GREEN : (oneoff ? ONEOFF : YELLOW);
+      const isOne = (it.status==="flagged" && oneoffSet.has(it.field+"||"+it.cur));
+      const fill = it.status==="fixed" ? GREEN : (isOne ? ONEOFF : YELLOW);
       const nmr = it.chg==="Needs Manual Review";
       rows.push([
         cell(i===0?"Issues Found:":"",{bold:i===0,color:BLUE}),

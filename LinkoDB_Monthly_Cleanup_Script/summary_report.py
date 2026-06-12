@@ -81,6 +81,7 @@ def _issue_rows(changes, field_order):
             "current":  chg["original"],
             "changed":  _suggestion(chg),
             "status":   chg["status"],
+            "note":     chg.get("note", ""),
         })
     # sort by facility, then rubric field order
     def sk(r):
@@ -91,7 +92,23 @@ def _issue_rows(changes, field_order):
     return rows
 
 
-def _write_block(ws, row, cfg, changes, write_headers):
+# A "one-off" (blue) is either:
+#  (a) a value that recurs across the data but never appears in the rubric
+#      — e.g. "Quasar" in MapCategory (appears many times, never valid); or
+#  (b) a forced exception we've been told to always treat as a one-off
+#      — currently the HSW / Septic disposal stations.
+# Everything else that's flagged stays yellow (review).
+ONEOFF_EXCEPTIONS = ("hsw", "septic")
+
+def _is_oneoff(r, recurring):
+    orig = str(r["current"]).lower()
+    if any(p in orig for p in ONEOFF_EXCEPTIONS):
+        return True
+    return ("is not a valid value for" in r.get("note", "")
+            and (r["field"], r["current"]) in recurring)
+
+
+def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
     fields = cfg["fields"]
 
     # Report Name row (+ column headers on the first block)
@@ -121,9 +138,9 @@ def _write_block(ws, row, cfg, changes, write_headers):
         return row + 1
 
     for i, r in enumerate(rows):
-        if r["status"] == "fixed":             fill = GREEN
-        elif r["changed"] == "Needs Manual Review": fill = ONEOFF   # one-off, no suggestion
-        else:                                  fill = YELLOW
+        if r["status"] == "fixed":        fill = GREEN
+        elif _is_oneoff(r, recurring):    fill = ONEOFF   # recurring value missing from rubric
+        else:                             fill = YELLOW   # suggested fix OR unique exception
         _cell(ws, row, COL_LABEL, "Issues Found:" if i == 0 else "",
               bold=(i == 0), color=BLUE)
         _cell(ws, row, COL_FAC,    r["facility"], fill=fill)
@@ -146,6 +163,15 @@ def build_report(changes_path="output/all_changes.json",
                  only_reports=None):
     with open(changes_path) as f:
         all_changes = json.load(f)
+
+    # A value is a one-off only if it recurs (appears 2+ times) AND never appears
+    # in the rubric (flagged as "is not a valid value for ..."). Count globally so a
+    # value like "Quasar" that recurs across facilities is recognised as a one-off.
+    _unmatched = Counter()
+    for c in all_changes:
+        if "is not a valid value for" in c.get("note", ""):
+            _unmatched[(c["field"], c["original"])] += 1
+    recurring = {k for k, n in _unmatched.items() if n >= 2}
 
     by_file = defaultdict(list)
     for c in all_changes:
@@ -177,14 +203,14 @@ def build_report(changes_path="output/all_changes.json",
     _cell(ws, row, COL_FAC, "Yellow", bold=True, fill=YELLOW, halign="center")
     ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_CHG)
     _cell(ws, row, COL_PERMIT,
-          "Needs review — the tool has a suggested fix for you to confirm.")
+          "Needs review — no auto-fix and not a one-off (e.g. old ID needing a new number).")
     ws.row_dimensions[row].height = 15
     row += 1
 
     _cell(ws, row, COL_FAC, "Blue", bold=True, fill=ONEOFF, halign="center")
     ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_CHG)
     _cell(ws, row, COL_PERMIT,
-          "One-off — a unique value with no match (e.g. Quasar, HSW - Station 1); decide individually.")
+          "One-off — recurs in the data but never in the rubric (e.g. Quasar), plus HSW/Septic stations.")
     ws.row_dimensions[row].height = 15
     row += 2  # blank separator before first report
 
