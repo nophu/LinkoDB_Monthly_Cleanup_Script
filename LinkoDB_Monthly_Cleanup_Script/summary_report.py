@@ -188,7 +188,7 @@ def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
         _cell(ws, row, COL_FIELD,  FIELD_DISPLAY.get(r["field"], r["field"]),
               fill=fill, bold=True)
         _cell(ws, row, COL_CUR,    r["current"], fill=fill, color=RED)
-        nmr = (r["changed"] == "Needs Manual Review")
+        nmr = (r["changed"] == "May Need Manual Review")
         _cell(ws, row, COL_CHG,    r["changed"], fill=fill,
               color=(RED if r["status"] == "flagged" else "000000"),
               italic=nmr)
