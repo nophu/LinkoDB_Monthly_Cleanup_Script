@@ -14,20 +14,39 @@ FIELD_ALIASES = {
 #     new number = base + (old_number - 1)
 # e.g. a "grease trap" with ID 001 -> EX200, 002 -> EX201, ... up to range_max.
 EXTRACTOR_MIGRATION = [
-    # description keyword (lowercased)        new base   range cap   label
-    {"keyword": "grease trap",      "base": 200, "range_max": 220, "label": "grease trap"},
-    {"keyword": "sediment",         "base": 230, "range_max": 239, "label": "sediment trap"},
-    {"keyword": "hair",             "base": 250, "range_max": 259, "label": "hair trap"},
-    {"keyword": "amalgam",          "base": 300, "range_max": 310, "label": "amalgam separator"},
-    {"keyword": "oil/sand",         "base": 311, "range_max": 319, "label": "oil/sand separator"},
-    {"keyword": "oil water",        "base": 311, "range_max": 319, "label": "oil/sand separator"},
-    {"keyword": "oil-water",        "base": 311, "range_max": 319, "label": "oil/sand separator"},
-    {"keyword": "sand separator",   "base": 311, "range_max": 319, "label": "oil/sand separator"},
-    {"keyword": "solids",           "base": 150, "range_max": 159, "label": "solids interceptor"},
-    {"keyword": "shared",           "base": 160, "range_max": 169, "label": "shared interceptor"},
-    {"keyword": "concrete",         "base": 100, "range_max": 110, "label": "grease interceptor (concrete)"},
-    {"keyword": "interceptor",      "base": 120, "range_max": 129, "label": "grease interceptor"},
+    # unambiguous type words in the description → new series (confident, GREEN)
+    {"keyword": "grease trap",    "base": 200, "range_max": 220, "label": "grease trap"},
+    {"keyword": "sediment",       "base": 230, "range_max": 239, "label": "sediment trap"},
+    {"keyword": "hair",           "base": 250, "range_max": 259, "label": "hair trap"},
+    {"keyword": "amalgam",        "base": 300, "range_max": 310, "label": "amalgam separator"},
+    {"keyword": "oil/sand",       "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "oil water",      "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "oil-water",      "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "sand separator", "base": 311, "range_max": 319, "label": "oil/sand separator"},
+    {"keyword": "solids",         "base": 150, "range_max": 159, "label": "solids interceptor"},
+    {"keyword": "shared",         "base": 160, "range_max": 169, "label": "shared interceptor"},
 ]
+
+# Grease interceptors split by material. Only used once we know it's an interceptor.
+# Concrete → EX100 series, everything else → EX120 series.
+INTERCEPTOR_MATERIAL = [
+    ("concrete",   100, 110, "grease interceptor (concrete)"),
+    ("fiberglass", 120, 129, "grease interceptor (fiberglass)"),
+    ("plastic",    120, 129, "grease interceptor (plastic)"),
+    ("steel",      120, 129, "grease interceptor (steel)"),
+]
+
+# Fallback when the data description names no type: the OLD code number itself
+# identifies the type (per the old rubric). These produce YELLOW "suggested" fixes
+# for a person to confirm — not silent auto-fixes.
+OLD_CODE_FALLBACK = {
+    50: (160, "shared interceptor"),
+    60: (150, "solids interceptor"),
+    75: (311, "oil/sand separator"),
+    80: (400, "food-truck effluent valve"),
+    98: (500, "retired/inactive"),
+    99: (600, "no interceptor (verified)"),
+}
 
 # fields that may hold the extractor's free-text description, across report types
 _DESC_FIELDS = ("ExtractDesc", "Text24", "Description", "ExtractorDesc")
@@ -269,8 +288,9 @@ def _check_extractor_id(value, valid_values, value_pattern, description=""):
 
     # number is not in any NEW range
     if num < 100:
-        # try to migrate using the extractor's description (e.g. grease trap → EX200 range)
         desc = (description or "").lower()
+
+        # TIER 1 — description names a clear trap/separator type → confident (GREEN)
         for m in EXTRACTOR_MIGRATION:
             if m["keyword"] in desc:
                 new_num = m["base"] + (num - 1)
@@ -281,11 +301,44 @@ def _check_extractor_id(value, valid_values, value_pattern, description=""):
                         "cleaned_value": new_id,
                         "note":          f"migrated old {m['label']} ID '{value}' → '{new_id}'",
                     }
-        # no description match → old-scheme ID that still needs a manual decision
+
+        # interceptor: must know the material to pick concrete (EX100) vs other (EX120)
+        if "interceptor" in desc:
+            for kw, base, cap, label in INTERCEPTOR_MATERIAL:
+                if kw in desc:
+                    new_num = base + (num - 1)
+                    if base <= new_num <= cap:
+                        new_id = f"EX{new_num}"
+                        return {
+                            "status":        "fixed",
+                            "cleaned_value": new_id,
+                            "note":          f"migrated old {label} ID '{value}' → '{new_id}'",
+                        }
+            # interceptor but material not stated → too unspecific to pick → review
+            return {
+                "status":        "flagged",
+                "cleaned_value": value,
+                "note":          f"'{value}' is an old grease interceptor but the material isn't stated — assign EX100 (concrete) or EX120 (other) manually",
+            }
+
+        # TIER 2 — no type in description, but the OLD code number implies the type
+        #          (per the old rubric) → suggest the new ID for review (YELLOW)
+        fb = OLD_CODE_FALLBACK.get(num)
+        if fb:
+            base, label = fb
+            new_id = f"EX{base}"
+            return {
+                "status":        "flagged",
+                "cleaned_value": value,
+                "note":          f"old code '{candidate}' is a {label} per the old rubric — suggested: '{new_id}'",
+            }
+
+        # TIER 3 — plain sequence number (EX001-EX049) with no type stated:
+        #          can't tell trap from interceptor → review manually
         return {
             "status":        "flagged",
             "cleaned_value": value,
-            "note":          f"'{value}' is an old-scheme ID ({candidate}) — needs a new EX1xx–EX8xx ID (review manually)",
+            "note":          f"'{value}' is an old-scheme ID ({candidate}) with no type stated — assign a new EX ID manually",
         }
     # at or above EX100 but not inside any valid range → just invalid
     return {

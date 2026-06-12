@@ -127,8 +127,12 @@ def _reason(r, is_oneoff):
         return "Disposal station — treated as a one-off per program guidance."
     if is_oneoff:
         return "Recurs in the data but never appears in the rubric — one-off to decide on."
-    if "old-scheme ID" in note:
-        return "Old-scheme ID, but the description names no type — assign a new EX number manually."
+    if "per the old rubric" in note:
+        return "The old code's number identifies its type per the old rubric — confirm the suggested new ID."
+    if "material isn't stated" in note:
+        return "Old grease interceptor, but the material isn't stated — choose EX100 (concrete) or EX120 (other)."
+    if "no type stated" in note or "old-scheme ID" in note:
+        return "Old-scheme ID with no type stated — assign a new EX number manually."
     if "is not in any valid range" in note:
         return "ID number is outside every valid EX range."
     if "is not a standard extractor ID" in note:
