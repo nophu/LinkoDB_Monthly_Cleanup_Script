@@ -143,7 +143,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
 </main>
 
-<!-- the validation engine (inlined) -->
+<!-- the validation engine -->
 <script>
 /* linko.js — browser/Node port of the Linko cleanup pipeline.
    Uses SheetJS (global `XLSX` in browser, or require in Node). */
@@ -692,10 +692,17 @@ function validateData(records, rubric, sourceKey, onlyFields){
   if(onlyFields) checkable=checkable.filter(f=>onlyFields.includes(f));
   const changes=[];
   for(const rec of records){
-    for(const field in rec){
+    for(const field of checkable){
       const value=rec[field];
-      if(value===null||["","nan","NaN"].includes(S(value))) continue;
-      if(!checkable.includes(field)) continue;
+      const isBlank = value===null||value===undefined||["","nan","NaN","None"].includes(S(value));
+      const valid = rubric.valid_values[field]||[];
+      if(isBlank){
+        if(valid.length===0) continue;   // rubric says leave blank → correct, nothing to flag
+        changes.push({source_file:sourceKey, facility:getFacility(rec), permit_no:getPermit(rec),
+          field, original:"", cleaned_value:"", status:"flagged",
+          note:`'${field}' is blank — a value is expected here (review)`});
+        continue;
+      }
       const res=checkValue(field, S(value), rubric, rec);
       if(res.status!=="pass"){
         changes.push({source_file:sourceKey, facility:getFacility(rec), permit_no:getPermit(rec),
@@ -883,11 +890,19 @@ function showResults(changes, processed, skipped){
     if(dedup.has(k)) continue; dedup.add(k);
     rows.push(c);
   }
+  // group like values: by field, then the value itself, then facility
+  rows.sort((a,b)=>{
+    if(a.field!==b.field) return a.field<b.field?-1:1;
+    const ao=String(a.original).toLowerCase(), bo=String(b.original).toLowerCase();
+    if(ao!==bo) return ao<bo?-1:1;
+    return a.facility.toLowerCase()<b.facility.toLowerCase()?-1:1;
+  });
   let html = `<thead><tr><th>Facility</th><th>Permit</th><th>Field</th><th>Current</th><th>Changed To</th><th>Reason</th><th>Result</th></tr></thead><tbody>`;
   for(const c of rows){
     const disp = L.FIELD_DISPLAY[c.field] || c.field;
-    const sug = suggestion(c);
     const cat = category(c, oneoffSet);
+    let sug = suggestion(c);
+    if(cat==="oneoff" && sug==="Needs Manual Review") sug="May Need Manual Review";
     html += `<tr class="${cat}">
       <td>${esc(c.facility)}</td><td>${esc(c.permit_no)}</td><td>${esc(disp)}</td>
       <td class="cur">${esc(c.original)}</td><td>${esc(sug)}</td>
@@ -946,19 +961,25 @@ function buildReportBlob(changes, processed){
     for(const c of ch){ const k=c.facility+"|"+c.permit_no+"|"+c.field+"|"+c.original;
       if(seen.has(k))continue; seen.add(k);
       issues.push({fac:c.facility,permit:c.permit_no,field:c.field,cur:c.original,chg:suggestion(c),status:c.status,note:c.note}); }
-    issues.sort((a,b)=> a.fac.toLowerCase()<b.fac.toLowerCase()?-1:1);
+    issues.sort((a,b)=>{
+      if(a.field!==b.field) return a.field<b.field?-1:1;
+      const ao=String(a.cur).toLowerCase(), bo=String(b.cur).toLowerCase();
+      if(ao!==bo) return ao<bo?-1:1;
+      return a.fac.toLowerCase()<b.fac.toLowerCase()?-1:1;
+    });
     if(!issues.length){ rows.push([cell("Issues Found:",{bold:true,color:BLUE}), cell("None")]); }
     else issues.forEach((it,i)=>{
       const isOne = (it.status==="flagged" && oneoffSet.has(it.field+"||"+it.cur));
       const fill = it.status==="fixed" ? GREEN : (isOne ? ONEOFF : YELLOW);
       const nmr = it.chg==="Needs Manual Review";
+      const chgText = (isOne && nmr) ? "May Need Manual Review" : it.chg;
       const rsn = reasonText({status:it.status, note:it.note, original:it.cur}, isOne);
       rows.push([
         cell(i===0?"Issues Found:":"",{bold:i===0,color:BLUE}),
         cell(it.fac,{fill}), cell(it.permit,{fill,h:"center"}),
         cell(L.FIELD_DISPLAY[it.field]||it.field,{fill,bold:true}),
         cell(it.cur,{fill,color:RED}),
-        cell(it.chg,{fill,color:it.status==="flagged"?RED:"FF000000",italic:nmr}),
+        cell(chgText,{fill,color:it.status==="flagged"?RED:"FF000000",italic:nmr}),
         cell(rsn,{fill,italic:true}),
       ]);
     });

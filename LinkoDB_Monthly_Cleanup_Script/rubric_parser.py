@@ -2,7 +2,7 @@ import re
 import json
 import pandas as pd
 
-# green tabs only
+# Hard-coded green tabs only (FS - Classes removed — not green)
 NEEDED_SHEETS = [
     'Key',
     'Tables Extractor IDs, Type',
@@ -11,7 +11,10 @@ NEEDED_SHEETS = [
     'FS - Cleaning Frequency',
 ]
 
-# 6Other Codes sheet has side-by-side columns where each "New ___" column
+# The 6Other Codes sheet has side-by-side columns where each "New ___" column
+# is the valid list for a field. This maps each header label -> rubric field name.
+# TrunkLine and ReceivingPlant are NOT here because they are a sub-table
+# buried inside cols 0/1 — handled separately below.
 OTHER_CODES_COLUMNS = {
     "new class codes":    "ClassCode",
     "new secondclass":    "SecondClass",
@@ -19,59 +22,69 @@ OTHER_CODES_COLUMNS = {
     "new eventtypeabbrv": "EventTypeAbbrv",
 }
 
-# fields owned by the 6Other Codes sheet — the generic reader must NOT touch these
+# Fields owned by the 6Other Codes sheet — the generic reader must NOT touch these
+# or it will mix values from the wrong columns
 OTHER_CODES_FIELDS = set(OTHER_CODES_COLUMNS.values()) | {"ReceivingPlant", "TrunkLine"}
 
-# fields owned by the Tables sheet — generic reader must not touch these either
+# Fields owned by the Tables sheet — generic reader must not touch these either
 TABLES_FIELDS = {"Extractor ID", "Extractor Type"}
+
 
 def parse_rubric(filepath):
     print(f"\nReading rubric: {filepath}")
-    fp = filepath.lower()
-    if fp.endswith(".xlsx"):    engine = 'openpyxl'
-    elif fp.endswith(".xls"):    engine = 'xlrd'
-    else:   raise ValueError(f"Unrecognized file type: {filepath}")
-    wb = pd.ExcelFile(filepath, engine=engine)
+    wb = pd.ExcelFile(filepath)
     sheet_names = wb.sheet_names
+
     rubric = {"column_mapping": {}, "valid_values": {}, "value_patterns": {}}
 
-    # learn column-name mapping from the Key sheet
+    # --- Step 1: learn column-name mapping from the Key sheet ---
     key_sheet = _find_sheet(wb, "Key")
     if key_sheet is not None:
         for _, row in key_sheet.iterrows():
             values = [str(v).strip() for v in row if str(v).strip() not in ("", "nan")]
             if len(values) >= 2:
                 messy, correct = values[0], values[1]
-                if messy.lower() in ("download data header", "header", "field"):   continue
+                if messy.lower() in ("download data header", "header", "field"):
+                    continue
                 rubric["column_mapping"][messy] = correct
         print(f"Column mappings learned: {len(rubric['column_mapping'])}")
-    else:  print("WARNING: Could not find 'Key' sheet")
+    else:
+        print("WARNING: Could not find 'Key' sheet")
 
-    # extract valid values from each green rule sheet
+    # --- Step 2: extract valid values from each green rule sheet ---
     rule_sheets = [s for s in sheet_names if s in NEEDED_SHEETS]
     print(f"Rule sheets used: {rule_sheets}")
 
     for sheet_name in rule_sheets:
-
-        # this sheet needs its own dedicated reader
-        if "Other Codes" in sheet_name:   _extract_other_codes(wb, sheet_name, rubric)
-
+        if "Other Codes" in sheet_name:
+            # this sheet needs its own dedicated reader
+            _extract_other_codes(wb, sheet_name, rubric)
+        elif "Tables Extractor" in sheet_name:
             # only read the NEW Linko pick list (ignore the Current/old scheme)
-        elif "Tables Extractor" in sheet_name: _extract_tables(wb, sheet_name, rubric)
-
+            _extract_tables(wb, sheet_name, rubric)
+        else:
             # all other green sheets use the generic single-column reader
-        else: _extract_valid_values(wb, sheet_name, rubric)
+            _extract_valid_values(wb, sheet_name, rubric)
+
     _build_patterns(rubric)
 
-    # trap Size and Units uses a conditional size-based rule, not a static list.
+    # Trap Size and Units uses a conditional size-based rule, not a static list.
+    # Adding it here (as []) tells the validator to check it —
+    # _check_value catches it by field name before the empty-list logic runs.
     rubric["valid_values"]["Trap Size and Units"] = []
-    with open("output/rubric.json", "w") as f:    json.dump(rubric, f, indent=2)
+
+    with open("output/rubric.json", "w") as f:
+        json.dump(rubric, f, indent=2)
     print("Saved: output/rubric.json")
     return rubric
 
-# dedicated reader for the "Tables Extractor IDs, Type" sheet
+
+# --- Dedicated reader for the "Tables Extractor IDs, Type" sheet ---
+# This sheet has a "New Linko Pick Lists" section and a "Current Linko Pick Lists"
+# section. We only want the NEW one — the Current list is the old scheme being
+# phased out. We read everything ABOVE the "Current Linko Pick Lists" marker.
 def _extract_tables(wb, sheet_name, rubric):
-    df = wb.parse(sheet_name, dtype=str, header=None)
+    df = wb.parse(sheet_name, dtype=str, header=None, keep_default_na=False)
 
     # find the boundary row where the OLD (Current) section starts
     boundary = len(df)
@@ -81,28 +94,39 @@ def _extract_tables(wb, sheet_name, rubric):
             boundary = r
             break
 
-    # extractor IDs live in column 1 — keep only cells that look like "EX###"
+    # Extractor IDs live in column 1 — keep only cells that look like "EX###"
+    # (these are the NEW ranges: EX100 - EX110, EX120 - EX129, ... EX800 - EX830)
     ext_ids = []
     for r in range(boundary):
         cell = str(df.iloc[r, 1]).strip()
-        if re.match(r"^EX\s*\d", cell, re.IGNORECASE):   ext_ids.append(cell)
-    if ext_ids:  rubric["valid_values"]["Extractor ID"] = sorted(set(ext_ids))
+        if re.match(r"^EX\s*\d", cell, re.IGNORECASE):
+            ext_ids.append(cell)
+    if ext_ids:
+        rubric["valid_values"]["Extractor ID"] = sorted(set(ext_ids))
 
-    # extractor Types live in column 7 of the NEW section — only ABOVE-FLOOR / IN-FLOOR / OUTDOOR
+    # Extractor Types live in column 7 of the NEW section — only ABOVE-FLOOR / IN-FLOOR / OUTDOOR
     ext_types = []
     if df.shape[1] > 7:
         for r in range(boundary):
             cell = str(df.iloc[r, 7]).strip()
-            if cell in ("", "nan"):  continue
+            if cell in ("", "nan"):
+                continue
             cl = cell.lower()
-            if "extractor type" in cl or "description" in cl or "location" in cl:  continue
-            if len(cell) > 30:    continue
+            if "extractor type" in cl or "description" in cl or "location" in cl:
+                continue
+            if len(cell) > 30:
+                continue
             ext_types.append(cell)
-    if ext_types:  rubric["valid_values"]["Extractor Type"] = sorted(set(ext_types))
+    if ext_types:
+        rubric["valid_values"]["Extractor Type"] = sorted(set(ext_types))
 
-# dedicated reader for the 6Other Codes sheet
+
+# --- Dedicated reader for the 6Other Codes sheet ---
+# This sheet has multiple side-by-side tables. Each "New ___" column header
+# is the valid list for its field. TrunkLine/ReceivingPlant are a sub-table
+# stacked in cols 0/1 and are handled separately.
 def _extract_other_codes(wb, sheet_name, rubric):
-    df = wb.parse(sheet_name, dtype=str, header=None)
+    df = wb.parse(sheet_name, dtype=str, header=None, keep_default_na=False)
 
     # find the row that contains the "New ___" column headers
     header_row = 0
@@ -116,21 +140,29 @@ def _extract_other_codes(wb, sheet_name, rubric):
     # read each "New ___" column — values below the header are the valid list
     for col_idx in range(df.shape[1]):
         label = str(df.iloc[header_row, col_idx]).strip().lower()
-        if label not in OTHER_CODES_COLUMNS:   continue
+        if label not in OTHER_CODES_COLUMNS:
+            continue
         field = OTHER_CODES_COLUMNS[label]
         vals = []
         for r in range(header_row + 1, len(df)):
             cell = str(df.iloc[r, col_idx]).strip()
-            if cell in ("", "nan"):  continue
-            if len(cell) > 40:  continue
-            if cell.lower().startswith("delete entry"):   continue
+            if cell in ("", "nan"):
+                continue
+            if len(cell) > 40:          # skip long description sentences
+                continue
+            if cell.lower().startswith("delete entry"):
+                continue
             vals.append(cell)
-        if vals:   rubric["valid_values"][field] = sorted(set(vals))
+        if vals:
+            rubric["valid_values"][field] = sorted(set(vals))
 
-    # trunkLine rule: "delete entry and leave field BLANK"
+    # TrunkLine rule: "delete entry and leave field BLANK"
+    # Any non-blank value is wrong, so we store [] (empty list).
+    # The validator will flag every non-blank TrunkLine automatically.
     rubric["valid_values"]["TrunkLine"] = []
 
-    # scan for the "new receiving plant" sub-header, then collect values below it.
+    # ReceivingPlant is a sub-table in cols 0/1 (rows 5-8).
+    # Scan for the "new receiving plant" sub-header, then collect values below it.
     receiving_vals = []
     for col_idx in range(df.shape[1]):
         for row_idx in range(len(df)):
@@ -138,21 +170,30 @@ def _extract_other_codes(wb, sheet_name, rubric):
             if cell == "new receiving plant":
                 for r in range(row_idx + 1, min(row_idx + 10, len(df))):
                     val = str(df.iloc[r, col_idx]).strip()
-                    if val in ("", "nan"):  continue
-                    if val.lower().startswith("delete entry"):   continue
-                    if len(val) > 60: continue
+                    if val in ("", "nan"):
+                        continue
+                    if val.lower().startswith("delete entry"):
+                        continue
+                    if len(val) > 60:
+                        continue
                     receiving_vals.append(val)
                 break
-    if receiving_vals:   rubric["valid_values"]["ReceivingPlant"] = sorted(set(receiving_vals))
+    if receiving_vals:
+        rubric["valid_values"]["ReceivingPlant"] = sorted(set(receiving_vals))
 
-# generic single-column reader for Tables / FS - Trap Size / FS - Cleaning Frequency
+
+# --- Generic single-column reader for Tables / FS - Trap Size / FS - Cleaning Frequency ---
+# Scans every cell; when a cell matches a known field name, reads values straight down
+# that column. Does NOT touch fields owned by the 6Other Codes sheet.
 def _extract_valid_values(wb, sheet_name, rubric):
-    try: df = wb.parse(sheet_name, dtype=str, header=None)
+    try:
+        df = wb.parse(sheet_name, dtype=str, header=None, keep_default_na=False)
     except Exception as e:
         print(f"   WARNING: Could not read sheet '{sheet_name}': {e}")
         return
 
     known_fields = list(rubric["column_mapping"].values())
+
     for row_idx, row in df.iterrows():
         for col_idx, cell in enumerate(row):
             cell_str = str(cell).strip()
@@ -165,19 +206,25 @@ def _extract_valid_values(wb, sheet_name, rubric):
                     existing = rubric["valid_values"].get(matched_field, [])
                     rubric["valid_values"][matched_field] = sorted(set(existing + values))
 
+
 def _find_sheet(wb, partial_name):
     for name in wb.sheet_names:
         if partial_name.lower() in name.lower():
-            try:  return wb.parse(name, dtype=str)
-            except Exception as e:  print(f"   WARNING: Could not read sheet '{name}': {e}")
+            try:
+                return wb.parse(name, dtype=str, keep_default_na=False)
+            except Exception as e:
+                print(f"   WARNING: Could not read sheet '{name}': {e}")
     return None
+
 
 def _match_field_name(cell_str, known_fields):
     cell_norm = re.sub(r"[^a-z0-9 ]", "", cell_str.lower()).strip()
     for field in known_fields:
         field_norm = re.sub(r"[^a-z0-9 ]", "", field.lower()).strip()
-        if field_norm and field_norm in cell_norm:    return field
+        if field_norm and field_norm in cell_norm:
+            return field
     return None
+
 
 def _collect_column_values(df, start_row, col_idx):
     values = []
@@ -196,25 +243,37 @@ def _collect_column_values(df, start_row, col_idx):
     ]
     for row_idx in range(start_row + 1, min(start_row + 50, len(df))):
         cell = str(df.iloc[row_idx, col_idx]).strip()
-        if cell in ("", "nan"):  continue
-        if len(cell) > 40: continue
-        if cell.isdigit():  continue
+        if cell in ("", "nan"):
+            continue
+        if len(cell) > 40:
+            continue
+        if cell.isdigit():
+            continue
         cl = cell.lower()
-        if cl in field_names:  continue
-        if any(j in cl for j in junk_words):  continue
+        if cl in field_names:
+            continue
+        if any(j in cl for j in junk_words):
+            continue
         values.append(cell)
     return values
 
+
 def _build_patterns(rubric):
     for field, values in rubric["valid_values"].items():
-        if not values: continue
+        if not values:
+            continue
         p = _infer_pattern(field, values)
-        if p: rubric["value_patterns"][field] = p
+        if p:
+            rubric["value_patterns"][field] = p
+
 
 def _infer_pattern(field, values):
     clean = [str(v).strip() for v in values if str(v).strip()]
-    if not clean:  return None
-    if "extractor id" in field.lower(): return r"^EX\s*[-]?\s*\d+"
+    if not clean:
+        return None
+    if "extractor id" in field.lower():
+        return r"^EX\s*[-]?\s*\d+"
     escaped = [re.escape(v) for v in clean if len(v) <= 40]
-    if escaped: return r"^(" + "|".join(escaped) + r")$"
+    if escaped:
+        return r"^(" + "|".join(escaped) + r")$"
     return None

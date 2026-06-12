@@ -83,11 +83,12 @@ def _issue_rows(changes, field_order):
             "status":   chg["status"],
             "note":     chg.get("note", ""),
         })
-    # sort by facility, then rubric field order
+    # group like values together: rubric field order, then the value itself
+    # (so all "Aqua Indiana" rows sit together, all blanks together), then facility
     def sk(r):
         try: fi = field_order.index(r["field"])
         except ValueError: fi = 99
-        return (r["facility"].lower(), fi)
+        return (fi, str(r["current"]).lower(), r["facility"].lower())
     rows.sort(key=sk)
     return rows
 
@@ -189,7 +190,8 @@ def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
               fill=fill, bold=True)
         _cell(ws, row, COL_CUR,    r["current"], fill=fill, color=RED)
         nmr = (r["changed"] == "Needs Manual Review")
-        _cell(ws, row, COL_CHG,    r["changed"], fill=fill,
+        chg_text = "May Need Manual Review" if (is_one and nmr) else r["changed"]
+        _cell(ws, row, COL_CHG,    chg_text, fill=fill,
               color=(RED if r["status"] == "flagged" else "000000"),
               italic=nmr)
         _cell(ws, row, COL_REASON, _reason(r, is_one), fill=fill, italic=True)
@@ -260,7 +262,7 @@ def build_report(changes_path="output/all_changes.json",
         items = [(k, c) for k, c in items if k in only_reports]
 
     for idx, (key, cfg) in enumerate(items):
-        row = _write_block(ws, row, cfg, by_file.get(key, []), write_headers=(idx == 0))
+        row = _write_block(ws, row, cfg, by_file.get(key, []), write_headers=(idx == 0), recurring=recurring)
         row += 1  # blank separator
 
     ws.column_dimensions["A"].width = 16

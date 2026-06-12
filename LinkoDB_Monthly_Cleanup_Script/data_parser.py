@@ -2,18 +2,33 @@ import re
 import json
 import pandas as pd
 
+
+# choose the right reader: .xls (old Excel 97-2003) needs xlrd, .xlsx/.xlsm use openpyxl
+def _open_excel(filepath):
+    ext = filepath.lower().rsplit(".", 1)[-1]
+    if ext == "xls":
+        try:
+            import xlrd  # noqa: F401
+        except ImportError:
+            raise SystemExit(
+                "\nThis file is an old .xls (Excel 97-2003) file, which needs the 'xlrd' "
+                "library.\nFix it one of two ways:\n"
+                "   1) In Excel, open it and 'Save As' -> Excel Workbook (.xlsx), or\n"
+                "   2) Install the reader:  pip install xlrd\n"
+            )
+        return pd.ExcelFile(filepath, engine="xlrd")
+    # .xlsx and .xlsm
+    return pd.ExcelFile(filepath, engine="openpyxl")
+
+
 def parse_data(filepath, rubric):
     print(f"\nReading data from: {filepath}")
-    fp = filepath.lower()
-    if fp.endswith(".xlsx"): engine = 'openpyxl'
-    elif fp.endswith(".xls"): engine = 'xlrd'
-    else: raise ValueError(f"Unrecognized file type: {filepath}")
-    wb = pd.ExcelFile(filepath, engine=engine)
+    wb = _open_excel(filepath)
     sheet_name  = wb.sheet_names[0]
     print(f"Sheet: {sheet_name}")
 
     # read everything as raw text, no header assumed yet
-    raw_df = wb.parse(sheet_name, dtype=str, header=None)
+    raw_df = wb.parse(sheet_name, dtype=str, header=None, keep_default_na=False)
     print(f"Raw shape: {raw_df.shape}")
 
     # detect which file type this is
@@ -222,6 +237,7 @@ def _parse_facility_string(raw_string):
         parts = rest.split("   -   ", 1)
         facility_name = parts[0].strip() if parts else rest
         address       = parts[1].strip() if len(parts) > 1 else None
+
         return { "PermitID": permit_id, "FacilityName": facility_name, "Address": address }
 
     # couldn't parse it — just return the raw string
@@ -368,6 +384,7 @@ def _match_by_values(values, value_patterns):
     sample = [v.strip() for v in values if v.strip() not in ("", "nan")][:20]
 
     if not sample:  return None
+
     best_field = None
     best_score = 0.0
 
