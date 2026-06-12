@@ -143,7 +143,7 @@ def _reason(r, is_oneoff):
         return "Value doesn't match the expected format."
     if "is not a valid value for" in note:
         return "Not a valid rubric value and doesn't recur — manual review."
-    return "May need manual review."
+    return "Needs manual review."
 
 
 def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
