@@ -1,63 +1,13 @@
 [
   {
     "source_file": "permit_list",
-    "facility": "07 Pub",
-    "permit_no": "2739",
-    "field": "Extractor Type",
-    "original": "SIDEWAYS-FLOOR",
-    "cleaned_value": "SIDEWAYS-FLOOR",
-    "status": "flagged",
-    "note": "'SIDEWAYS-FLOOR' is not a valid value for 'Extractor Type' \u2014 review manually"
-  },
-  {
-    "source_file": "permit_list",
-    "facility": "07 Pub",
-    "permit_no": "2739",
-    "field": "Trap Size and Units",
-    "original": "35 gal",
-    "cleaned_value": "35 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 35 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '35 gpm'"
-  },
-  {
-    "source_file": "permit_list",
-    "facility": "19th Hole",
-    "permit_no": "2697",
-    "field": "Extractor ID",
-    "original": "EX999",
-    "cleaned_value": "EX999",
-    "status": "flagged",
-    "note": "'EX999' (EX999) is not in any valid range (EX100\u2013EX830) \u2014 review manually"
-  },
-  {
-    "source_file": "permit_list",
-    "facility": "19th Hole",
-    "permit_no": "2697",
-    "field": "Extractor Type",
-    "original": "in-floor",
-    "cleaned_value": "IN-FLOOR",
-    "status": "fixed",
-    "note": "fixed casing: 'in-floor' \u2192 'IN-FLOOR'"
-  },
-  {
-    "source_file": "permit_list",
-    "facility": "19th Hole",
-    "permit_no": "2697",
-    "field": "Cleaning Frequency",
-    "original": "monthly",
-    "cleaned_value": "Monthly",
-    "status": "fixed",
-    "note": "fixed casing: 'monthly' \u2192 'Monthly'"
-  },
-  {
-    "source_file": "permit_list",
     "facility": "American Kolache",
     "permit_no": "18443",
     "field": "Extractor ID",
     "original": "001",
-    "cleaned_value": "001",
-    "status": "flagged",
-    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "migrated old grease trap ID '001' \u2192 'EX200'"
   },
   {
     "source_file": "permit_list",
@@ -185,9 +135,9 @@
     "permit_no": "18449",
     "field": "Extractor ID",
     "original": "EX 002",
-    "cleaned_value": "EX 002",
-    "status": "flagged",
-    "note": "'EX 002' is an old-scheme ID (EX002) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+    "cleaned_value": "EX201",
+    "status": "fixed",
+    "note": "migrated old grease trap ID 'EX 002' \u2192 'EX201'"
   },
   {
     "source_file": "permit_list",
@@ -205,9 +155,9 @@
     "permit_no": "3027",
     "field": "Trap Size and Units",
     "original": "20 gal",
-    "cleaned_value": "20 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+    "cleaned_value": "20 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '20 gal' \u2192 '20 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -225,9 +175,9 @@
     "permit_no": "4558",
     "field": "Trap Size and Units",
     "original": "20 gal",
-    "cleaned_value": "20 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+    "cleaned_value": "20 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '20 gal' \u2192 '20 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -245,9 +195,9 @@
     "permit_no": "18479",
     "field": "Trap Size and Units",
     "original": "50 gal",
-    "cleaned_value": "50 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 50 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '50 gpm'"
+    "cleaned_value": "50 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '50 gal' \u2192 '50 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -285,9 +235,9 @@
     "permit_no": "18463",
     "field": "Cleaning Frequency",
     "original": "Twice Monthly",
-    "cleaned_value": "Twice Monthly",
-    "status": "flagged",
-    "note": "'Twice Monthly' is not a valid value for 'Cleaning Frequency' \u2014 review manually"
+    "cleaned_value": "Every 2 Weeks",
+    "status": "fixed",
+    "note": "mapped 'Twice Monthly' \u2192 'Every 2 Weeks'"
   },
   {
     "source_file": "permit_list",
@@ -295,9 +245,9 @@
     "permit_no": "18463",
     "field": "Trap Size and Units",
     "original": "20 gal",
-    "cleaned_value": "20 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+    "cleaned_value": "20 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '20 gal' \u2192 '20 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -335,9 +285,9 @@
     "permit_no": "18486",
     "field": "Trap Size and Units",
     "original": "40 gal",
-    "cleaned_value": "40 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 40 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '40 gpm'"
+    "cleaned_value": "40 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '40 gal' \u2192 '40 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -375,9 +325,9 @@
     "permit_no": "18450",
     "field": "Extractor ID",
     "original": "001",
-    "cleaned_value": "001",
-    "status": "flagged",
-    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "migrated old grease trap ID '001' \u2192 'EX200'"
   },
   {
     "source_file": "permit_list",
@@ -415,9 +365,9 @@
     "permit_no": "10195",
     "field": "Extractor ID",
     "original": "001",
-    "cleaned_value": "001",
-    "status": "flagged",
-    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+    "cleaned_value": "EX200",
+    "status": "fixed",
+    "note": "migrated old grease trap ID '001' \u2192 'EX200'"
   },
   {
     "source_file": "permit_list",
@@ -425,9 +375,9 @@
     "permit_no": "6546",
     "field": "Trap Size and Units",
     "original": "25 gal",
-    "cleaned_value": "25 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 25 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '25 gpm'"
+    "cleaned_value": "25 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '25 gal' \u2192 '25 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -465,9 +415,9 @@
     "permit_no": "17421",
     "field": "Trap Size and Units",
     "original": "20 gal",
-    "cleaned_value": "20 gal",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+    "cleaned_value": "20 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '20 gal' \u2192 '20 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -485,9 +435,9 @@
     "permit_no": "5796",
     "field": "Trap Size and Units",
     "original": "20 lbs",
-    "cleaned_value": "20 lbs",
-    "status": "flagged",
-    "note": "unit should be 'gpm' for size 20 (rule: \u226499 \u2192 gpm, \u2265100 \u2192 gal) \u2014 suggested: '20 gpm'"
+    "cleaned_value": "20 gpm",
+    "status": "fixed",
+    "note": "corrected unit by rule (\u226499 \u2192 gpm, \u2265100 \u2192 gal): '20 lbs' \u2192 '20 gpm'"
   },
   {
     "source_file": "permit_list",
@@ -535,9 +485,9 @@
     "permit_no": "18404",
     "field": "Extractor ID",
     "original": "001",
-    "cleaned_value": "001",
-    "status": "flagged",
-    "note": "'001' is an old-scheme ID (EX001) \u2014 needs a new EX1xx\u2013EX8xx ID (review manually)"
+    "cleaned_value": "EX120",
+    "status": "fixed",
+    "note": "migrated old grease interceptor ID '001' \u2192 'EX120'"
   },
   {
     "source_file": "permit_list",
