@@ -62,8 +62,8 @@
     ],
     "EventTypeAbbrv": [
       "Complaint/Investigation",
-      "Dye Trace CMH",
       "Dye Trace Extractor",
+      "Dye Trace Monitoring Point",
       "FOG CoOp Eligible",
       "Informational",
       "Inspection FOG Extractor",
@@ -101,7 +101,7 @@
     "ClassCode": "^(Auto|Commissary|Dentists|Distillery\\ \\(No\\ food\\)|Dry\\ Cleaner|Food\\ Service|Funeral\\ Home|Institutional|Laundromat|Non\\ FSE|Residential|Salon\\ \\(No\\ food\\)|Waste\\ Hauler)$",
     "SecondClass": "^(FF|FP|FS|MB|NC)$",
     "MapCategory": "^(Mobile\\ Business|Multi\\-Tenant|Stand\\ Alone\\ Building)$",
-    "EventTypeAbbrv": "^(Complaint/Investigation|Dye\\ Trace\\ CMH|Dye\\ Trace\\ Extractor|FOG\\ CoOp\\ Eligible|Informational|Inspection\\ FOG\\ Extractor|Inspection\\ Monitoring\\ Point|Inspection\\ Oil/Sand\\ Separator|Outreach|Sign\\ Off\\ DOH|Sludge\\ Judge|Water\\ Exempt)$",
+    "EventTypeAbbrv": "^(Complaint/Investigation|Dye\\ Trace\\ Extractor|Dye\\ Trace\\ Monitoring\\ Point|FOG\\ CoOp\\ Eligible|Informational|Inspection\\ FOG\\ Extractor|Inspection\\ Monitoring\\ Point|Inspection\\ Oil/Sand\\ Separator|Outreach|Sign\\ Off\\ DOH|Sludge\\ Judge|Water\\ Exempt)$",
     "ReceivingPlant": "^(Fort\\ Wayne\\ WPC\\ Plant)$",
     "Cleaning Frequency": "^(Annual|Batch|Blank|Daily|Every\\ 2\\ Months|Every\\ 2\\ Weeks|Every\\ 5\\ Years|Monthly|Quarterly|SemiAnnual|Three\\ Times\\ Weekly|Twice\\ Weekly|Weekly)$"
   }
