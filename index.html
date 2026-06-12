@@ -951,7 +951,7 @@ function buildReportBlob(changes, processed){
     else issues.forEach((it,i)=>{
       const isOne = (it.status==="flagged" && oneoffSet.has(it.field+"||"+it.cur));
       const fill = it.status==="fixed" ? GREEN : (isOne ? ONEOFF : YELLOW);
-      const nmr = it.chg==="May Need Manual Review";
+      const nmr = it.chg==="Needs Manual Review";
       const rsn = reasonText({status:it.status, note:it.note, original:it.cur}, isOne);
       rows.push([
         cell(i===0?"Issues Found:":"",{bold:i===0,color:BLUE}),
