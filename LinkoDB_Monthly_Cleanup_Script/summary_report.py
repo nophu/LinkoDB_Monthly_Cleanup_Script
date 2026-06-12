@@ -143,7 +143,7 @@ def _reason(r, is_oneoff):
         return "Value doesn't match the expected format."
     if "is not a valid value for" in note:
         return "Not a valid rubric value and doesn't recur — manual review."
-    return "Needs manual review."
+    return "May need manual review."
 
 
 def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
@@ -188,7 +188,7 @@ def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
         _cell(ws, row, COL_FIELD,  FIELD_DISPLAY.get(r["field"], r["field"]),
               fill=fill, bold=True)
         _cell(ws, row, COL_CUR,    r["current"], fill=fill, color=RED)
-        nmr = (r["changed"] == "May Need Manual Review")
+        nmr = (r["changed"] == "Needs Manual Review")
         _cell(ws, row, COL_CHG,    r["changed"], fill=fill,
               color=(RED if r["status"] == "flagged" else "000000"),
               italic=nmr)
