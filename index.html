@@ -79,6 +79,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
      font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;position:sticky;top:0}
   td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
   tr.fixed td{background:var(--green-soft)} tr.review td{background:var(--amber-soft)} tr.oneoff td{background:var(--oneoff-soft)}
+  td.reason{font-size:.82rem;color:var(--muted);font-style:italic;max-width:320px}
   .pill{font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
   .pill.fixed{background:var(--green);color:#fff} .pill.review{background:var(--amber);color:#fff} .pill.oneoff{background:var(--oneoff);color:#fff}
   .tablewrap{max-height:520px;overflow:auto;border-radius:12px}
@@ -805,6 +806,32 @@ function category(c, oneoff){
 }
 const PILL_LABEL = {fixed:"AUTO-FIXED", review:"REVIEW", oneoff:"ONE-OFF"};
 
+// Plain-language justification for each change (mirrors summary_report._reason).
+function reasonText(c, isOneoff){
+  const note = c.note || "";
+  if(c.status==="fixed"){
+    if(note.includes("fixed casing"))        return "Casing corrected to the rubric's accepted spelling.";
+    if(note.includes("added EX prefix"))     return "Added the required 'EX' prefix; value was otherwise valid.";
+    if(note.includes("migrated old")){
+      const m = note.match(/migrated old (.+?) ID/);
+      return `Old ID mapped to the new series — description identifies a ${m?m[1]:"type"}.`;
+    }
+    if(note.includes("mapped '"))            return "Program equivalent of a valid rubric value.";
+    if(note.includes("corrected unit by rule")) return "Unit set by rubric rule (size ≤99 → gpm, ≥100 → gal).";
+    return "Auto-corrected to a valid rubric value.";
+  }
+  const orig = String(c.original).toLowerCase();
+  if(ONEOFF_EXCEPTIONS.some(p=>orig.includes(p))) return "Disposal station — treated as a one-off per program guidance.";
+  if(isOneoff)                                    return "Recurs in the data but never appears in the rubric — one-off to decide on.";
+  if(note.includes("old-scheme ID"))              return "Old-scheme ID, but the description names no type — assign a new EX number manually.";
+  if(note.includes("is not in any valid range"))  return "ID number is outside every valid EX range.";
+  if(note.includes("is not a standard extractor ID")) return "Not a standard extractor-ID format.";
+  if(note.includes("should be deleted")||note.includes("leave this field blank")) return "Rubric requires this field to be blank.";
+  if(note.includes("expected format")||note.includes("not a valid numeric")) return "Value doesn't match the expected format.";
+  if(note.includes("is not a valid value for"))   return "Not a valid rubric value and doesn't recur — manual review.";
+  return "Needs manual review.";
+}
+
 function showResults(changes, processed, skipped){
   const oneoffSet = oneoffKeys(changes);
   const fixed  = changes.filter(c=>category(c,oneoffSet)==="fixed").length;
@@ -823,7 +850,7 @@ function showResults(changes, processed, skipped){
     if(dedup.has(k)) continue; dedup.add(k);
     rows.push(c);
   }
-  let html = `<thead><tr><th>Facility</th><th>Permit</th><th>Field</th><th>Current</th><th>Changed To</th><th>Result</th></tr></thead><tbody>`;
+  let html = `<thead><tr><th>Facility</th><th>Permit</th><th>Field</th><th>Current</th><th>Changed To</th><th>Reason</th><th>Result</th></tr></thead><tbody>`;
   for(const c of rows){
     const disp = L.FIELD_DISPLAY[c.field] || c.field;
     const sug = suggestion(c);
@@ -831,6 +858,7 @@ function showResults(changes, processed, skipped){
     html += `<tr class="${cat}">
       <td>${esc(c.facility)}</td><td>${esc(c.permit_no)}</td><td>${esc(disp)}</td>
       <td class="cur">${esc(c.original)}</td><td>${esc(sug)}</td>
+      <td class="reason">${esc(reasonText(c, cat==="oneoff"))}</td>
       <td><span class="pill ${cat}">${PILL_LABEL[cat]}</span></td></tr>`;
   }
   html += "</tbody>";
@@ -859,14 +887,14 @@ function buildReportBlob(changes, processed){
   const blank = ()=>cell("");
 
   rows.push([{v:"Linko DB Monthly Quality Check — "+new Date().toLocaleDateString(),t:"s",s:{font:fontHdr}}]);
-  merges.push({s:{r:0,c:0},e:{r:0,c:5}});
+  merges.push({s:{r:0,c:0},e:{r:0,c:6}});
   rows.push([cell("Color Key:",{bold:true})]);
   rows.push([blank(), cell("Green",{bold:true,fill:GREEN,h:"center"}), cell("Auto-fixed — apply as-is in Linko."),blank(),blank(),blank()]);
-  merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
+  merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:6}});
   rows.push([blank(), cell("Yellow",{bold:true,fill:YELLOW,h:"center"}), cell("Needs review — no auto-fix and not a one-off (e.g. old ID needing a new number)."),blank(),blank(),blank()]);
-  merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
+  merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:6}});
   rows.push([blank(), cell("Blue",{bold:true,fill:ONEOFF,h:"center"}), cell("One-off — recurs in the data but never in the rubric (e.g. Quasar), plus HSW/Septic stations."),blank(),blank(),blank()]);
-  merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:5}});
+  merges.push({s:{r:rows.length-1,c:2},e:{r:rows.length-1,c:6}});
   rows.push([]);
 
   const order = (processed&&processed.length)?processed:Object.keys(L.REPORT_CONFIG);
@@ -876,7 +904,7 @@ function buildReportBlob(changes, processed){
     const head = [cell("Report Name:",{bold:true,color:BLUE}), cell(cfg.name,{bold:true})];
     if(first){ head.push(cell("Permit No",{bold:true,fill:GREY,h:"center"}),
         cell("Field",{bold:true,fill:GREY,h:"center"}), cell("Current",{bold:true,fill:GREY,h:"center"}),
-        cell("Changed To",{bold:true,fill:GREY,h:"center"})); first=false; }
+        cell("Changed To",{bold:true,fill:GREY,h:"center"}), cell("Reason",{bold:true,fill:GREY,h:"center"})); first=false; }
     rows.push(head);
     rows.push([cell("Fields Checked:",{bold:true,color:BLUE}),
                cell(cfg.fields.map(f=>L.FIELD_DISPLAY[f]||f).join(",  "))]);
@@ -884,29 +912,31 @@ function buildReportBlob(changes, processed){
     const ch = byKey[key]||[]; const seen=new Set(); const issues=[];
     for(const c of ch){ const k=c.facility+"|"+c.permit_no+"|"+c.field+"|"+c.original;
       if(seen.has(k))continue; seen.add(k);
-      issues.push({fac:c.facility,permit:c.permit_no,field:c.field,cur:c.original,chg:suggestion(c),status:c.status}); }
+      issues.push({fac:c.facility,permit:c.permit_no,field:c.field,cur:c.original,chg:suggestion(c),status:c.status,note:c.note}); }
     issues.sort((a,b)=> a.fac.toLowerCase()<b.fac.toLowerCase()?-1:1);
     if(!issues.length){ rows.push([cell("Issues Found:",{bold:true,color:BLUE}), cell("None")]); }
     else issues.forEach((it,i)=>{
       const isOne = (it.status==="flagged" && oneoffSet.has(it.field+"||"+it.cur));
       const fill = it.status==="fixed" ? GREEN : (isOne ? ONEOFF : YELLOW);
       const nmr = it.chg==="Needs Manual Review";
+      const rsn = reasonText({status:it.status, note:it.note, original:it.cur}, isOne);
       rows.push([
         cell(i===0?"Issues Found:":"",{bold:i===0,color:BLUE}),
         cell(it.fac,{fill}), cell(it.permit,{fill,h:"center"}),
         cell(L.FIELD_DISPLAY[it.field]||it.field,{fill,bold:true}),
         cell(it.cur,{fill,color:RED}),
         cell(it.chg,{fill,color:it.status==="flagged"?RED:"FF000000",italic:nmr}),
+        cell(rsn,{fill,italic:true}),
       ]);
     });
     rows.push([]);
   }
 
-  const ws2 = {}; const range={s:{r:0,c:0},e:{r:rows.length-1,c:5}};
+  const ws2 = {}; const range={s:{r:0,c:0},e:{r:rows.length-1,c:6}};
   rows.forEach((r,ri)=> r.forEach((c,ci)=>{ if(c&&c.v!==undefined){ ws2[XLSX.utils.encode_cell({r:ri,c:ci})]=c; }}));
   ws2["!ref"]=XLSX.utils.encode_range(range);
   ws2["!merges"]=merges;
-  ws2["!cols"]=[{wch:16},{wch:40},{wch:11},{wch:20},{wch:30},{wch:26}];
+  ws2["!cols"]=[{wch:16},{wch:40},{wch:11},{wch:20},{wch:30},{wch:26},{wch:52}];
   const wbOut = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wbOut, ws2, "Quality Check");
   const arr = XLSX.write(wbOut, {bookType:"xlsx", type:"array"});

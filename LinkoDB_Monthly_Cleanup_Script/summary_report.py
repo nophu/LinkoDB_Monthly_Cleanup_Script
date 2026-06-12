@@ -1,6 +1,6 @@
 import json, os, re
 from datetime import date
-from collections import defaultdict
+from collections import defaultdict, Counter
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -50,7 +50,7 @@ def _cell(ws, row, col, value, bold=False, color="000000", fill=None,
 
 
 # columns: A=label  B=facility  C=permit  D=field  E=current  F=changed to
-COL_LABEL, COL_FAC, COL_PERMIT, COL_FIELD, COL_CUR, COL_CHG = 1, 2, 3, 4, 5, 6
+COL_LABEL, COL_FAC, COL_PERMIT, COL_FIELD, COL_CUR, COL_CHG, COL_REASON = 1, 2, 3, 4, 5, 6, 7
 
 
 def _suggestion(change):
@@ -108,6 +108,40 @@ def _is_oneoff(r, recurring):
             and (r["field"], r["current"]) in recurring)
 
 
+# Plain-language justification for every change, derived from the validator's note
+# plus the one-off classification. Shown in the report's "Reason" column.
+def _reason(r, is_oneoff):
+    note = r.get("note", "")
+    if r["status"] == "fixed":
+        if "fixed casing" in note:          return "Casing corrected to the rubric's accepted spelling."
+        if "added EX prefix" in note:       return "Added the required 'EX' prefix; value was otherwise valid."
+        if "migrated old" in note:
+            m = re.search(r"migrated old (.+?) ID", note)
+            t = m.group(1) if m else "type"
+            return f"Old ID mapped to the new series — description identifies a {t}."
+        if "mapped '" in note:              return "Program equivalent of a valid rubric value."
+        if "corrected unit by rule" in note:return "Unit set by rubric rule (size ≤99 → gpm, ≥100 → gal)."
+        return "Auto-corrected to a valid rubric value."
+    # flagged
+    if any(p in str(r["current"]).lower() for p in ONEOFF_EXCEPTIONS):
+        return "Disposal station — treated as a one-off per program guidance."
+    if is_oneoff:
+        return "Recurs in the data but never appears in the rubric — one-off to decide on."
+    if "old-scheme ID" in note:
+        return "Old-scheme ID, but the description names no type — assign a new EX number manually."
+    if "is not in any valid range" in note:
+        return "ID number is outside every valid EX range."
+    if "is not a standard extractor ID" in note:
+        return "Not a standard extractor-ID format."
+    if "should be deleted" in note or "leave this field blank" in note:
+        return "Rubric requires this field to be blank."
+    if "expected format" in note or "not a valid numeric" in note:
+        return "Value doesn't match the expected format."
+    if "is not a valid value for" in note:
+        return "Not a valid rubric value and doesn't recur — manual review."
+    return "Needs manual review."
+
+
 def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
     fields = cfg["fields"]
 
@@ -119,6 +153,7 @@ def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
         _cell(ws, row, COL_FIELD,  "Field",      bold=True, halign="center", fill=GREY)
         _cell(ws, row, COL_CUR,    "Current",    bold=True, halign="center", fill=GREY)
         _cell(ws, row, COL_CHG,    "Changed To", bold=True, halign="center", fill=GREY)
+        _cell(ws, row, COL_REASON, "Reason",     bold=True, halign="center", fill=GREY)
     ws.row_dimensions[row].height = 18
     row += 1
 
@@ -138,9 +173,10 @@ def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
         return row + 1
 
     for i, r in enumerate(rows):
-        if r["status"] == "fixed":        fill = GREEN
-        elif _is_oneoff(r, recurring):    fill = ONEOFF   # recurring value missing from rubric
-        else:                             fill = YELLOW   # suggested fix OR unique exception
+        is_one = _is_oneoff(r, recurring)
+        if r["status"] == "fixed":  fill = GREEN
+        elif is_one:                fill = ONEOFF   # recurring value missing from rubric
+        else:                       fill = YELLOW   # can't guess, not a one-off
         _cell(ws, row, COL_LABEL, "Issues Found:" if i == 0 else "",
               bold=(i == 0), color=BLUE)
         _cell(ws, row, COL_FAC,    r["facility"], fill=fill)
@@ -152,6 +188,7 @@ def _write_block(ws, row, cfg, changes, write_headers, recurring=frozenset()):
         _cell(ws, row, COL_CHG,    r["changed"], fill=fill,
               color=(RED if r["status"] == "flagged" else "000000"),
               italic=nmr)
+        _cell(ws, row, COL_REASON, _reason(r, is_one), fill=fill, italic=True)
         ws.row_dimensions[row].height = 15
         row += 1
 
@@ -181,7 +218,7 @@ def build_report(changes_path="output/all_changes.json",
     ws = wb.active
     ws.title = f"Quality Check {date.today().strftime('%b %Y')}"
 
-    ws.merge_cells("A1:F1")
+    ws.merge_cells("A1:G1")
     t = ws["A1"]
     t.value = f"Linko DB Monthly Quality Check  —  {date.today().strftime('%B %d, %Y')}"
     t.font = _f(13, bold=True)
@@ -194,21 +231,21 @@ def build_report(changes_path="output/all_changes.json",
     row += 1
 
     _cell(ws, row, COL_FAC, "Green", bold=True, fill=GREEN, halign="center")
-    ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_CHG)
+    ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_REASON)
     _cell(ws, row, COL_PERMIT,
           "Auto-fixed — the tool applied a clear correction (casing, EX prefix, trap unit). Apply it as-is in Linko.")
     ws.row_dimensions[row].height = 15
     row += 1
 
     _cell(ws, row, COL_FAC, "Yellow", bold=True, fill=YELLOW, halign="center")
-    ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_CHG)
+    ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_REASON)
     _cell(ws, row, COL_PERMIT,
           "Needs review — no auto-fix and not a one-off (e.g. old ID needing a new number).")
     ws.row_dimensions[row].height = 15
     row += 1
 
     _cell(ws, row, COL_FAC, "Blue", bold=True, fill=ONEOFF, halign="center")
-    ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_CHG)
+    ws.merge_cells(start_row=row, start_column=COL_PERMIT, end_row=row, end_column=COL_REASON)
     _cell(ws, row, COL_PERMIT,
           "One-off — recurs in the data but never in the rubric (e.g. Quasar), plus HSW/Septic stations.")
     ws.row_dimensions[row].height = 15
@@ -228,6 +265,7 @@ def build_report(changes_path="output/all_changes.json",
     ws.column_dimensions["D"].width = 20
     ws.column_dimensions["E"].width = 30
     ws.column_dimensions["F"].width = 26
+    ws.column_dimensions["G"].width = 52
     ws.freeze_panes = "B2"
 
     wb.save(output_path)
