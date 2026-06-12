@@ -1,30 +1,16 @@
-import os
-import easyocr
-import pandas as pd
+# This is a sample Python script.
 
-# Initialize the reader (English language; set gpu=True if you have a graphics card)
-reader = easyocr.Reader(['en'], gpu=False)
+# Press Shift+F10 to execute it or replace it with your code.
+# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-image_folder = "screenshots_folder/"
-output_data = []
 
-# Loop through all screenshots in your directory
-for filename in os.listdir(image_folder):
-    if filename.endswith((".png", ".jpg", ".jpeg")):
-        image_path = os.path.join(image_folder, filename)
+def print_hi(name):
+    # Use a breakpoint in the code line below to debug your script.
+    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
-        # Read the text from the image
-        results = reader.readtext(image_path)
 
-        # Combine all extracted fragments into one text line, or map them out
-        extracted_text = " ".join([res[1] for res in results])
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    print_hi('PyCharm')
 
-        output_data.append({
-            "File Name": filename,
-            "Extracted Data": extracted_text
-        })
-
-# Export directly to an Excel sheet for easy study management
-df = pd.DataFrame(output_data)
-df.to_excel("study_results.xlsx", index=False)
-print("Data extraction complete! Saved to study_results.xlsx")
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/
